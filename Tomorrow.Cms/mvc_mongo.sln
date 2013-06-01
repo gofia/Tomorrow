@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mvc_mongo", "mvc_mongo\mvc_mongo.csproj", "{CF64F0C1-A1CF-4ADD-A13F-A63F43BF70E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mvc_mongo.Tests", "mvc_mongo.Tests\mvc_mongo.Tests.csproj", "{49571E05-823B-4276-B571-225E782D15A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF64F0C1-A1CF-4ADD-A13F-A63F43BF70E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF64F0C1-A1CF-4ADD-A13F-A63F43BF70E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF64F0C1-A1CF-4ADD-A13F-A63F43BF70E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF64F0C1-A1CF-4ADD-A13F-A63F43BF70E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49571E05-823B-4276-B571-225E782D15A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49571E05-823B-4276-B571-225E782D15A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49571E05-823B-4276-B571-225E782D15A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49571E05-823B-4276-B571-225E782D15A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

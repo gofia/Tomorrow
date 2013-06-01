@@ -1,0 +1,32 @@
+﻿@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>CmsTests</title>
+  <script src="~/Scripts/jquery-1.6.4.js"></script>
+  <script src="~/Scripts/jquery-ui-1.10.2.js"></script>
+  <script>
+    var postData = {
+      collectionName: "CmsTest",
+      document: {
+        Name: "Lucas",
+        Age: 24
+      }
+    };
+    $.post("/Cms/Save", postData).done(function (response) {
+      $("body").text(response);
+    }).fail(function (response) {
+      $("body").text(response);
+    });
+  </script>
+</head>
+<body>
+  <div>
+  </div>
+</body>
+</html>

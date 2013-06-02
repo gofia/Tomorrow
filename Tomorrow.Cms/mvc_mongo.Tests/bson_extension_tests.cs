@@ -1,56 +1,49 @@
-﻿using System;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-//using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using MongoDB.Bson;
-
 using mvc_mongo.Models;
 
 namespace mvc_mongo.Tests
 {
-  //[TestFixture]
-  [TestClass]
-  public class bson_extension_tests
+  [TestFixture]
+  public class BsonExtensionTests
   {
-    [TestMethod]
+    [Test]
     public void TestValueCurrent()
     {
-      var value = mocks.BsonDocumentMock["Simple"].AsBsonValue;
+      var value = Mocks.BsonDocumentMock["Simple"].AsBsonValue;
       var currentValue = value.Current();
       Assert.AreEqual(value, currentValue);
     }
 
-    //[Test]
-    [TestMethod]
+    [Test]
     public void TestArrayCurrent()
     {
-      var array = mocks.BsonDocumentMock["Historized"].AsBsonArray;
+      var array = Mocks.BsonDocumentMock["Historized"].AsBsonArray;
       var currentValue = array.Current();
       Assert.AreEqual(array[0].AsBsonDocument["Value"], currentValue);
     }
 
-    [TestMethod]
+    [Test]
     public void TestLocalizedCurrent()
     {
-      var document = mocks.BsonDocumentMock["Localized"].AsBsonDocument;
+      var document = Mocks.BsonDocumentMock["Localized"].AsBsonDocument;
       var currentValue = document.Current();
       Assert.AreEqual(document["EN"], currentValue);
     }
 
-    [TestMethod]
+    [Test]
     public void TestLocalizedHistorizedCurrent()
     {
-      var document = mocks.BsonDocumentMock["LocalizedHistorized"].AsBsonDocument;
+      var document = Mocks.BsonDocumentMock["LocalizedHistorized"].AsBsonDocument;
       var currentValue = document.Current();
       Assert.AreEqual(document["EN"].AsBsonArray[0].AsBsonDocument["Value"], currentValue);
     }
 
-    [TestMethod]
+    [Test]
     public void TestDocumentCurrent()
     {
-      var value = mocks.BsonDocumentMock;
+      var value = Mocks.BsonDocumentMock;
       var currentValue = value.Current();
 
       var expected = new BsonDocument
@@ -65,10 +58,10 @@ namespace mvc_mongo.Tests
       Assert.AreEqual(expected, currentValue);
     }
 
-    [TestMethod]
+    [Test]
     public void TestDocumentLocalizedCurrent()
     {
-      var value = mocks.BsonDocumentMock;
+      var value = Mocks.BsonDocumentMock;
       var currentValue = value.Current("DE");
 
       var expected = new BsonDocument

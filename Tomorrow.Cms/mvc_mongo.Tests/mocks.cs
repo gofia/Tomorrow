@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using MongoDB.Bson;
 
 namespace mvc_mongo.Tests
 {
-  public static class mocks
+  public static class Mocks
   {
     public static BsonDocument BsonDocumentMock = new BsonDocument
     {

@@ -1,68 +1,67 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-
 using mvc_mongo.Models;
 
 namespace mvc_mongo.Tests
 {
-  [TestClass]
-  public class icms_handler_tests
+  [TestFixture]
+  public class ICmsHandlerTests
   {
-    [TestMethod]
+    [Test]
     public void TestGetCurrent()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var actual = cms_handler.getCurrent("entities", _id);
-        var expected = mocks.BsonDocumentMock.Current();
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var actual = cmsHandler.getCurrent("entities", id);
+        var expected = Mocks.BsonDocumentMock.Current();
         Assert.AreEqual(expected, actual);
       });
     }
 
-    [TestMethod]
+    [Test]
     public void TestGetField()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var actual = cms_handler.getField("entities", _id, "LocalizedHistorized");
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var actual = cmsHandler.getField("entities", id, "LocalizedHistorized");
         actual = actual["LocalizedHistorized"].AsBsonDocument;
-        var expected = mocks.BsonDocumentMock["LocalizedHistorized"];
+        var expected = Mocks.BsonDocumentMock["LocalizedHistorized"];
         Assert.AreEqual(expected, actual);
       });
     }
 
-    [TestMethod]
+    [Test]
     public void TestUpdate()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
         // Update object
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var cms_parameter = new cms_update_parameter
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var cmsParameter = new cms_update_parameter
         {
-          id = _id,
+          id = id,
           collection = "entities",
           field = "Simple",
           value = new BsonString("New value.")
         };
-        var cms_response = cms_handler.update(cms_parameter);
+        var cmsResponse = cmsHandler.update(cmsParameter);
 
         // Check that the update was successful
-        Assert.IsTrue(cms_response.success);
+        Assert.IsTrue(cmsResponse.success);
 
         // Check that reduced entity has the expected value
-        var actual = cms_handler.getCurrent("entities", _id);
+        var actual = cmsHandler.getCurrent("entities", id);
         actual.OrderFields();
-        var expected = mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
+        var expected = Mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
         expected = expected.Current().AsBsonDocument;
         expected["Simple"] = new BsonString("New value.");
         expected.OrderFields();
@@ -70,31 +69,31 @@ namespace mvc_mongo.Tests
       });
     }
 
-    [TestMethod]
+    [Test]
     public void TestLocalizedUpdate()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
         // Update object
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var cms_parameter = new cms_update_parameter
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var cmsParameter = new cms_update_parameter
         {
-          id = _id,
+          id = id,
           collection = "entities",
           field = "Motivation",
           language = "DE",
           value = new BsonString("Neue Deutsche Motivation.")
         };
-        var cms_response = cms_handler.update(cms_parameter);
+        var cmsResponse = cmsHandler.update(cmsParameter);
 
         // Check that the update was successful
-        Assert.IsTrue(cms_response.success);
+        Assert.IsTrue(cmsResponse.success);
 
         // Check that reduced entity has the expected value
-        var actual = cms_handler.getCurrent("entities", _id, "DE");
+        var actual = cmsHandler.getCurrent("entities", id, "DE");
         actual.OrderFields();
-        var expected = mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
+        var expected = Mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
         expected = expected.Current("DE").AsBsonDocument;
         expected["Motivation"] = new BsonString("Neue Deutsche Motivation.");
         expected.OrderFields();
@@ -102,30 +101,30 @@ namespace mvc_mongo.Tests
       });
     }
 
-    [TestMethod]
+    [Test]
     public void TestRevision()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
         // Update object
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var cms_parameter = new cms_update_parameter
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var cmsParameter = new cms_update_parameter
         {
-          id = _id,
+          id = id,
           collection = "entities",
           field = "Description",
           value = new BsonString("It is me, Lucas!")
         };
-        var cms_response = cms_handler.revise(cms_parameter);
+        var cmsResponse = cmsHandler.revise(cmsParameter);
 
         // Check that the update was successful
-        Assert.IsTrue(cms_response.success);
+        Assert.IsTrue(cmsResponse.success);
 
         // Check that reduced entity has the expected value
-        var actual = cms_handler.getCurrent("entities", _id);
+        var actual = cmsHandler.getCurrent("entities", id);
         actual.OrderFields();
-        var expected = mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
+        var expected = Mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
         expected = expected.Current().AsBsonDocument;
         expected["Description"] = new BsonString("It is me, Lucas!");
         expected.OrderFields();
@@ -133,31 +132,31 @@ namespace mvc_mongo.Tests
       });
     }
 
-    [TestMethod]
+    [Test]
     public void TestLocalizedRevision()
     {
-      DbTest((MongoDatabase database) =>
+      DbTest(database =>
       {
         // Update object
-        var cms_handler = new cms_handler(database);
-        var _id = mocks.BsonDocumentMock["_id"].AsObjectId;
-        var cms_parameter = new cms_update_parameter
+        var cmsHandler = new cms_handler(database);
+        var id = Mocks.BsonDocumentMock["_id"].AsObjectId;
+        var cmsParameter = new cms_update_parameter
         {
-          id = _id,
+          id = id,
           collection = "entities",
           field = "Biography",
           language = "DE",
           value = new BsonString("Eine neue Biography!")
         };
-        var cms_response = cms_handler.revise(cms_parameter);
+        var cmsResponse = cmsHandler.revise(cmsParameter);
 
         // Check that the update was successful
-        Assert.IsTrue(cms_response.success);
+        Assert.IsTrue(cmsResponse.success);
 
         // Check that reduced entity has the expected value
-        var actual = cms_handler.getCurrent("entities", _id, "DE");
+        var actual = cmsHandler.getCurrent("entities", id, "DE");
         actual.OrderFields();
-        var expected = mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
+        var expected = Mocks.BsonDocumentMock.DeepClone().AsBsonDocument;
         expected = expected.Current().AsBsonDocument;
         expected["Biography"] = new BsonString("Eine neue Biography!");
         expected.OrderFields();
@@ -167,13 +166,13 @@ namespace mvc_mongo.Tests
 
     private void DbTest(Action<MongoDatabase> action)
     {
-      var connectionString = "mongodb://localhost";
+      const string connectionString = "mongodb://localhost";
       var client = new MongoClient(connectionString);
       var server = client.GetServer();
       var database = server.GetDatabase("test");
       var collection = database.GetCollection("entities");
       collection.RemoveAll();
-      collection.Insert(mocks.BsonDocumentMock);
+      collection.Insert(Mocks.BsonDocumentMock);
       action(database);
     }
   }

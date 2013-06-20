@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using MathNet.Numerics.LinearAlgebra.Double;
+using Tomorrow.Mathematics;
 
 namespace Tomorrow.Lppl
 {
@@ -61,7 +58,7 @@ namespace Tomorrow.Lppl
       var matrixInverse = matrix.Inverse();
 
       var vector = new DenseVector(new[] { sys, sysfs, sysgs, syshs });
-
+      
       var result = matrixInverse * vector;
       _lppl.A = result[0];
       _lppl.B = result[1];

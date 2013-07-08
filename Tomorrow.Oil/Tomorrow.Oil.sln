@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Tomorrow.Oil", "Tomorrow.Oil\Tomorrow.Oil.pyproj", "{980A6FCE-EFDC-468E-A457-9D91BE1EF473}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Tomorrow.Oil.Tests", "Tomorrow.Oil.Tests\Tomorrow.Oil.Tests.pyproj", "{1BD06DCC-2720-40AF-83D9-353D1F9D477D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{980A6FCE-EFDC-468E-A457-9D91BE1EF473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{980A6FCE-EFDC-468E-A457-9D91BE1EF473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{980A6FCE-EFDC-468E-A457-9D91BE1EF473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{980A6FCE-EFDC-468E-A457-9D91BE1EF473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BD06DCC-2720-40AF-83D9-353D1F9D477D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BD06DCC-2720-40AF-83D9-353D1F9D477D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BD06DCC-2720-40AF-83D9-353D1F9D477D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BD06DCC-2720-40AF-83D9-353D1F9D477D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

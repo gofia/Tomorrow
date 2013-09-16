@@ -16,8 +16,8 @@ DATABASES = {
                                               # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'Peak0i1?',
-        'HOST': 'localhost',              # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3307',                   # Set to empty string for default.
+        'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                   # Set to empty string for default.
     }
 }
 
@@ -111,6 +111,7 @@ import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
+    'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -121,7 +122,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
     'bsee_loader',
 )
 

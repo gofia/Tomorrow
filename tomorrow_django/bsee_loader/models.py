@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 import requests, calendar, datetime
@@ -15,6 +16,31 @@ class Production(models.Model):
     production_oil = models.PositiveIntegerField(default=0)
     production_gas = models.PositiveIntegerField(null=True, default=None)
     depth = models.PositiveIntegerField(null=True, default=None)
+
+    def __str__(self):
+        return self.name + " ; " + self.country + " ; " + self.date.__str__() + " ; "
+
+
+class BseeManager():
+    update_to = datetime.date.today()
+
+    def getOldestDate(self):
+        last_date = Production.objects.all().aggregate(Max('date'))
+
+        if last_date['date__max'] is None:
+            return date(year=1947, month=11, day=1)
+
+        return last_date['date__max']
+
+    def update(self):
+        bseeRequest = BseeRequest()
+        bseeRequest.year_month = self.getOldestDate()
+        while bseeRequest.year_month < self.update_to:
+            productions = bseeRequest.getProductions()
+            print "Saved: " + len(productions).__str__()
+            for production in productions:
+                production.save()
+            bseeRequest.nextMonth()
 
 
 class BseeRequest():
@@ -35,14 +61,37 @@ class BseeRequest():
             'top': "'" + self.year_month.year.__str__() + "'"
         }
 
-    def getSoup(self):
-        self.session = requests.session()
-        r = requests.post(self.url, data=self.getPostData())
+    def getNextPagePostData(self, page):
+        return {
+            'PageTo': "'" + page.__str__() + "'",
+            'Paging': 'True',
+            'sort' : 'Production Year',
+            'strOption' : 'Production Year and Production Month'
+        }
+
+    def getSoup(self, page):
+        r = None
+        if page == 1:
+            self.session = requests.session()
+            r = self.session.post(self.url, data=self.getPostData())
+        elif page > 1:
+            r = self.session.post(self.url, data=self.getNextPagePostData(page))
         return BeautifulSoup(r.content)
 
     def getProductions(self):
+        page = 1
         productions = []
-        soup = self.getSoup()
+        pageProductions = []
+        while len(pageProductions) > 0 or page == 1:
+            pageProductions = self.getProductionPage(page)
+            productions = productions + pageProductions
+            page = page + 1
+
+        return productions
+
+    def getProductionPage(self, page):
+        productions = []
+        soup = self.getSoup(page)
         table = soup.find('table', border=5, width=600)
 
         if table is None:

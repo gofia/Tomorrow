@@ -5,12 +5,43 @@ import csv
 import time
 from BeautifulSoup import BeautifulSoup
 
-first = False
 
-for year in range(2001, 2013):
-    for month in range(1, 13):
+def pageToCsv(soup, writeHeader):
+    table = soup.find('table', border=5, width=600)
+    if table is not None:
+        headers = table.findAll('th')[1:-1]
+        if headers is not None:
+            headers = [header.text for header in headers]
 
-        print year.__str__() + " " + month.__str__()
+        rows = []
+        trs = table.findAll('tr')
+        if trs is not None:
+            trs = trs[2:-1]
+            for row in trs:
+                tds = row.findAll('td')
+                columns = [val.text.encode('utf8') for val in tds]
+                if len(columns) > 0:
+                    rows.append([val.text.encode('utf8') for val in tds])
+            print "Found " + len(rows).__str__() + " rows"
+
+        with open('D:\Dropbox\PhD\Data\\bsee_data_new.csv', 'a') as f:
+            writer = csv.writer(f)
+            if writeHeader:
+                writeHeader = False
+                writer.writerow(headers)
+            writer.writerows(row for row in rows if row)
+
+        return len(rows), writeHeader
+    return 0, writeHeader
+
+
+writeHeader = True
+
+
+for year in range(2013, 2014):
+    for month in range(1, 9):
+        page = 1
+        print year.__str__() + " " + month.__str__() + " " + page.__str__()
 
         URL = 'http://www.data.bsee.gov/homepg/data_center/production/production/prodlist.asp'
         postData = {
@@ -24,33 +55,26 @@ for year in range(2001, 2013):
             'tom': "'" + month.__str__() + "'",
             'top': "'" + year.__str__() + "'"
         }
-
         session = requests.session()
-        r = requests.post(URL, data=postData)
+        r = session.post(URL, data=postData)
 
         soup = BeautifulSoup(r.content)
+        numberRows, writeHeader = pageToCsv(soup, writeHeader)
 
-        table = soup.find('table', border=5, width=600)
+        while numberRows > 0:
+            page = page + 1
+            print year.__str__() + " " + month.__str__() + " " + page.__str__()
 
-        if table is not None:
-            headers = table.findAll('th')[1:-1]
-            if headers is not None:
-                headers = [header.text for header in headers]
+            pagingPostData = {
+                'PageTo': "'" + page.__str__() + "'",
+                'Paging': 'True',
+                'sort' : 'Default Sort',
+                'strOption' : 'Production Year and Production Month'
+            }
+            r = session.post(URL, data=pagingPostData)
 
-            rows = []
-            trs = table.findAll('tr')
-            if trs is not None:
-                trs = trs[2:-1]
-                for row in trs:
-                    tds = row.findAll('td')
-                    rows.append([val.text.encode('utf8') for val in tds])
-                print "Found " + len(rows).__str__() + " rows"
+            soup = BeautifulSoup(r.content)
+            numberRows, writeHeader = pageToCsv(soup, writeHeader)
 
-            with open('C:\Users\lucas.fievet\Dropbox\PhD\Data\\bsee_data.csv', 'a') as f:
-                writer = csv.writer(f)
-                if first:
-                    writer.writerow(headers)
-                    first = False
-                writer.writerows(row for row in rows if row)
+            time.sleep(0.25)
 
-        time.sleep(1)

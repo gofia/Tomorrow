@@ -33,14 +33,16 @@ class BseeManager():
         return last_date['date__max']
 
     def update(self):
+        number_updates = 0
         bseeRequest = BseeRequest()
         bseeRequest.year_month = self.getOldestDate()
         while bseeRequest.year_month < self.update_to:
             productions = bseeRequest.getProductions()
-            print "Saved: " + len(productions).__str__()
+            number_updates = number_updates + len(productions)
             for production in productions:
                 production.save()
             bseeRequest.nextMonth()
+        return number_updates
 
 
 class BseeRequest():
@@ -136,7 +138,6 @@ class BseeRequest():
             return intValue
         except:
             logger.error("Value " + value + " could not be converted to int.")
-            print("Value " + value + " could not be converted to int.")
             return 0
 
     def nextMonth(self):

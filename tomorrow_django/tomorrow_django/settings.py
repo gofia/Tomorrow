@@ -112,6 +112,8 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').repl
 
 INSTALLED_APPS = (
     'south',
+    'djcelery',
+    'kombu.transport.django',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -155,3 +157,21 @@ LOGGING = {
         },
     }
 }
+
+import djcelery
+from djcelery.schedulers import DatabaseScheduler
+from datetime import timedelta
+
+BROKER_URL = 'django://'
+CELERY_TIMEZONE = 'Europe/London'
+
+CELERYBEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'bsee_loader.tasks.updateBsee',
+        'schedule': timedelta(seconds=30)
+    },
+}
+
+CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler
+
+djcelery.setup_loader()

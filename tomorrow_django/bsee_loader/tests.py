@@ -10,6 +10,7 @@ from datetime import date
 from BeautifulSoup import BeautifulSoup
 
 from bsee_loader.models import Production, BseeRequest, BseeManager
+from bsee_loader.tasks import updateBsee
 
 class BseeRequestTest(TestCase):
     def test_next_month(self):
@@ -123,3 +124,8 @@ class BseeManagerTest(TestCase):
         count = Production.objects.count()
         self.assertEqual(count, 2)
         self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=12, day=1))
+
+    def test_async_update(self):
+        result = updateBsee.delay()
+        self.assertEquals(result.get(), 2)
+        self.assertTrue(result.successful())

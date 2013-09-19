@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bd0a4561-00ba-4353-8350-5c77a224d47d" name="Default" comment="" />
+    <list default="true" id="bd0a4561-00ba-4353-8350-5c77a224d47d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tomorrow_django/settings.py" afterPath="$PROJECT_DIR$/tomorrow_django/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bsee_loader/tasks.py" afterPath="$PROJECT_DIR$/bsee_loader/tasks.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bsee_loader/tests.py" afterPath="$PROJECT_DIR$/bsee_loader/tests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/tomorrow_django.iml" afterPath="$PROJECT_DIR$/.idea/tomorrow_django.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="tomorrow_django.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/settings.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379323344738" ignored="false" />
-    <file path="/Dummy.txt" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379580695960" ignored="false" />
-    <file path="/Python Console" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379323299684" ignored="false" />
+    <file path="/settings.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379585275084" ignored="false" />
+    <file path="/Dummy.txt" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379584147902" ignored="false" />
+    <file path="/Python Console" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379584434711" ignored="false" />
     <file path="/models.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379332418069" ignored="false" />
     <file path="/Django Console" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379323419536" ignored="false" />
-    <file path="/tests.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379332705179" ignored="false" />
+    <file path="/tests.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379585508038" ignored="false" />
+    <file path="/__init__.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379584778655" ignored="false" />
+    <file path="/tasks.py" changelist="bd0a4561-00ba-4353-8350-5c77a224d47d" time="1379586423053" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,15 +39,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="26" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bsee_loader/views.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -50,9 +51,29 @@
       <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bsee_loader/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="42" selection-start="3413" selection-end="3413" vertical-scroll-proportion="0.2057911">
+            <state line="39" column="54" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.57886904">
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="164" column="32" selection-start="5608" selection-end="5608" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tasks.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bsee_loader/tasks.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="5" selection-start="193" selection-end="193" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#29#52#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -61,8 +82,10 @@
       <file leaf-file-name="tests.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bsee_loader/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="64" selection-start="2410" selection-end="2410" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="89" column="21" selection-start="3565" selection-end="3565" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#184#216#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,9 +108,11 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/bsee_loader/models.py" />
+        <option value="C:/Program Files/Python-2.7.5/Lib/site-packages/djcelery/__init__.py" />
         <option value="$PROJECT_DIR$/tomorrow_django/settings.py" />
         <option value="$PROJECT_DIR$/bsee_loader/tests.py" />
-        <option value="$PROJECT_DIR$/bsee_loader/models.py" />
+        <option value="$PROJECT_DIR$/bsee_loader/tasks.py" />
       </list>
     </option>
   </component>
@@ -108,7 +133,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -123,6 +148,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -171,18 +197,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$USER_HOME$/Workspace" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -299,29 +324,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="tomorrow_django" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -343,6 +345,29 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="tomorrow_django" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -392,10 +417,10 @@
       <method />
     </configuration>
     <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in tests" />
-      <item index="1" class="java.lang.String" itemvalue="Django tests.Test: bsee_loader.BseeRequestTest.test_next_month" />
-      <item index="2" class="java.lang.String" itemvalue="Django tests.Test: bsee_loader.BseeRequestTest.test_get_production" />
-      <item index="3" class="java.lang.String" itemvalue="Django server.tomorrow_django" />
+      <item index="0" class="java.lang.String" itemvalue="Django server.tomorrow_django" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in tests" />
+      <item index="2" class="java.lang.String" itemvalue="Django tests.Test: bsee_loader.BseeRequestTest.test_next_month" />
+      <item index="3" class="java.lang.String" itemvalue="Django tests.Test: bsee_loader.BseeRequestTest.test_get_production" />
     </list>
     <recent_temporary>
       <list size="3">
@@ -459,11 +484,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297244" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16435432" sideWeight="0.6712598" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16595517" sideWeight="0.7116142" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297244" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874015" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28838584" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -549,18 +574,13 @@
     <entry file="file://$PROJECT_DIR$/bsee_loader/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <element signature="e#184#216#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bsee_loader/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
@@ -579,7 +599,9 @@
     <entry file="file://$PROJECT_DIR$/bsee_loader/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <element signature="e#184#216#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -590,26 +612,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tomorrow_django/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
@@ -626,23 +629,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Program Files/Python-2.7.5/Lib/site-packages/djcelery/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="5" selection-start="631" selection-end="631" vertical-scroll-proportion="0.57012194">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/Python-2.7.5/Lib/site-packages/django/conf/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="133" column="0" selection-start="5153" selection-end="5153" vertical-scroll-proportion="0.4476386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bsee_loader/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tomorrow_django/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="26" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0">
+        <state line="164" column="32" selection-start="5608" selection-end="5608" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bsee_loader/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="64" selection-start="2410" selection-end="2410" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="89" column="21" selection-start="3565" selection-end="3565" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#184#216#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bsee_loader/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="5" selection-start="193" selection-end="193" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#29#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bsee_loader/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="42" selection-start="3413" selection-end="3413" vertical-scroll-proportion="0.2057911">
+        <state line="39" column="54" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.57886904">
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>

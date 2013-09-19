@@ -6,6 +6,6 @@ from bsee_loader.models import BseeManager
 
 @task()
 def updateBsee():
-    #bseeManager = BseeManager()
-    #return bseeManager.update()
-    return 1 + 1
+    bseeManager = BseeManager()
+    return bseeManager.update()
+    #return 1 + 1

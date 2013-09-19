@@ -14,10 +14,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'tomorrow',                   # Or path to database file if using sqlite3.
                                               # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'Peak0i1?',
+        'USER': 'tomorrow',
+        'PASSWORD': 't4ever!',
         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                   # Set to empty string for default.
+        'PORT': '3307',                   # Set to empty string for default.
     }
 }
 
@@ -159,19 +159,19 @@ LOGGING = {
 }
 
 import djcelery
-from djcelery.schedulers import DatabaseScheduler
-from datetime import timedelta
+# from djcelery.schedulers import DatabaseScheduler
+# from datetime import timedelta
 
-BROKER_URL = 'django://'
-CELERY_TIMEZONE = 'Europe/London'
-
-CELERYBEAT_SCHEDULE = {
-    'add-every-30-seconds': {
-        'task': 'bsee_loader.tasks.updateBsee',
-        'schedule': timedelta(seconds=30)
-    },
-}
-
-CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler
-
+BROKER_URL = 'django://localhost'
+# CELERY_TIMEZONE = 'Europe/London'
+#
+# CELERYBEAT_SCHEDULE = {
+#     'add-every-30-seconds': {
+#         'task': 'bsee_loader.tasks.updateBsee',
+#         'schedule': timedelta(seconds=30)
+#     },
+# }
+#
+# CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler
+#
 djcelery.setup_loader()

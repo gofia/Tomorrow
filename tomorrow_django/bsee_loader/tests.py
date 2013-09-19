@@ -6,6 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.test.utils import override_settings
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 
@@ -63,15 +64,15 @@ class BseeRequestTest(TestCase):
         bseeRequest = BseeRequest()
         bseeRequest.year_month = date(year=2013, month=1, day=1)
         productions = bseeRequest.getProductions()
-        self.assertEqual(len(productions), 1300)
+        self.assertEqual(len(productions), 1302)
         production = productions[0]
         expectedProduction = Production(
-            name="G03197",
+            name="G03205",
             country="US",
             date=date(year=2013, month=1, day=1),
-            production_oil=8741,
-            production_gas=72970,
-            depth=44,
+            production_oil=17271,
+            production_gas=9446,
+            depth=495,
         )
         self.assertEqual(production.name, expectedProduction.name)
         self.assertEqual(production.country, expectedProduction.country)
@@ -81,12 +82,12 @@ class BseeRequestTest(TestCase):
         self.assertEqual(production.depth, expectedProduction.depth)
         production = productions[-1]
         expectedProduction = Production(
-            name="G15161",
+            name="G15212",
             country="US",
             date=date(year=2013, month=1, day=1),
-            production_oil=179,
-            production_gas=4407,
-            depth=171,
+            production_oil=4773+34,
+            production_gas=3626+9121,
+            depth=140,
         )
         self.assertEqual(production.name, expectedProduction.name)
         self.assertEqual(production.country, expectedProduction.country)
@@ -125,6 +126,9 @@ class BseeManagerTest(TestCase):
         self.assertEqual(count, 2)
         self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=12, day=1))
 
+    @override_settings(CELERY_EAGER_PROPAGATES_EXCEPTIONS = True,
+                       CELERY_ALWAYS_EAGER = True,
+                       BROKER_BACKEND = 'memory',)
     def test_async_update(self):
         result = updateBsee.delay()
         self.assertEquals(result.get(), 2)

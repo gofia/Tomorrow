@@ -10,7 +10,8 @@ from django.test.utils import override_settings
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 
-from bsee_loader.models import Production, BseeRequest, BseeManager
+from oil_and_gas.models import FieldProduction
+from bsee_loader.models import UsRequest, UsManager
 from bsee_loader.tasks import updateBsee
 
 class BseeRequestTest(TestCase):
@@ -18,7 +19,7 @@ class BseeRequestTest(TestCase):
         """
         Tests that month increment is working.
         """
-        bseeRequest = BseeRequest()
+        bseeRequest = UsRequest()
         self.assertEqual(bseeRequest.year_month, date(year=1947, month=1, day=1))
         bseeRequest.nextMonth()
         self.assertEqual(bseeRequest.year_month, date(year=1947, month=2, day=1))
@@ -29,9 +30,9 @@ class BseeRequestTest(TestCase):
         """
         soup = BeautifulSoup("<tr><td>G03229</td><td>5</td><td>2013</td><td>304</td>" +
                              "<td>0</td><td>0</td><td>516</td><td>13,129</td><td>1</td><td>18</td></tr>")
-        bseeRequest = BseeRequest()
+        bseeRequest = UsRequest()
         production = bseeRequest.getProduction(soup)
-        expectedProduction = Production(
+        expectedProduction = FieldProduction(
             name="G03229",
             country="US",
             date=date(year=2013, month=5, day=1),
@@ -50,7 +51,7 @@ class BseeRequestTest(TestCase):
         """
         Tests that production is correct.
         """
-        bseeRequest = BseeRequest()
+        bseeRequest = UsRequest()
         bseeRequest.year_month = date(year=2013, month=1, day=1)
         soup = bseeRequest.getSoup(page=1)
         table = soup.find('table', border=5, width=600)
@@ -61,12 +62,12 @@ class BseeRequestTest(TestCase):
         """
         Tests that production is correct.
         """
-        bseeRequest = BseeRequest()
+        bseeRequest = UsRequest()
         bseeRequest.year_month = date(year=2013, month=1, day=1)
         productions = bseeRequest.getProductions()
         self.assertEqual(len(productions), 1302)
         production = productions[0]
-        expectedProduction = Production(
+        expectedProduction = FieldProduction(
             name="G03205",
             country="US",
             date=date(year=2013, month=1, day=1),
@@ -81,7 +82,7 @@ class BseeRequestTest(TestCase):
         self.assertEqual(production.production_gas, expectedProduction.production_gas)
         self.assertEqual(production.depth, expectedProduction.depth)
         production = productions[-1]
-        expectedProduction = Production(
+        expectedProduction = FieldProduction(
             name="G15212",
             country="US",
             date=date(year=2013, month=1, day=1),
@@ -102,7 +103,7 @@ class ProductionTest(TestCase):
         """
         Tests save.
         """
-        production = Production(
+        production = FieldProduction(
             name="G15161",
             country="US",
             date=date(year=2013, month=1, day=1),
@@ -118,11 +119,11 @@ class BseeManagerTest(TestCase):
         """
         Tests update.
         """
-        bseeManager = BseeManager()
+        bseeManager = UsManager()
         bseeManager.update_to = date(year=1948, month=1, day=1)
         self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=11, day=1))
         bseeManager.update()
-        count = Production.objects.count()
+        count = FieldProduction.objects.count()
         self.assertEqual(count, 2)
         self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=12, day=1))
 

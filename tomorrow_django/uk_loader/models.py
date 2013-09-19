@@ -50,7 +50,6 @@ class UkRequest():
     def getSoup(self, page):
         self.session = requests.session()
         r = self.session.post(self.url + "/" + page.__str__() + ".htm")
-        print r.content
         return BeautifulSoup(r.content)
 
     def getProductionPage(self, page):

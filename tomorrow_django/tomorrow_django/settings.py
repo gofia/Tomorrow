@@ -195,8 +195,12 @@ from datetime import timedelta, date
 CELERY_TIMEZONE = 'Europe/London'
 
 CELERYBEAT_SCHEDULE = {
-    'add-every-30-seconds': {
-        'task': 'bsee_loader.tasks.updateBsee',
+    'update_us': {
+        'task': 'bsee_loader.tasks.updateUs',
+        'schedule': timedelta(seconds=30),
+    },
+    'update_uk': {
+        'task': 'uk_loader.tasks.updateUk',
         'schedule': timedelta(seconds=30),
     },
 }

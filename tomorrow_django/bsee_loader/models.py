@@ -1,15 +1,17 @@
 from django.db import models
 from django.db.models import Max
+
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 import requests, calendar, datetime
 import logging
 
 
-logger = logging.getLogger("BseeLoader.Model")
+logger = logging.getLogger("BseeLoader")
 
 
 class Production(models.Model):
+    logger.info("Created production.")
     name = models.CharField(max_length=50, default="")
     country = models.CharField(max_length=50, default="")
     date = models.DateField(unique_for_date="name")
@@ -33,6 +35,7 @@ class BseeManager():
         return last_date['date__max']
 
     def update(self):
+        logger.info("Bsee update started.")
         number_updates = 0
         bseeRequest = BseeRequest()
         bseeRequest.year_month = self.getOldestDate()
@@ -42,6 +45,7 @@ class BseeManager():
             for production in productions:
                 production.save()
             bseeRequest.nextMonth()
+        logger.info("Bsee update finished.")
         return number_updates
 
 

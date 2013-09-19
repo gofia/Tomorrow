@@ -130,6 +130,6 @@ class BseeManagerTest(TestCase):
                        CELERY_ALWAYS_EAGER = True,
                        BROKER_BACKEND = 'memory',)
     def test_async_update(self):
-        result = updateBsee.delay()
+        result = updateBsee.delay(date(year=1948, month=1, day=1))
         self.assertEquals(result.get(), 2)
         self.assertTrue(result.successful())

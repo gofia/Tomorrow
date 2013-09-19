@@ -17,7 +17,7 @@ DATABASES = {
         'USER': 'tomorrow',
         'PASSWORD': 't4ever!',
         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3307',                   # Set to empty string for default.
+        'PORT': '3306',                   # Set to empty string for default.
     }
 }
 
@@ -124,7 +124,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'oil_and_gas',
     'bsee_loader',
+    'uk_loader',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -137,19 +139,41 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
     'handlers': {
+        'default': {
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/mylog.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter':'standard',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler'
+        },
     },
     'loggers': {
+        'BseeLoader': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': True
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
@@ -159,19 +183,22 @@ LOGGING = {
 }
 
 import djcelery
-# from djcelery.schedulers import DatabaseScheduler
-# from datetime import timedelta
 
 BROKER_URL = 'django://localhost'
-# CELERY_TIMEZONE = 'Europe/London'
-#
-# CELERYBEAT_SCHEDULE = {
-#     'add-every-30-seconds': {
-#         'task': 'bsee_loader.tasks.updateBsee',
-#         'schedule': timedelta(seconds=30)
-#     },
-# }
-#
-# CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler
-#
+
 djcelery.setup_loader()
+
+#from djcelery.schedulers import DatabaseScheduler
+import datetime
+from datetime import timedelta, date
+
+CELERY_TIMEZONE = 'Europe/London'
+
+CELERYBEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'bsee_loader.tasks.updateBsee',
+        'schedule': timedelta(seconds=30),
+    },
+}
+
+#CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler

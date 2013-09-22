@@ -125,7 +125,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'oil_and_gas',
-    'bsee_loader',
+    'us_loader',
     'uk_loader',
 )
 
@@ -188,15 +188,13 @@ BROKER_URL = 'django://localhost'
 
 djcelery.setup_loader()
 
-#from djcelery.schedulers import DatabaseScheduler
-import datetime
-from datetime import timedelta, date
+from datetime import timedelta
 
 CELERY_TIMEZONE = 'Europe/London'
 
 CELERYBEAT_SCHEDULE = {
     'update_us': {
-        'task': 'bsee_loader.tasks.updateUs',
+        'task': 'us_loader.tasks.updateUs',
         'schedule': timedelta(seconds=30),
     },
     'update_uk': {
@@ -205,4 +203,3 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-#CELERYBEAT_SCHEDULER = djcelery.schedulers.DatabaseScheduler

@@ -11,8 +11,8 @@ from datetime import date
 from BeautifulSoup import BeautifulSoup
 
 from oil_and_gas.models import FieldProduction
-from bsee_loader.models import UsRequest, UsManager
-from bsee_loader.tasks import updateBsee
+from us_loader.models import UsRequest, UsManager
+from us_loader.tasks import updateBsee
 
 class BseeRequestTest(TestCase):
     def test_next_month(self):

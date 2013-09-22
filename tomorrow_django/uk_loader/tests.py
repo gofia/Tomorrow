@@ -10,8 +10,8 @@ from django.test.utils import override_settings
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 
-from oil_and_gas.models import WellProduction
-from uk_loader.models import UkRequest, UkManager
+from oil_and_gas.models import WellProduction, FieldProduction
+from uk_loader.models import UkRequest, UkManager, UkAggregator
 from uk_loader.tasks import updateUk
 
 class UkRequestTest(TestCase):
@@ -113,3 +113,94 @@ class UkManagerTest(TestCase):
         result = updateUk.delay(2)
         self.assertEquals(result.get(), 141)
         self.assertTrue(result.successful())
+
+
+class UkAggregatorTest(TestCase):
+    def test_fields(self):
+        """
+        Tests get fields.
+        """
+        wellProduction1 = WellProduction(
+            name="Well1",
+            country="UK",
+            field="Field1",
+            date=date(year=1995, month=1, day=1),
+            production_oil=46742,
+            production_gas=2184,
+            production_water=1035,
+        )
+        wellProduction1.save()
+        wellProduction2 = WellProduction(
+            name="Well1",
+            country="UK",
+            field="Field2",
+            date=date(year=1995, month=1, day=1),
+            production_oil=46742,
+            production_gas=2184,
+            production_water=1035,
+        )
+        wellProduction2.save()
+        ukAggregator = UkAggregator()
+        fields=ukAggregator.getFields()
+        self.assertEqual(fields[0]['field'], wellProduction1.field)
+        self.assertEqual(fields[1]['field'], wellProduction2.field)
+
+    def test_aggregate_wells(self):
+        """
+        Tests aggregate single field.
+        """
+        wellProduction1_1 = WellProduction(
+            name="Well1",
+            country="UK",
+            field="Field3",
+            date=date(year=1995, month=1, day=1),
+            production_oil=1,
+            production_gas=2,
+            production_water=3,
+        )
+        wellProduction1_1.save()
+        wellProduction1_2 = WellProduction(
+            name="Well1",
+            country="UK",
+            field="Field3",
+            date=date(year=1996, month=1, day=1),
+            production_oil=4,
+            production_gas=5,
+            production_water=6,
+        )
+        wellProduction1_2.save()
+        wellProduction2_1 = WellProduction(
+            name="Well2",
+            country="UK",
+            field="Field3",
+            date=date(year=1995, month=1, day=1),
+            production_oil=10,
+            production_gas=20,
+            production_water=30,
+        )
+        wellProduction2_1.save()
+        wellProduction2_2 = WellProduction(
+            name="Well2",
+            country="UK",
+            field="Field3",
+            date=date(year=1996, month=1, day=1),
+            production_oil=100,
+            production_gas=200,
+            production_water=300,
+        )
+        wellProduction2_2.save()
+        ukAggregator = UkAggregator()
+        aggregate_wells=ukAggregator.aggregateWells("Field3")
+        expected = [{
+            'date': date(1995, 1, 1),
+            'total_gas': 11,
+            'total_oil': 22,
+            'total_water': 33
+        }, {
+            'date': date(1996, 1, 1),
+            'total_gas': 104,
+            'total_oil': 205,
+            'total_water': 306
+        }]
+        self.assertEqual(aggregate_wells[0], expected[0])
+        self.assertEqual(aggregate_wells[1], expected[1])

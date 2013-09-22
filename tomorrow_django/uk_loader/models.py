@@ -1,12 +1,11 @@
-from django.db import models
-from django.db.models import Max
+from django.db.models import Max, Sum
 
 from datetime import date
 from BeautifulSoup import BeautifulSoup
-import requests, calendar, datetime
+import requests, datetime
 import logging
 
-from oil_and_gas.models import WellProduction
+from oil_and_gas.models import WellProduction, FieldProduction
 
 logger = logging.getLogger("UkLoader")
 
@@ -42,6 +41,37 @@ class UkManager():
         logger.info("Uk update finished.")
         return number_updates
 
+
+class UkAggregator():
+    def getFields(self):
+        return WellProduction.objects.filter(country="UK").values("field").distinct()
+
+    def aggregateWells(self, name):
+        return WellProduction.objects.filter(field=name).values('date').annotate(
+            total_oil=Sum('production_gas'),
+            total_gas=Sum('production_oil'),
+            total_water=Sum('production_water'),
+        )
+
+    def aggWellToField(self, agg_well):
+        return FieldProduction(
+            name=agg_well.field,
+            country="UK",
+            date=agg_well['date'],
+            production_oil=agg_well['total_oil'],
+            production_gas=agg_well['total_gas'],
+            production_water=agg_well['total_water'],
+        )
+
+    def computeFields(self, fields):
+        for field in fields:
+            fieldName=field['field']
+            agg_wells = self.aggregateField(fieldName)
+            for agg_well in agg_wells:
+                productionDate=agg_well['date']
+                fieldProduction = FieldProduction.objects.get_or_create(name=fieldName, date=productionDate)
+                self.setFieldData(fieldProduction, agg_well)
+                fieldProduction.save()
 
 class UkRequest():
     url = "https://www.og.decc.gov.uk/information/wells/pprs/Well_production_offshore_oil_fields/offshore_oil_fields_by_well"

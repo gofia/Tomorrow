@@ -7,7 +7,7 @@ import logging
 
 from oil_and_gas.models import FieldProduction
 
-logger = logging.getLogger("BseeLoader")
+logger = logging.getLogger("UsLoader")
 
 
 class UsManager():
@@ -22,7 +22,7 @@ class UsManager():
         return last_date['date__max']
 
     def update(self):
-        logger.info("Bsee update started.")
+        logger.info("US update started.")
         number_updates = 0
         bseeRequest = UsRequest()
         bseeRequest.year_month = self.getOldestDate()
@@ -32,7 +32,7 @@ class UsManager():
             for production in productions:
                 production.save()
             bseeRequest.nextMonth()
-        logger.info("Bsee update finished.")
+        logger.info("US update finished.")
         return number_updates
 
 

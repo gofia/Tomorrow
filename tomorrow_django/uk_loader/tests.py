@@ -116,11 +116,10 @@ class UkManagerTest(TestCase):
 
 
 class UkAggregatorTest(TestCase):
-    def test_fields(self):
-        """
-        Tests get fields.
-        """
-        wellProduction1 = WellProduction(
+    wellProduction1, wellProduction2 = None, None
+
+    def setUp(self):
+        self.wellProduction1 = WellProduction.objects.create(
             name="Well1",
             country="UK",
             field="Field1",
@@ -129,8 +128,7 @@ class UkAggregatorTest(TestCase):
             production_gas=2184,
             production_water=1035,
         )
-        wellProduction1.save()
-        wellProduction2 = WellProduction(
+        self.wellProduction2 = WellProduction.objects.create(
             name="Well1",
             country="UK",
             field="Field2",
@@ -139,17 +137,7 @@ class UkAggregatorTest(TestCase):
             production_gas=2184,
             production_water=1035,
         )
-        wellProduction2.save()
-        ukAggregator = UkAggregator()
-        fields=ukAggregator.getFields()
-        self.assertEqual(fields[0]['field'], wellProduction1.field)
-        self.assertEqual(fields[1]['field'], wellProduction2.field)
-
-    def test_aggregate_wells(self):
-        """
-        Tests aggregate single field.
-        """
-        wellProduction1_1 = WellProduction(
+        wellProduction1_1 = WellProduction.objects.create(
             name="Well1",
             country="UK",
             field="Field3",
@@ -158,8 +146,7 @@ class UkAggregatorTest(TestCase):
             production_gas=2,
             production_water=3,
         )
-        wellProduction1_1.save()
-        wellProduction1_2 = WellProduction(
+        wellProduction1_2 = WellProduction.objects.create(
             name="Well1",
             country="UK",
             field="Field3",
@@ -168,8 +155,7 @@ class UkAggregatorTest(TestCase):
             production_gas=5,
             production_water=6,
         )
-        wellProduction1_2.save()
-        wellProduction2_1 = WellProduction(
+        wellProduction2_1 = WellProduction.objects.create(
             name="Well2",
             country="UK",
             field="Field3",
@@ -178,8 +164,7 @@ class UkAggregatorTest(TestCase):
             production_gas=20,
             production_water=30,
         )
-        wellProduction2_1.save()
-        wellProduction2_2 = WellProduction(
+        wellProduction2_2 = WellProduction.objects.create(
             name="Well2",
             country="UK",
             field="Field3",
@@ -188,9 +173,22 @@ class UkAggregatorTest(TestCase):
             production_gas=200,
             production_water=300,
         )
-        wellProduction2_2.save()
+
+    def test_fields(self):
+        """
+        Tests get fields.
+        """
         ukAggregator = UkAggregator()
-        aggregate_wells=ukAggregator.aggregateWells("Field3")
+        fields = ukAggregator.getFields()
+        self.assertEqual(fields[0]['field'], self.wellProduction1.field)
+        self.assertEqual(fields[1]['field'], self.wellProduction2.field)
+
+    def test_aggregate_wells(self):
+        """
+        Tests aggregate single field.
+        """
+        ukAggregator = UkAggregator()
+        aggregate_wells = ukAggregator.aggregateWells("Field3")
         expected = [{
             'date': date(1995, 1, 1),
             'total_gas': 11,
@@ -202,5 +200,34 @@ class UkAggregatorTest(TestCase):
             'total_oil': 205,
             'total_water': 306
         }]
-        self.assertEqual(aggregate_wells[0], expected[0])
-        self.assertEqual(aggregate_wells[1], expected[1])
+        self.assertDictEqual(aggregate_wells[0], expected[0])
+        self.assertDictEqual(aggregate_wells[1], expected[1])
+
+    def test_compute(self):
+        """
+        Tests compute aggregate wells for all fields.
+        """
+        ukAggregator = UkAggregator()
+        ukAggregator.compute()
+        fieldProductions = FieldProduction.objects.filter(name="Field3").all()
+        expected = [{
+            'date': date(1995, 1, 1),
+            'total_gas': 11,
+            'total_oil': 22,
+            'total_water': 33
+        }, {
+            'date': date(1996, 1, 1),
+            'total_gas': 104,
+            'total_oil': 205,
+            'total_water': 306
+        }]
+        self.assertEqual(fieldProductions[0].name, "Field3")
+        self.assertEqual(fieldProductions[0].date, date(1995, 1, 1))
+        self.assertEqual(fieldProductions[0].production_gas, 11)
+        self.assertEqual(fieldProductions[0].production_oil, 22)
+        self.assertEqual(fieldProductions[0].production_water, 33)
+        self.assertEqual(fieldProductions[1].name, "Field3")
+        self.assertEqual(fieldProductions[1].date, date(1996, 1, 1))
+        self.assertEqual(fieldProductions[1].production_gas, 104)
+        self.assertEqual(fieldProductions[1].production_oil, 205)
+        self.assertEqual(fieldProductions[1].production_water, 306)

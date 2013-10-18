@@ -12,7 +12,7 @@ from BeautifulSoup import BeautifulSoup
 
 from oil_and_gas.models import FieldProduction
 from us_loader.models import UsRequest, UsManager
-from us_loader.tasks import updateBsee
+from us_loader.tasks import updateUs
 
 class BseeRequestTest(TestCase):
     def test_next_month(self):
@@ -51,9 +51,9 @@ class BseeRequestTest(TestCase):
         """
         Tests that production is correct.
         """
-        bseeRequest = UsRequest()
-        bseeRequest.year_month = date(year=2013, month=1, day=1)
-        soup = bseeRequest.getSoup(page=1)
+        usRequest = UsRequest()
+        usRequest.year_month = date(year=2013, month=1, day=1)
+        soup = usRequest.getSoup(page=1)
         table = soup.find('table', border=5, width=600)
         trs = table.findAll('tr')
         self.assertEqual(len(trs), 1002)
@@ -62,9 +62,9 @@ class BseeRequestTest(TestCase):
         """
         Tests that production is correct.
         """
-        bseeRequest = UsRequest()
-        bseeRequest.year_month = date(year=2013, month=1, day=1)
-        productions = bseeRequest.getProductions()
+        usRequest = UsRequest()
+        usRequest.year_month = date(year=2013, month=1, day=1)
+        productions = usRequest.getProductions()
         self.assertEqual(len(productions), 1302)
         production = productions[0]
         expectedProduction = FieldProduction(
@@ -114,23 +114,23 @@ class ProductionTest(TestCase):
         production.save()
 
 
-class BseeManagerTest(TestCase):
+class UsManagerTest(TestCase):
     def test_update(self):
         """
         Tests update.
         """
-        bseeManager = UsManager()
-        bseeManager.update_to = date(year=1948, month=1, day=1)
-        self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=11, day=1))
-        bseeManager.update()
+        usManager = UsManager()
+        usManager.update_to = date(year=1948, month=1, day=1)
+        self.assertEqual(usManager.getOldestDate(), date(year=1947, month=11, day=1))
+        usManager.update()
         count = FieldProduction.objects.count()
         self.assertEqual(count, 2)
-        self.assertEqual(bseeManager.getOldestDate(), date(year=1947, month=12, day=1))
+        self.assertEqual(usManager.getOldestDate(), date(year=1947, month=12, day=1))
 
     @override_settings(CELERY_EAGER_PROPAGATES_EXCEPTIONS = True,
                        CELERY_ALWAYS_EAGER = True,
                        BROKER_BACKEND = 'memory',)
     def test_async_update(self):
-        result = updateBsee.delay(date(year=1948, month=1, day=1))
+        result = updateUs.delay(date(year=1948, month=1, day=1))
         self.assertEquals(result.get(), 2)
         self.assertTrue(result.successful())

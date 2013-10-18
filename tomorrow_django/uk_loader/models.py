@@ -53,25 +53,30 @@ class UkAggregator():
             total_water=Sum('production_water'),
         )
 
-    def aggWellToField(self, agg_well):
-        return FieldProduction(
-            name=agg_well.field,
-            country="UK",
-            date=agg_well['date'],
-            production_oil=agg_well['total_oil'],
-            production_gas=agg_well['total_gas'],
-            production_water=agg_well['total_water'],
-        )
+    def setFieldData(self, field, agg_well):
+        field.name = agg_well['field']
+        field.country = 'UK'
+        field.date = agg_well['date']
+        field.production_oil = agg_well['total_oil']
+        field.production_gas = agg_well['total_gas']
+        field.production_water = agg_well['total_water']
 
     def computeFields(self, fields):
         for field in fields:
-            fieldName=field['field']
-            agg_wells = self.aggregateField(fieldName)
+            fieldName = field['field']
+            agg_wells = self.aggregateWells(fieldName)
             for agg_well in agg_wells:
-                productionDate=agg_well['date']
-                fieldProduction = FieldProduction.objects.get_or_create(name=fieldName, date=productionDate)
+                agg_well['field'] = fieldName
+                productionDate = agg_well['date']
+                fieldProduction, created = FieldProduction.objects.get_or_create(name=fieldName, date=productionDate)
                 self.setFieldData(fieldProduction, agg_well)
                 fieldProduction.save()
+        return len(fields)
+
+    def compute(self):
+        fields = self.getFields()
+        return self.computeFields(fields)
+
 
 class UkRequest():
     url = "https://www.og.decc.gov.uk/information/wells/pprs/Well_production_offshore_oil_fields/offshore_oil_fields_by_well"

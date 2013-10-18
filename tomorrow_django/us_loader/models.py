@@ -24,14 +24,14 @@ class UsManager():
     def update(self):
         logger.info("US update started.")
         number_updates = 0
-        bseeRequest = UsRequest()
-        bseeRequest.year_month = self.getOldestDate()
-        while bseeRequest.year_month < self.update_to:
-            productions = bseeRequest.getProductions()
+        usRequest = UsRequest()
+        usRequest.year_month = self.getOldestDate()
+        while usRequest.year_month < self.update_to:
+            productions = usRequest.getProductions()
             number_updates = number_updates + len(productions)
             for production in productions:
                 production.save()
-            bseeRequest.nextMonth()
+            usRequest.nextMonth()
         logger.info("US update finished.")
         return number_updates
 

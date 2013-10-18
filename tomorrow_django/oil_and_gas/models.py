@@ -8,9 +8,15 @@ class Production(models.Model):
     logger.info("Created production.")
     name = models.CharField(max_length=50, default="", unique_for_date="date")
     date = models.DateField()
+    # In BBL (barrels)
     production_oil = models.PositiveIntegerField(default=0)
+    # In MCF (million cubic feet)
     production_gas = models.PositiveIntegerField(null=True, default=None)
     production_water = models.PositiveIntegerField(null=True, default=None)
+
+    @property
+    def production(self):
+        return self.production_oil + (self.production_gas * 1000 / 5800)
 
     def __str__(self):
         return self.name + " ; " + self.date.__str__() + " ; "

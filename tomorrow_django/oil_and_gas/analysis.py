@@ -7,9 +7,6 @@ from fitting import fit_exponential
 from fitting import fit_stretched_exponential
 from fitting import fit_power_law
 from fitting import prepare_xy
-from fitting import chop_xy
-from fitting import cost_function
-from fitting import xmin2xmin
 from get_data import get_production
 from get_data import get_classification
 from config import DPATH
@@ -19,7 +16,6 @@ from fit_logistic import compute_logistic
 
 from pandas import date_range
 from pandas.tseries.offsets import *
-from pandas.tseries.offsets import DateOffset
 from pandas import concat
 from pandas import Series
 from pandas import DataFrame

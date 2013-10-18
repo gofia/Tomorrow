@@ -1,0 +1,13 @@
+Django==1.5.1
+djangorestframework==2.3.8
+South==0.8.1
+html5lib==1.0b3
+django-i18nurls==0.7
+django-mptt==0.5.2
+django-reversion==1.7.1
+django-polymorphic==0.5.2
+django-easymode==1.0b1
+unidecode==0.04.14
+django-annoying==0.7.7
+pandas=0.12.0
+numpy=1.7.1

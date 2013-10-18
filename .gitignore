@@ -1,1 +1,4 @@
 *.pyc
+.idea
+*.log
+*.pid

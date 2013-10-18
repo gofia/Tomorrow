@@ -73,7 +73,7 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
     view_name = "field list"
 
     def get_queryset(self):
-        return FieldProduction.objects.all().distinct("name")
+        return FieldProduction.objects.all().values('name').distinct()
 
 
 class FieldProductionList(AuthenticatedView, LoggedViewMixin, ListAPIView):

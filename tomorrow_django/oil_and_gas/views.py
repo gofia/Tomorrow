@@ -83,3 +83,10 @@ class FieldProductionList(AuthenticatedView, LoggedViewMixin, ListAPIView):
 
     def get_queryset(self):
         return FieldProduction.objects.filter(name=self.kwargs['name'])
+
+
+def oil_and_gas_base(request):
+    if settings.DEBUG:
+        return serve(request, '/views/production.html')
+    else:
+        return serve(request, '/views/production.html')

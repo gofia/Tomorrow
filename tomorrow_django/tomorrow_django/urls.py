@@ -21,4 +21,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', oil_and_gas_views.oil_and_gas_base, name="tomorrow-base"),
 )

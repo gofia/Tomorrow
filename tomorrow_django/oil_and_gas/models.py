@@ -6,7 +6,7 @@ logger = logging.getLogger("OilAndGas")
 
 class Production(models.Model):
     logger.info("Created production.")
-    name = models.CharField(max_length=50, default="", unique_for_date="date")
+    name = models.CharField(max_length=50, default="")
     date = models.DateField()
     # In BBL (barrels)
     production_oil = models.PositiveIntegerField(default=0)
@@ -23,6 +23,7 @@ class Production(models.Model):
 
     class Meta:
         abstract = True
+        unique_together = (("name", "date"),)
 
 
 class CountryProduction(Production):
@@ -49,3 +50,14 @@ class WellProduction(Production):
 
     def __str__(self):
         return self.name + " ; " + self.country + " ; " + self.date.__str__() + " ; "
+
+
+class Field(models.Model):
+    name = models.CharField(max_length=50, default="", unique=True)
+    country = models.CharField(max_length=50, default="", unique=True)
+    production_oil = models.TextField(default="")
+    production_gas = models.TextField(default="")
+    production = models.TextField(default="")
+    production_oil_smooth = models.TextField(default="")
+    production_gas_smooth = models.TextField(default="")
+    production_smooth = models.TextField(default="")

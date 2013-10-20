@@ -12,14 +12,13 @@ $(function () {
             load_field_production($("#fields").val());
         });
     });
+
     function load_field_production(field_name) {
         $.getJSON("/api/productions/" + field_name + "/").done(function (data) {
             var productions = [];
-            var startYear = parseInt(data[0].date.substring(0, 4));
-            var startMonth = parseInt(data[0].date.substring(5, 7));
-            var startDay = parseInt(data[0].date.substring(8, 10));
+            var first_month = $.number_month(data[0].date);
             for (var i = 0; i < data.length; i++) {
-                productions.push(data[i].production);
+                productions.push([$.number_month(data[i].date) - first_month, data[i].production]);
             }
 
             $('#container').highcharts({
@@ -79,8 +78,8 @@ $(function () {
                     {
                         type: 'area',
                         name: 'Production',
-                        pointInterval: 24 * 3600 * 1000 * 30,
-                        pointStart: Date.UTC(startYear, startMonth, startDay),
+                        //pointInterval: 24 * 3600 * 1000 * 30,
+                        //pointStart: Date.UTC(startYear, startMonth, startDay),
                         data: productions
                     }
                 ]

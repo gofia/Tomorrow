@@ -17,7 +17,7 @@ DATABASES = {
         'USER': 'tomorrow',
         'PASSWORD': 't4ever!',
         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3307',                   # Set to empty string for default.
+        'PORT': '3306',                   # Set to empty string for default.
     }
 }
 
@@ -152,7 +152,7 @@ LOGGING = {
     },
     'handlers': {
         'default': {
-            'level':'INFO',
+            'level':'ERROR',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': 'logs/mylog.log',
             'maxBytes': 1024*1024*5, # 5 MB
@@ -165,14 +165,14 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.StreamHandler'
         },
     },
     'loggers': {
         'UsLoader': {
             'handlers': ['default', 'console'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True
         },
         'django.request': {

@@ -1,8 +1,10 @@
 from django.db.models import Max
+from django.db import IntegrityError
 
 from datetime import date
 from BeautifulSoup import BeautifulSoup
 import requests, calendar, datetime
+from requests.adapters import HTTPAdapter
 import logging
 
 from oil_and_gas.models import FieldProduction
@@ -22,7 +24,7 @@ class UsManager():
         return last_date['date__max']
 
     def update(self):
-        logger.info("US update started.")
+        logger.error("US update started.")
         number_updates = 0
         usRequest = UsRequest()
         usRequest.year_month = self.getOldestDate()
@@ -30,9 +32,13 @@ class UsManager():
             productions = usRequest.getProductions()
             number_updates = number_updates + len(productions)
             for production in productions:
-                production.save()
+                try:
+                    production.save()
+                except (IntegrityError,):
+                    logger.error("Entry " + production.__str__() + " already exists")
             usRequest.nextMonth()
-        logger.info("US update finished.")
+            logger.error("Added " + len(productions).__str__() + " new entries.")
+        logger.error("US update finished with " + number_updates.__str__() + " new entries.")
         return number_updates
 
 
@@ -64,11 +70,15 @@ class UsRequest():
 
     def getSoup(self, page):
         r = None
-        if page == 1:
-            self.session = requests.session()
-            r = self.session.post(self.url, data=self.getPostData())
-        elif page > 1:
-            r = self.session.post(self.url, data=self.getNextPagePostData(page))
+        try :
+            if page == 1:
+                self.session = requests.session()
+                self.session.mount('http://', HTTPAdapter(max_retries=5))
+                r = self.session.post(self.url, data=self.getPostData())
+            elif page > 1:
+                r = self.session.post(self.url, data=self.getNextPagePostData(page))
+        except:
+            logger.error("Page was not accessible")
         return BeautifulSoup(r.content)
 
     def getProductions(self):
@@ -88,13 +98,13 @@ class UsRequest():
         table = soup.find('table', border=5, width=600)
 
         if table is None:
-            logger.error("Table is None.", )
+            logger.warning("Table is None.", )
             return productions
 
         trs = table.findAll('tr')
 
         if trs is None:
-            logger.error("Rows are None.")
+            logger.warning("Rows are None.")
             return productions
 
         trs = trs[2:]
@@ -108,7 +118,8 @@ class UsRequest():
     def getProduction(self, row):
         tds = row.findAll('td')
         if len(tds) != 10:
-            logger.error("Row did not have 10 columns.")
+            logger.warning("Row did not have 10 columns.")
+            logger.warning(row.__str__())
             return None
 
         p = FieldProduction()

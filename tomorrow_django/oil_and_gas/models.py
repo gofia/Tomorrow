@@ -61,3 +61,39 @@ class Field(models.Model):
     production_oil_smooth = models.TextField(default="")
     production_gas_smooth = models.TextField(default="")
     production_smooth = models.TextField(default="")
+
+
+class CountryAggregator():
+    def getFields(self):
+        return WellProduction.objects.filter(country="UK").values("field").distinct()
+
+    def aggregateWells(self, name):
+        return WellProduction.objects.filter(field=name).values('date').annotate(
+            total_oil=Sum('production_gas'),
+            total_gas=Sum('production_oil'),
+            total_water=Sum('production_water'),
+        )
+
+    def setFieldData(self, field, agg_well):
+        field.name = agg_well['field']
+        field.country = 'UK'
+        field.date = agg_well['date']
+        field.production_oil = agg_well['total_oil']
+        field.production_gas = agg_well['total_gas']
+        field.production_water = agg_well['total_water']
+
+    def computeFields(self, fields):
+        for field in fields:
+            fieldName = field['field']
+            agg_wells = self.aggregateWells(fieldName)
+            for agg_well in agg_wells:
+                agg_well['field'] = fieldName
+                productionDate = agg_well['date']
+                fieldProduction, created = FieldProduction.objects.get_or_create(name=fieldName, date=productionDate)
+                self.setFieldData(fieldProduction, agg_well)
+                fieldProduction.save()
+        return len(fields)
+
+    def compute(self):
+        fields = self.getFields()
+        return self.computeFields(fields)

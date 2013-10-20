@@ -14,7 +14,7 @@ class FieldProductionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FieldProduction
-        fields = ('date', 'production')
+        fields = ('date', 'production_oil')
 
 
 class FieldSerializer(serializers.ModelSerializer):

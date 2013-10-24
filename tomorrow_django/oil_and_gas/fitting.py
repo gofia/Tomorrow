@@ -105,16 +105,16 @@ def prepare_xy(_x, _y=None):
 
     return (x, y)
 
-def chop_xy(x, y, xmin, xmax):
-    """Returns the indices of xmin corresponding to the position of xmin in the 
+def chop_xy(x, y, x_min, x_max):
+    """Returns the indices of x_min corresponding to the position of x_min in the
     iterable.
     """
     
-    ixmin = x.searchsorted(xmin)
-    ixmax = x.searchsorted(xmax)
-    ixmax = ixmax if ixmax != 0 else None
+    x_min_found = x.searchsorted(x_min)
+    x_max_found = x.searchsorted(x_max)
+    x_max_found = x_max_found if x_max_found != 0 else None
 
-    return (x[ixmin:ixmax], y[ixmin:ixmax])
+    return (x[x_min_found:x_max_found], y[x_min_found:x_max_found])
 
 def show_fit(fitstyle, **kwargs):
     """Plots the fit together with the data."""

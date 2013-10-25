@@ -17,7 +17,7 @@ DATABASES = {
         'USER': 'tomorrow',
         'PASSWORD': 't4ever!',
         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                   # Set to empty string for default.
+        'PORT': '3307',                   # Set to empty string for default.
     }
 }
 
@@ -152,19 +152,19 @@ LOGGING = {
     },
     'handlers': {
         'default': {
-            'level':'ERROR',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'logs/mylog.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
-            'formatter':'standard',
+            'formatter': 'standard',
         },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'console':{
+        'console': {
             'level': 'ERROR',
             'class': 'logging.StreamHandler'
         },
@@ -198,10 +198,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'us_loader.tasks.updateUs',
         'schedule': timedelta(seconds=30),
     },
-    # 'update_uk': {
-    #     'task': 'uk_loader.tasks.updateUk',
-    #     'schedule': timedelta(seconds=30),
-    # },
+    'update_uk': {
+        'task': 'uk_loader.tasks.updateUk',
+        'schedule': timedelta(seconds=30),
+    },
 }
 
 REST_FRAMEWORK = {

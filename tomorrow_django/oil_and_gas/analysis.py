@@ -14,26 +14,14 @@ from config import DPATH
 from fit_logistic import fit_logistic
 from fit_logistic import compute_logistic
 
-from pandas import date_range
+from pandas import date_range, concat, Series, DataFrame, Timestamp
 from pandas.tseries.offsets import *
-from pandas import concat
-from pandas import Series
-from pandas import DataFrame
-from pandas import Timestamp
 
-from numpy import array
-from numpy import exp
-from numpy import log
-from numpy import sign
-from numpy import arange
-from numpy import log10
-from numpy import ceil
-from numpy import inf
+from numpy import array, exp, log, sign, arange, log10, ceil, inf
 from numpy.random import choice
 from numpy.random import rand 
 
-from pickle import load
-from pickle import dump
+from pickle import load, dump
 
 import matplotlib.pyplot as plt
 

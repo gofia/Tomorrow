@@ -63,37 +63,47 @@ class Field(models.Model):
     production_smooth = models.TextField(default="")
 
 
-class CountryAggregator():
-    def getFields(self):
-        return WellProduction.objects.filter(country="UK").values("field").distinct()
+class Country(models.Model):
+    name = models.CharField(max_length=50, default="", unique=True)
+    production_oil = models.TextField(default="")
+    production_gas = models.TextField(default="")
+    production = models.TextField(default="")
+    production_oil_smooth = models.TextField(default="")
+    production_gas_smooth = models.TextField(default="")
+    production_smooth = models.TextField(default="")
 
-    def aggregateWells(self, name):
-        return WellProduction.objects.filter(field=name).values('date').annotate(
+
+class CountryAggregator():
+    def getCountries(self):
+        return FieldProduction.objects.values("country").distinct()
+
+    def aggregateFields(self, name):
+        return FieldProduction.objects.filter(country=name).values('date').annotate(
             total_oil=Sum('production_gas'),
             total_gas=Sum('production_oil'),
             total_water=Sum('production_water'),
         )
 
-    def setFieldData(self, field, agg_well):
-        field.name = agg_well['field']
-        field.country = 'UK'
-        field.date = agg_well['date']
-        field.production_oil = agg_well['total_oil']
-        field.production_gas = agg_well['total_gas']
-        field.production_water = agg_well['total_water']
+    def setCountryData(self, country, agg_well):
+        country.name = agg_well['field']
+        country.country = 'UK'
+        country.date = agg_well['date']
+        country.production_oil = agg_well['total_oil']
+        country.production_gas = agg_well['total_gas']
+        country.production_water = agg_well['total_water']
 
-    def computeFields(self, fields):
-        for field in fields:
-            fieldName = field['field']
-            agg_wells = self.aggregateWells(fieldName)
-            for agg_well in agg_wells:
-                agg_well['field'] = fieldName
-                productionDate = agg_well['date']
-                fieldProduction, created = FieldProduction.objects.get_or_create(name=fieldName, date=productionDate)
-                self.setFieldData(fieldProduction, agg_well)
-                fieldProduction.save()
+    def computeCountries(self, countries):
+        for country in countries:
+            country_name = country['country']
+            Country, created = Country.objects.get_or_create(name=country_name)
+            agg_fields = self.aggregateFields(country_name)
+            for agg_field in agg_fields:
+                agg_field['field'] = country_name
+                productionDate = agg_field['date']
+                self.setCountryData(Country, agg_field)
+                Country.save()
         return len(fields)
 
     def compute(self):
-        fields = self.getFields()
-        return self.computeFields(fields)
+        countries = self.getCountries()
+        return self.computeCountry(countries)

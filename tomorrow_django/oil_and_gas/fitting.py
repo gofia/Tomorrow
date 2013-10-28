@@ -176,3 +176,5 @@ def show_fit(fit_style, **kwargs):
     ax.set_yscale(kwargs['y_scale'])
     ax.set_title(kwargs['title'])
     plt.draw()
+    # TODO later
+    # plt.savefig("C:/Users/lucas.fievet/PycharmProjects/Tomorrow/tomorrow_django/oil_and_gas/figure.png")

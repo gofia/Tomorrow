@@ -1,4 +1,10 @@
 from django.db import models
+from django.core import serializers
+from dateutil import relativedelta
+
+import math
+
+from fitting import fit_stretched_exponential
 
 import logging
 
@@ -8,10 +14,13 @@ class Production(models.Model):
     logger.info("Created production.")
     name = models.CharField(max_length=50, default="")
     date = models.DateField()
+
     # In BBL (barrels)
     production_oil = models.PositiveIntegerField(default=0)
+
     # In MCF (million cubic feet)
     production_gas = models.PositiveIntegerField(null=True, default=None)
+
     production_water = models.PositiveIntegerField(null=True, default=None)
 
     @property
@@ -54,13 +63,65 @@ class WellProduction(Production):
 
 class Field(models.Model):
     name = models.CharField(max_length=50, default="", unique=True)
-    country = models.CharField(max_length=50, default="", unique=True)
+    country = models.CharField(max_length=50, default="")
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
-    production_oil_smooth = models.TextField(default="")
-    production_gas_smooth = models.TextField(default="")
-    production_smooth = models.TextField(default="")
+
+    # A * exp((x/a)**b)
+    x_min = models.PositiveIntegerField(default=0)
+    A = models.FloatField(default=0.0)
+    tau = models.FloatField(default=-1.0)
+    beta = models.FloatField(default=1.0)
+
+
+class FieldProcessor():
+    def getFields(self):
+        return FieldProduction.objects.values("name").distinct()
+
+    def getPlotData(self, productions):
+        first_date = productions[0].date
+        x, y = [], []
+        for production in productions:
+            if(production.production_oil == 0):
+                continue;
+            time_delta = relativedelta.relativedelta(production.date, first_date)
+            x.append(time_delta.years * 12 + time_delta.months)
+            y.append(production.production_oil)
+        return x, y
+
+    def computeFields(self, fields):
+        for field in fields:
+            name = field['name']
+            self.computeField(name)
+        return len(fields)
+
+    def computeField(self, name):
+        productions = FieldProduction.objects.filter(name=name).all().order_by('date')
+        serialized_productions = serializers.serialize("json", productions, fields=('date', 'production_oil'))
+        x, y = self.getPlotData(productions)
+        if len(x) > 0 and len(y) > 0:
+            x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
+            print y0
+            print tau
+            print beta
+        field, created = Field.objects.get_or_create(name=name)
+        field.name = name
+        field.country = productions[0].country
+        field.production_oil = serialized_productions
+        if not math.isnan(tau) and not math.isnan(beta) and not math.isnan(y0):
+            field.x_min = x_min
+            field.A = y0
+            field.tau = tau
+            field.beta = beta
+            print "SUCCESS"
+        else:
+            print "FAILURE"
+        field.save()
+
+    def compute(self):
+        fields = self.getFields()
+        return self.computeFields(fields)
 
 
 class Country(models.Model):
@@ -68,9 +129,6 @@ class Country(models.Model):
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
-    production_oil_smooth = models.TextField(default="")
-    production_gas_smooth = models.TextField(default="")
-    production_smooth = models.TextField(default="")
 
 
 class CountryAggregator():

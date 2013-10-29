@@ -49,10 +49,7 @@ class FittingTest(TestCase):
     def test_stretched_exponential(self):
         _x = [0, 1, 2, 3]
         _y = [2*exp((0.5*0)**1.5), 2*exp((0.5*1)**1.5), 2*exp((0.5*2)**1.5), 2*exp((0.5*3)**1.5)]
-        tau, beta, y0 = fit_stretched_exponential(_x, _y, show=True)
-        print y0
-        print tau
-        print beta
+        x_min, tau, beta, y0 = fit_stretched_exponential(_x, _y, show=True)
         self.assertAlmostEqual(y0, 2.0, delta=0.01, msg="y0 is incorrect")
         self.assertAlmostEqual(tau, 2.0, delta=0.01, msg="tau is incorrect")
         self.assertAlmostEqual(beta, 1.5, delta=0.01, msg="beta is incorrect")

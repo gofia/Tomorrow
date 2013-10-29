@@ -124,6 +124,9 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
 
+    print x
+    print y
+
     logy = log(y)
     param_lambda, logy0, _, _, _ = linregress(x, logy)
     tau, beta, y0 = 1. / param_lambda, 0.7, exp(logy0)
@@ -135,7 +138,7 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
                  tau=tau, beta=beta, x_scale=x_scale, y_scale=y_scale, ax=ax,
                  title=title)
  
-    return tau, beta, y0
+    return x_min, tau, beta, y0
 
 
 def cost_function((tau, beta, y0), x, y):

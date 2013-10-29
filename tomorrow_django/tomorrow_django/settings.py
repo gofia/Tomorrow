@@ -194,12 +194,16 @@ from datetime import timedelta
 CELERY_TIMEZONE = 'Europe/London'
 
 CELERYBEAT_SCHEDULE = {
-    'update_us': {
-        'task': 'us_loader.tasks.updateUs',
-        'schedule': timedelta(seconds=30),
-    },
-    'update_uk': {
-        'task': 'uk_loader.tasks.updateUk',
+    # 'update_us': {
+    #     'task': 'us_loader.tasks.updateUs',
+    #     'schedule': timedelta(seconds=30),
+    # },
+    # 'update_uk': {
+    #     'task': 'uk_loader.tasks.updateUk',
+    #     'schedule': timedelta(seconds=30),
+    # },
+    'process_fields': {
+        'task': 'oil_and_gas.tasks.process_fields',
         'schedule': timedelta(seconds=30),
     },
 }

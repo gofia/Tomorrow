@@ -8,7 +8,7 @@ from rest_framework import permissions, generics, status, views, decorators
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 
-from .models import (FieldProduction)
+from .models import (FieldProduction, Field)
 from .serializers import (FieldProductionSerializer, FieldSerializer)
 
 import logging
@@ -77,12 +77,12 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
 
 
 class FieldProductionList(AuthenticatedView, LoggedViewMixin, ListAPIView):
-    model = FieldProduction
+    model = Field
     serializer_class = FieldProductionSerializer
     view_name = "field production list"
 
     def get_queryset(self):
-        return FieldProduction.objects.filter(name=self.kwargs['name'])
+        return Field.objects.filter(name=self.kwargs['name'])
 
 
 def oil_and_gas_base(request):

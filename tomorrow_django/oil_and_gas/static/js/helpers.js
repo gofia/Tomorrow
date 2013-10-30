@@ -11,4 +11,19 @@
         return Date.UTC(start_year, start_month, start_day);
     };
 
+    $.month_diff = function (date1, date2) {
+        return Math.round((date2 - date1) / (1000 * 3600 * 24 * 30.5));
+    };
+
+    $.stretched_exponential = function (A, tau, beta) {
+        return function (x) {
+            var result = x / Math.abs(tau);
+            result = Math.pow(result, beta);
+            result *= tau / Math.abs(tau);
+            result = Math.exp(result);
+            result *= A;
+            return result;
+        };
+    };
+
 }(window.jQuery));

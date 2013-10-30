@@ -15,9 +15,27 @@ $(function () {
 
     function load_field_production(field_name) {
         $.getJSON("/api/productions/" + field_name + "/").done(function (data) {
-            var productions = [];
-            for (var i = 0; i < data.length; i++) {
-                productions.push([$.to_date(data[i].date), data[i].production_oil]);
+            data = data[0]
+            server_production = JSON.parse(data.production_oil);
+            var productions = [],
+                fit = [],
+                fit_function = $.stretched_exponential(data.A, data.tau, data.beta),
+                first_date = $.to_date(server_production[0].fields.date),
+                date = first_date,
+                x = 0;
+            for (var i = 0; i < server_production.length; i++) {
+                date = $.to_date(server_production[i].fields.date);
+                productions.push([
+                    date,
+                    server_production[i].fields.production_oil
+                ]);
+                x = $.month_diff(first_date, date);
+                if (x >= data.x_min) {
+                    fit.push([
+                        date,
+                        fit_function(x)
+                    ]);
+                }
             }
 
             $('#container').highcharts({
@@ -78,6 +96,11 @@ $(function () {
                         type: 'area',
                         name: 'Production',
                         data: productions
+                    },
+                    {
+                        type: 'line',
+                        name: 'Fit',
+                        data: fit
                     }
                 ]
             });

@@ -1,12 +1,15 @@
 from django.db import models
 from django.core import serializers
+from django.db.models import Max
 from dateutil import relativedelta
+from datetime import datetime
 
 import math
 
-from fitting import fit_stretched_exponential
+from fitting import fit_stretched_exponential, r_squared
 
 import logging
+from oil_and_gas.fitting import get_stretched_exponential
 
 logger = logging.getLogger("OilAndGas")
 
@@ -74,21 +77,55 @@ class Field(models.Model):
     tau = models.FloatField(default=-1.0)
     beta = models.FloatField(default=1.0)
 
+    @property
+    def max_fits(self):
+        max_date = self.fits.all().aggregate(Max('date_begin'))['date_begin__max']
+        return self.fits.filter(date_begin = max_date).all()
+
+
+class StretchedExponential(models.Model):
+    # A * exp((x/a)**b)
+    date_begin = models.DateField(default=datetime.today())
+    date_end = models.DateField(default=datetime.today())
+    x_min = models.PositiveIntegerField(default=0)
+    length = models.PositiveIntegerField(default=0)
+    A = models.FloatField(default=0.0)
+    tau = models.FloatField(default=-1.0)
+    beta = models.FloatField(default=1.0)
+    field = models.ForeignKey(
+        Field,
+        related_name="fits"
+    )
+    r_squared = models.FloatField(default=0)
+    sum_error = models.FloatField(default=0)
+
+    def compute_fit(self, x, y):
+        x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
+
+        if math.isnan(tau) or math.isnan(beta) or math.isnan(y0):
+            return False
+
+        self.x_min = x_min
+        self.A = y0
+        self.tau = tau
+        self.beta = beta
+
+        func = get_stretched_exponential(y0, tau, beta)
+        x_min_index = x.index(x_min)
+        self.r_squared = r_squared(func, x[x_min_index:-1], y[x_min_index:-1])
+        return True
+
+    class Meta:
+        unique_together = (("field", "date_begin", "date_end"),)
+
 
 class FieldProcessor():
     def getFields(self):
         return FieldProduction.objects.values("name").distinct()
 
-    def getPlotData(self, productions):
-        first_date = productions[0].date
-        x, y = [], []
-        for production in productions:
-            if(production.production_oil == 0):
-                continue;
-            time_delta = relativedelta.relativedelta(production.date, first_date)
-            x.append(time_delta.years * 12 + time_delta.months)
-            y.append(production.production_oil)
-        return x, y
+    def compute(self):
+        fields = self.getFields()
+        return self.computeFields(fields)
 
     def computeFields(self, fields):
         for field in fields:
@@ -98,30 +135,55 @@ class FieldProcessor():
 
     def computeField(self, name):
         productions = FieldProduction.objects.filter(name=name).all().order_by('date')
-        serialized_productions = serializers.serialize("json", productions, fields=('date', 'production_oil'))
-        x, y = self.getPlotData(productions)
-        if len(x) > 0 and len(y) > 0:
-            x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
-            print y0
-            print tau
-            print beta
         field, created = Field.objects.get_or_create(name=name)
         field.name = name
         field.country = productions[0].country
+        serialized_productions = serializers.serialize("json", productions, fields=('date', 'production_oil'))
         field.production_oil = serialized_productions
-        if not math.isnan(tau) and not math.isnan(beta) and not math.isnan(y0):
-            field.x_min = x_min
-            field.A = y0
-            field.tau = tau
-            field.beta = beta
-            print "SUCCESS"
-        else:
-            print "FAILURE"
         field.save()
+        self.compute_fits(field, productions)
 
-    def compute(self):
-        fields = self.getFields()
-        return self.computeFields(fields)
+    def compute_fits(self, field, productions):
+        dates, x, y = self.getPlotData(productions)
+        fit = None
+
+        for i in range(2, len(x)):
+            fit, created = StretchedExponential.objects.get_or_create(field=field, date_end=dates[i])
+            if fit.compute_fit(x[0:i], y[0:i]):
+                try:
+                    fit.date_begin = dates[0] + relativedelta.relativedelta(months=fit.x_min)
+                    fit.date_end = dates[i]
+                    fit.length = i
+                    func = get_stretched_exponential(fit.A, fit.tau, fit.beta)
+                    x_min_index = x.index(fit.x_min)
+                    fit.sum_error = sum(y[x_min_index:-1]) - sum(func(x[x_min_index:-1]))
+                    fit.field = field
+                    fit.save()
+                    print "SUCCESS: " + fit.field.name + " - " + \
+                          fit.date_begin.__str__() + " - " + fit.date_end.__str__()
+                except Exception as e:
+                    print "EXCEPTION: " + e.__str__()
+                    fit.delete()
+            else:
+                print "FAILURE"
+                fit.delete()
+
+        if fit is not None:
+            field.x_min = fit.x_min
+            field.A = fit.A
+            field.tau = fit.tau
+            field.beta = fit.beta
+            field.save()
+
+    def getPlotData(self, productions):
+        first_date = productions[0].date
+        dates, x, y = [], [], []
+        for production in productions:
+            time_delta = relativedelta.relativedelta(production.date, first_date)
+            dates.append(production.date)
+            x.append(time_delta.years * 12 + time_delta.months)
+            y.append(production.production_oil)
+        return dates, x, y
 
 
 class Country(models.Model):

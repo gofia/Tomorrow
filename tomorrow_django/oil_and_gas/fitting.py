@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from numpy import array, ndarray, exp, log, sign
+from numpy import array, ndarray, exp, log, sign, mean
 
 from scipy.optimize import fmin
 from scipy.stats import linregress
@@ -74,6 +74,16 @@ def x_min_2_x_min(x_min, x_, y_, _x, _y=None):
     return x_[i_x_min]
 
 
+def remove_zeros(xs, ys):
+    x_no_zeros = []
+    y_no_zeros = []
+    for i in range(len(ys)):
+        if ys[i] != 0:
+            x_no_zeros.append(xs[i])
+            y_no_zeros.append(ys[i])
+    return x_no_zeros, y_no_zeros
+
+
 def fit_exponential(_x, _y=None, x_min=None, x_max=None, show=False,
                     x_scale='linear', y_scale='linear', ax='None', title='None'):
     """Fits an exponential y0 exp(-x / tau) to the data for each x > x_min.
@@ -83,8 +93,9 @@ def fit_exponential(_x, _y=None, x_min=None, x_max=None, show=False,
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
 
-    logy = log(y)
-    param_lambda, logy0, _, _, _ = linregress(x, logy)
+    x_no_zeros, y_no_zeros = remove_zeros(x, y)
+    logy = log(y_no_zeros)
+    param_lambda, logy0, _, _, _ = linregress(x_no_zeros, logy)
     tau, y0 = 1. / param_lambda, exp(logy0)
 
     if show:
@@ -103,7 +114,8 @@ def fit_power_law(_x, _y=None, x_min=None, x_max=None, show=False,
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
 
-    log_x, log_y = log(x), log(y)
+    x_no_zeros, y_no_zeros = remove_zeros(x, y)
+    log_x, log_y = log(x_no_zeros), log(y_no_zeros)
     alpha, logy0, _, _, _ = linregress(log_x[1:], log_y[1:])
     y0 = exp(logy0)
 
@@ -112,6 +124,13 @@ def fit_power_law(_x, _y=None, x_min=None, x_max=None, show=False,
                  x_scale=x_scale, y_scale=y_scale, ax=ax, title=title)
 
     return alpha, y0
+
+
+def get_stretched_exponential(y0, tau, beta):
+    def func(x):
+        return y0 * exp(sign(tau) * (x / abs(tau)) ** beta)
+
+    return func;
 
 
 def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
@@ -124,14 +143,12 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
 
-    print x
-    print y
-
-    logy = log(y)
-    param_lambda, logy0, _, _, _ = linregress(x, logy)
+    x_no_zeros, y_no_zeros = remove_zeros(x, y)
+    logy = log(y_no_zeros)
+    param_lambda, logy0, _, _, _ = linregress(x_no_zeros, logy)
     tau, beta, y0 = 1. / param_lambda, 0.7, exp(logy0)
-    tau, beta, y0 = fmin(cost_function, (tau, beta, y0), args=(x, y),
-                         disp=0)
+    tau, beta, y0 = fmin(cost_function, (tau, beta, y0), args=(x, y), disp=0)
+    tau, beta, y0 = fmin(cost_function_integral, (tau, beta, y0), args=(x, y), disp=0)
     
     if show:
         show_fit('stretched exponential', x_=x_, y_=y_, x=x, y=y, y0=y0,
@@ -144,8 +161,23 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
 def cost_function((tau, beta, y0), x, y):
     """Stretched exponential cost function. This is the function to minimize"""
 
-    fit = y0 * exp(sign(tau) * (x / abs(tau)) ** beta)
+    fit = get_stretched_exponential(y0, tau, beta)(x)
     return sum((fit - y)**2 / fit)
+
+
+def cost_function_integral((tau, beta, y0), x, y):
+    """Stretched exponential cost function. This is the function to minimize"""
+
+    fit = get_stretched_exponential(y0, tau, beta)(x)
+    return sum((fit - y)**2 / fit) + abs(sum(fit - y))
+
+
+def r_squared(fit, x, y):
+    y_average = mean(y)
+    ss_total = sum((y - y_average)**2)
+    ss_residual = sum((y-fit(x))**2)
+    r_squared = 1 - ss_residual / ss_total
+    return r_squared
 
 
 def show_fit(fit_style, **kwargs):

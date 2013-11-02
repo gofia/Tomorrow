@@ -2,7 +2,7 @@ from django.test import TestCase
 from numpy import array, exp
 from numpy.testing import assert_array_equal
 
-from ..fitting import (prepare_xy, chop_xy, x_min_2_x_min,
+from ..fitting import (prepare_xy, chop_xy, x_min_2_x_min, get_stretched_exponential,
                        fit_exponential, fit_power_law, fit_stretched_exponential)
 
 
@@ -47,8 +47,9 @@ class FittingTest(TestCase):
         self.assertAlmostEqual(alpha, 2.5, delta=0.01, msg="alpha is incorrect")
 
     def test_stretched_exponential(self):
+        func = get_stretched_exponential(2, 2, 1.5)
         _x = [0, 1, 2, 3]
-        _y = [2*exp((0.5*0)**1.5), 2*exp((0.5*1)**1.5), 2*exp((0.5*2)**1.5), 2*exp((0.5*3)**1.5)]
+        _y = [func(0.0), func(1.0), func(2.0), func(3.0)]
         x_min, tau, beta, y0 = fit_stretched_exponential(_x, _y, show=True)
         self.assertAlmostEqual(y0, 2.0, delta=0.01, msg="y0 is incorrect")
         self.assertAlmostEqual(tau, 2.0, delta=0.01, msg="tau is incorrect")

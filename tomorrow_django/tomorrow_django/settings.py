@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'rest_framework',
     'oil_and_gas',
+    'no_loader',
     'us_loader',
     'uk_loader',
 )

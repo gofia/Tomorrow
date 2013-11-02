@@ -18,13 +18,20 @@ $(function () {
             data = data[0]
             server_production = JSON.parse(data.production_oil);
             var productions = [],
+                total_oil_production = 0,
                 fit = [],
+                As = [],
+                taus = [],
+                betas = [],
+                sum_errors = [],
                 fit_function = $.stretched_exponential(data.A, data.tau, data.beta),
                 first_date = $.to_date(server_production[0].fields.date),
                 date = first_date,
                 x = 0;
+
             for (var i = 0; i < server_production.length; i++) {
                 date = $.to_date(server_production[i].fields.date);
+                total_oil_production += server_production[i].fields.production_oil;
                 productions.push([
                     date,
                     server_production[i].fields.production_oil
@@ -38,7 +45,22 @@ $(function () {
                 }
             }
 
-            $('#container').highcharts({
+            $(".total-oil-production").html(total_oil_production);
+
+            for (var i = 0; i < data.fits.length; i++) {
+                date = $.to_date(data.fits[i].date_end);
+                As.push([date, data.fits[i].A]);
+                taus.push([date, data.fits[i].tau]);
+                betas.push([date, data.fits[i].beta]);
+                sum_errors.push([date, data.fits[i].sum_error]);
+            }
+
+            As = As.slice(Math.round(As.length/3));
+            taus = taus.slice(Math.round(taus.length/3));
+            betas = betas.slice(Math.round(betas.length/3));
+            sum_errors = sum_errors.slice(Math.round(sum_errors.length/3));
+
+            var plot_options = {
                 chart: {
                     zoomType: 'x',
                     spacingRight: 20
@@ -103,7 +125,39 @@ $(function () {
                         data: fit
                     }
                 ]
-            });
+            };
+
+            $('#container').highcharts(plot_options);
+
+            plot_options.series = [
+                {
+                    type: 'area',
+                    name: 'tau',
+                    data: taus
+                }
+            ];
+
+            $('#tau').highcharts(plot_options);
+
+            plot_options.series = [
+                {
+                    type: 'area',
+                    name: 'beta',
+                    data: betas
+                }
+            ];
+
+            $('#beta').highcharts(plot_options);
+
+            plot_options.series = [
+                {
+                    type: 'area',
+                    name: 'forecast error',
+                    data: sum_errors
+                }
+            ];
+
+            $('#sum-error').highcharts(plot_options);
         });
     }
 });

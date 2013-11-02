@@ -4,12 +4,25 @@
   <title></title>
 </head>
 <body>
-  <div id="container"></div>
   <select id="fields"></select>
+  <div class="total-oil-production"></div>
+  <div id="container"></div>
+  <div>
+    The production is fitted from the maximum of production onwards as a stretched exponential:
+    $$p(t) = A \times \exp \left( sign(\tau) \left( {t \over \tau}  \right)^\beta \right).$$
+  </div>
+  <div id="A"></div>
+  <div id="tau"></div>
+  <div id="beta"></div>
+  <div id="sum-error"></div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script src="/static/js/helpers.js"></script>
   <script src="/static/js/production_plot.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
 </body>
 </html>

@@ -26,3 +26,9 @@ class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = FieldProduction
         fields = ('name',)
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Field
+        fields = ('country',)

@@ -9,7 +9,7 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 
 from .models import (FieldProduction, Field)
-from .serializers import (FieldProductionSerializer, FieldSerializer)
+from .serializers import (FieldProductionSerializer, FieldSerializer, CountrySerializer)
 
 import logging
 logger = logging.getLogger("rh")
@@ -67,13 +67,25 @@ def api_root(request, format=None):
     })
 
 
+class CountryFieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
+    model = Field
+    serializer_class = CountrySerializer
+    view_name = "country list"
+
+    def get_queryset(self):
+        return Field.objects.all().values('country').distinct()
+
+
 class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
     model = FieldProduction
     serializer_class = FieldSerializer
     view_name = "field list"
 
     def get_queryset(self):
-        return FieldProduction.objects.all().values('name').distinct()
+        if self.kwargs.has_key("country") and len(self.kwargs['country']) > 0:
+            return FieldProduction.objects.filter(country=self.kwargs['country']).all().order_by("name").values('name').distinct()
+        else:
+            return FieldProduction.objects.all().order_by("name").values('name').distinct()
 
 
 class FieldProductionList(AuthenticatedView, LoggedViewMixin, ListAPIView):

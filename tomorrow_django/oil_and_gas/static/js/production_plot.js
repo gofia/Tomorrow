@@ -4,7 +4,7 @@
 
 $(function () {
 
-    $.getJSON("/api/fields/").done(function (data) {
+    $.getJSON("/api/fields/NO").done(function (data) {
         for (var i = 0; i < data.length; i++) {
             $("<option value='" + data[i].name + "'>" + data[i].name + "</option>").appendTo($("#fields"));
         }
@@ -82,7 +82,7 @@ $(function () {
                 },
                 yAxis: {
                     title: {
-                        text: 'Production in BBL'
+                        text: 'barrel/month'
                     }
                 },
                 tooltip: {
@@ -132,10 +132,24 @@ $(function () {
             plot_options.series = [
                 {
                     type: 'area',
+                    name: 'forecast error',
+                    data: sum_errors
+                }
+            ];
+            plot_options.title.text = "Total production error";
+            plot_options.yAxis.title.text = "barrels";
+
+            $('#sum-error').highcharts(plot_options);
+
+            plot_options.series = [
+                {
+                    type: 'area',
                     name: 'tau',
                     data: taus
                 }
             ];
+            plot_options.title.text = "Fitted tau over time";
+            plot_options.yAxis.title.text = "tau";
 
             $('#tau').highcharts(plot_options);
 
@@ -146,18 +160,10 @@ $(function () {
                     data: betas
                 }
             ];
+            plot_options.title.text = "Fitted beta over time";
+            plot_options.yAxis.title.text = "beta";
 
             $('#beta').highcharts(plot_options);
-
-            plot_options.series = [
-                {
-                    type: 'area',
-                    name: 'forecast error',
-                    data: sum_errors
-                }
-            ];
-
-            $('#sum-error').highcharts(plot_options);
         });
     }
 });

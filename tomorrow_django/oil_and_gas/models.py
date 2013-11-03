@@ -100,7 +100,10 @@ class StretchedExponential(models.Model):
     sum_error = models.FloatField(default=0)
 
     def compute_fit(self, x, y):
-        x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
+        try:
+            x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
+        except:
+            return False
 
         if math.isnan(tau) or math.isnan(beta) or math.isnan(y0):
             return False
@@ -121,7 +124,7 @@ class StretchedExponential(models.Model):
 
 class FieldProcessor():
     def getFields(self):
-        return FieldProduction.objects.values("name").distinct()
+        return FieldProduction.objects.filter(country="NO").values("name").distinct()
 
     def compute(self):
         fields = self.getFields()
@@ -156,7 +159,7 @@ class FieldProcessor():
                     fit.length = i
                     func = get_stretched_exponential(fit.A, fit.tau, fit.beta)
                     x_min_index = x.index(fit.x_min)
-                    fit.sum_error = sum(y[x_min_index:-1]) - sum(func(x[x_min_index:-1]))
+                    fit.sum_error = sum(func(x[x_min_index:-1])) - sum(y[x_min_index:-1])
                     fit.field = field
                     fit.save()
                     print "SUCCESS: " + fit.field.name + " - " + \

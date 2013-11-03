@@ -12,16 +12,10 @@ class NoManagerTest(TestCase):
         Tests that update is correct.
         """
         noManager = NoManager()
-        noManager.update()
-        #expectedProduction = WellProduction(
-        #    country="UK",
-        #    date=date(year=1995, month=1, day=1),
-        #    production_oil=46742,
-        #    production_gas=2184,
-        #    production_water=1035,
-        #)
-        #self.assertEqual(production.country, expectedProduction.country)
-        #self.assertEqual(production.date, expectedProduction.date)
-        #self.assertEqual(production.production_oil, expectedProduction.production_oil)
-        #self.assertEqual(production.production_gas, expectedProduction.production_gas)
-        #self.assertEqual(production.production_water, expectedProduction.production_water)
+        noManager.update(5)
+        productions = FieldProduction.objects.filter(country="NO").all()
+        self.assertEqual(len(productions), 4)
+        self.assertEqual(productions[0].name, "33/9-6 DELTA")
+        self.assertEqual(productions[0].date.year, 2009)
+        self.assertEqual(productions[0].date.month, 7)
+        self.assertEqual(productions[0].production_oil, 2096)

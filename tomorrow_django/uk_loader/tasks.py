@@ -22,7 +22,7 @@ def aggregateUk(fields=None):
     if field is None:
         return ukAggregator.compute()
     else:
-        return ukAggregator.computeFields(fields)
+        return ukAggregator.computeAll(fields)
 
 
 @task()

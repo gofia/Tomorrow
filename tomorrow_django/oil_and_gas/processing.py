@@ -2,41 +2,52 @@ __author__ = 'lucas.fievet'
 
 from django.core import serializers
 from dateutil import relativedelta
+import abc
 
-from oil_and_gas.models import Field, FieldProduction, StretchedExponential
+from oil_and_gas.models import (Field, FieldProduction,
+                                Country, CountryProduction,
+                                StretchedExponential)
 from oil_and_gas.fitting import get_stretched_exponential
 
 
-class FieldProcessor():
-    def getFields(self, country):
-        return FieldProduction.objects.filter(country=country).values("name").distinct()
+class ProductionProcessor():
+    production_type = None
+    processed_type = None
 
-    def compute(self, country):
-        fields = self.getFields(country)
-        return self.computeFields(fields)
+    def compute(self, name):
+        list = self.getList(name)
+        return self.computeAll(list)
 
-    def computeFields(self, fields):
-        for field in fields:
-            name = field['name']
-            self.computeField(name)
-        return len(fields)
+    @abc.abstractmethod
+    def getList(self, name):
+        return
 
-    def computeField(self, name):
-        productions = FieldProduction.objects.filter(name=name).all().order_by('date')
-        field, created = Field.objects.get_or_create(name=name)
-        field.name = name
-        field.country = productions[0].country
-        serialized_productions = serializers.serialize("json", productions, fields=('date', 'production_oil'))
-        field.production_oil = serialized_productions
-        field.save()
-        self.compute_fits(field, productions)
+    def computeAll(self, list):
+        for item in list:
+            name = item['name']
+            self.computeItem(name)
+        return len(list)
 
-    def compute_fits(self, field, productions):
+    def computeItem(self, name):
+        productions = self.production_type.objects.filter(name=name).all().order_by('date')
+        processed, created = self.processed_type.objects.get_or_create(name=name)
+        processed.name = name
+        processed.country = productions[0].country
+        serialized_productions = serializers.serialize(
+            "json",
+            productions,
+            fields=('date', 'production_oil')
+        )
+        processed.production_oil = serialized_productions
+        processed.save()
+        self.compute_fits(processed, productions)
+
+    def compute_fits(self, processed, productions):
         dates, x, y = self.getPlotData(productions)
         fit = None
 
         for i in range(2, len(x)):
-            fit, created = StretchedExponential.objects.get_or_create(field=field, date_end=dates[i])
+            fit, created = self.getStretchedExponential(processed, dates[i])
             if fit.compute_fit(x[0:i], y[0:i]):
                 try:
                     fit.date_begin = dates[0] + relativedelta.relativedelta(months=fit.x_min)
@@ -64,11 +75,15 @@ class FieldProcessor():
                 fit.delete()
 
         if fit is not None:
-            field.x_min = fit.x_min
-            field.A = fit.A
-            field.tau = fit.tau
-            field.beta = fit.beta
-            field.save()
+            processed.x_min = fit.x_min
+            processed.A = fit.A
+            processed.tau = fit.tau
+            processed.beta = fit.beta
+            processed.save()
+
+    @abc.abstractmethod
+    def getStretchedExponential(self, processed, date_end):
+        return
 
     def getPlotData(self, productions):
         first_date = productions[0].date
@@ -79,3 +94,25 @@ class FieldProcessor():
             x.append(time_delta.years * 12 + time_delta.months)
             y.append(production.production_oil)
         return dates, x, y
+
+
+class FieldProcessor(ProductionProcessor):
+    production_type = FieldProduction
+    processed_type = Field
+
+    def getList(self, name):
+        return FieldProduction.objects.filter(country=name).values("name").distinct()
+
+    def getStretchedExponential(self, processed, date_end):
+        return StretchedExponential.objects.get_or_create(field=processed, date_end=date_end)
+
+
+class CountryProcessor(ProductionProcessor):
+    production_type = CountryProduction
+    processed_type = Country
+
+    def getList(self, name):
+        return CountryProduction.objects.filter(name=name).values("name").distinct()
+
+    def getStretchedExponential(self, processed, date_end):
+        return StretchedExponential.objects.get_or_create(country=processed, date_end=date_end)

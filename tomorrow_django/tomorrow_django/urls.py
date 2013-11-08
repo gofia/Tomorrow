@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.contrib.auth.views import login
 admin.autodiscover()
 
 from oil_and_gas import views as oil_and_gas_views
@@ -14,6 +15,7 @@ urlpatterns = patterns('',
     # url(r'^tomorrow_django/', include('tomorrow_django.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
+    url(r'^login/?$', login, {'template_name': 'login.html'}, name='login'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),

@@ -111,10 +111,12 @@ ROOT_URLCONF = 'tomorrow_django.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tomorrow_django.wsgi.application'
 
-LOGIN_REDIRECT_URL = 'rh-base'
+LOGIN_REDIRECT_URL = ''
 LOGIN_URL = 'login'
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'tomorrow_django', 'templates'),
+)
 
 INSTALLED_APPS = (
     'south',

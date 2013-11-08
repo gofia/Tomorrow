@@ -1,3 +1,4 @@
+from contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
@@ -97,6 +98,7 @@ class FieldProductionList(AuthenticatedView, LoggedViewMixin, ListAPIView):
         return Field.objects.filter(name=self.kwargs['name'])
 
 
+@login_required
 def oil_and_gas_base(request):
     if settings.DEBUG:
         return serve(request, '/views/production.html')

@@ -126,9 +126,12 @@ class StretchedExponential(models.Model):
     r_squared = models.FloatField(default=0)
     sum_error = models.FloatField(default=0)
 
-    def compute_fit(self, x, y):
+    def compute_fit(self, x, y, x_min_guess=None, y0_guess=None, tau_guess=None, beta_guess=None):
         try:
-            x_min, tau, beta, y0 = fit_stretched_exponential(x, y, x_min='max')
+            x_min, tau, beta, y0 = fit_stretched_exponential(
+                x, y, x_min='max',
+                x_min_guess=x_min_guess, y0=y0_guess, tau=tau_guess, beta=beta_guess
+            )
         except:
             return False
 

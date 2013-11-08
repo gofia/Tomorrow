@@ -134,6 +134,7 @@ def get_stretched_exponential(y0, tau, beta):
 
 
 def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
+                              x_min_guess=None, y0=None, tau=None, beta=None,
                               show=False, x_scale='linear', y_scale='linear',
                               ax='None', title='None'):
     """Fits a stretched exponential y0 -exp([x / tau]^beta) for each x > x_min.
@@ -143,10 +144,12 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
 
-    x_no_zeros, y_no_zeros = remove_zeros(x, y)
-    logy = log(y_no_zeros)
-    param_lambda, logy0, _, _, _ = linregress(x_no_zeros, logy)
-    tau, beta, y0 = 1. / param_lambda, 0.7, exp(logy0)
+    if x_min != x_min_guess or y0 is None or tau is None or beta is None:
+        x_no_zeros, y_no_zeros = remove_zeros(x, y)
+        logy = log(y_no_zeros)
+        param_lambda, logy0, _, _, _ = linregress(x_no_zeros, logy)
+        tau, beta, y0 = 1. / param_lambda, 0.7, exp(logy0)
+
     tau, beta, y0 = fmin(cost_function, (tau, beta, y0), args=(x, y), disp=0)
     tau, beta, y0 = fmin(cost_function_integral, (tau, beta, y0), args=(x, y), disp=0)
     
@@ -176,6 +179,8 @@ def r_squared(fit, x, y):
     y_average = mean(y)
     ss_total = sum((y - y_average)**2)
     ss_residual = sum((y-fit(x))**2)
+    if ss_total == 0:
+        return 0
     r_squared = 1 - ss_residual / ss_total
     return r_squared
 

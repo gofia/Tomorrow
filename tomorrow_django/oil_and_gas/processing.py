@@ -3,6 +3,7 @@ __author__ = 'lucas.fievet'
 from django.core import serializers
 from dateutil import relativedelta
 import abc
+import copy
 
 from oil_and_gas.models import (Field, FieldProduction,
                                 Country, CountryProduction,
@@ -32,7 +33,8 @@ class ProductionProcessor():
         productions = self.production_type.objects.filter(name=name).all().order_by('date')
         processed, created = self.processed_type.objects.get_or_create(name=name)
         processed.name = name
-        processed.country = productions[0].country
+        if hasattr(processed, 'country'):
+            processed.country = productions[0].country
         serialized_productions = serializers.serialize(
             "json",
             productions,
@@ -44,11 +46,18 @@ class ProductionProcessor():
 
     def compute_fits(self, processed, productions):
         dates, x, y = self.getPlotData(productions)
+        x_min_guess, y0_guess, tau_guess, beta_guess = None, None, None, None
+        last_good_fit = None
         fit = None
 
         for i in range(2, len(x)):
+
+            # If the fit is not zero, reuse the previous values as a first guess
+            if fit is not None:
+                x_min_guess, y0_guess, tau_guess, beta_guess = fit.x_min, fit.A, fit.tau, fit.beta
+
             fit, created = self.getStretchedExponential(processed, dates[i])
-            if fit.compute_fit(x[0:i], y[0:i]):
+            if fit.compute_fit(x[0:i], y[0:i], x_min_guess, y0_guess, tau_guess, beta_guess):
                 try:
                     fit.date_begin = dates[0] + relativedelta.relativedelta(months=fit.x_min)
                     fit.length = i
@@ -64,21 +73,24 @@ class ProductionProcessor():
                     except ZeroDivisionError:
                         pass
 
+                    last_good_fit = copy.copy(fit)
                     fit.save()
-                    print "SUCCESS: " + fit.field.name + " - " + \
+                    print "SUCCESS: " + productions[0].name + " - " + \
                           fit.date_begin.__str__() + " - " + fit.date_end.__str__()
                 except Exception as e:
                     print "EXCEPTION: " + e.__str__()
                     fit.delete()
+                    fit = None
             else:
                 print "FAILURE"
                 fit.delete()
+                fit = None
 
-        if fit is not None:
-            processed.x_min = fit.x_min
-            processed.A = fit.A
-            processed.tau = fit.tau
-            processed.beta = fit.beta
+        if last_good_fit is not None:
+            processed.x_min = last_good_fit.x_min
+            processed.A = last_good_fit.A
+            processed.tau = last_good_fit.tau
+            processed.beta = last_good_fit.beta
             processed.save()
 
     @abc.abstractmethod

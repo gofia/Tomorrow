@@ -2,7 +2,7 @@ __author__ = 'lucas.fievet'
 
 from rest_framework import serializers
 
-from .models import (FieldProduction, Field, StretchedExponential)
+from .models import (FieldProduction, Field, Country, StretchedExponential)
 
 import logging
 logger = logging.getLogger("UsLoader")
@@ -29,6 +29,8 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class CountrySerializer(serializers.ModelSerializer):
+    fits = StretchedExponentialSerializer(source="max_fits", many=True)
+
     class Meta:
-        model = Field
-        fields = ('country',)
+        model = Country
+        fields = ('name', 'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')

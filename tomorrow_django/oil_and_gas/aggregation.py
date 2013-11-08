@@ -33,8 +33,8 @@ class CountryAggregator():
 
     def aggregateFields(self, name):
         return FieldProduction.objects.filter(country=name).values('date').annotate(
-            total_oil=Sum('production_gas'),
-            total_gas=Sum('production_oil'),
+            total_oil=Sum('production_oil'),
+            total_gas=Sum('production_gas'),
             total_water=Sum('production_water'),
         )
 

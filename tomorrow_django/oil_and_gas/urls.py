@@ -7,8 +7,8 @@ from . import views
 oil_and_gas_urlpatterns = patterns(
     '',
     url(r'^countries/',
-        views.CountryFieldList.as_view(),
-        name='field-list'),
+        views.CountryList.as_view(),
+        name='country-list'),
     url(r'^fields/(?P<country>[\w-]*)',
         views.FieldList.as_view(),
         name='field-list'),

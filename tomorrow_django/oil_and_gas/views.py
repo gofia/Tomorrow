@@ -5,11 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.staticfiles.views import serve
 
 from rest_framework.generics import ListAPIView
-from rest_framework import permissions, generics, status, views, decorators
+from rest_framework import permissions, views, decorators
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 
-from .models import (FieldProduction, Field)
+from .models import (FieldProduction, Field, Country)
 from .serializers import (FieldProductionSerializer, FieldSerializer, CountrySerializer)
 
 import logging
@@ -68,13 +68,13 @@ def api_root(request, format=None):
     })
 
 
-class CountryFieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
-    model = Field
+class CountryList(AuthenticatedView, LoggedViewMixin, ListAPIView):
+    model = Country
     serializer_class = CountrySerializer
     view_name = "country list"
 
     def get_queryset(self):
-        return Field.objects.all().values('country').distinct()
+        return Country.objects.all().order_by("name")
 
 
 class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):

@@ -13,6 +13,6 @@ oil_and_gas_urlpatterns = patterns(
         views.FieldList.as_view(),
         name='field-list'),
     url(r'^productions/(?P<name>[\W|\w-]*)/$$',
-        views.FieldProductionList.as_view(),
+        views.FieldDetails.as_view(),
         name='production-list'),
 )

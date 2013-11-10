@@ -1,35 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="tomorrow">
 <head>
-  <title></title>
+  <title>Tomorrow</title>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style>
     .global-container {
+      position: relative;
       margin: 0 auto;
       max-width: 960px;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+    }
+    .header > div {
+      cursor: pointer;
+      display: inline-block;
+      width: 15%;
+      padding: 5px 0.5%;
+      font-weight: bold;
+      border-left: 1px solid gray;
+    }
+    .header > div:first-child {
+      border-left: 0;
+    }
+    .header > div:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+    .header .fa {
+      display: none;
+    }
+    .caret-up .fa.fa-caret-up {
+      display: inline-block;
+    }
+    .caret-down .fa.fa-caret-down {
+      display: inline-block;
+    }
+    .fields {
+      width: 100%;
+    }
+    .field {
+      background: rgba(255, 0, 0, 0.2);
+      border-bottom: 1px solid gray;
+      cursor: pointer;
+    }
+    .field:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+    .field.stable {
+      background: rgba(0, 255, 0, 0.2);
+    }
+    .field.stable:hover {
+      background: rgba(0, 255, 0, 0.5);
+    }
+    .field.inactive {
+      background: rgba(255, 0, 0, 0.1);
+    }
+    .field.inactive:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+    .field.inactive.stable {
+      background: rgba(0, 255, 0, 0.1);
+    }
+    .field.inactive.stable:hover {
+      background: rgba(0, 255, 0, 0.5);
+    }
+    .field > div {
+      display: inline-block;
+      width: 15%;
+      padding: 5px 0.5%;
+      border-left: 1px solid gray;
+    }
+    .field > div:first-child {
+      border-left: 0;
+    }
+    .field > div.details {
+      display: inline-block;
+      width: 96%;
+      margin: 10px 0 0 0;
+      background: white;
+      padding: 2%;
+      border-left: 0;
+    }
+    .information {
+      margin: 15px 25px;
+      padding: 15px 0;
+      border-top: 0px solid gray;
+      border-bottom: 3px solid gray;
+      text-align: center;
+    }
+    .information:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .information.open {
+      border-bottom: 0px solid gray;
+    }
+    .information .fa {
+      margin: 0 0 0 10px;
+    }
+    .information .fa-caret-up {
+      display: none;
+    }
+    .information.open .fa-caret-down {
+      display: none;
+    }
+    .information.open .fa-caret-down {
+      display: inline-block;
+    }
+    .information-content {
+      display: none;
+      margin: 15px 25px;
+      padding: 15px 0;
+      border-bottom: 3px solid gray;
+    }
+    .information-content.open {
+      display: block;
+    }
+    .MathJax_Display {
+      margin: 0.5em 0 0 0;
     }
   </style>
 </head>
-<body>
+<body ng-controller="FieldList">
 <div class="global-container">
-  <select id="fields"></select>
-  <div class="total-oil-production"></div>
-  <div id="container"></div>
-  <div>
-    The production is fitted from the maximum of production onwards as a stretched exponential:
-    $$p(t) = A \times \exp \left( sign(\tau) \left( {t \over \tau}  \right)^\beta \right).$$
+  <div class="fields">
+    <div class="header">
+      <div ng-click="change_predicate('name')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Name
+      </div>
+      <div ng-click="change_predicate('discovery')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Discovery
+      </div>
+      <div ng-click="change_predicate('shut_down')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Shut down
+      </div>
+      <div ng-click="change_predicate('total_production_oil')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Total oil production<br>(Mio. barrels)
+      </div>
+      <div ng-click="change_predicate('current_production_oil')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Current oil production<br>(barrels/mondiv)
+      </div>
+      <div ng-click="change_predicate('stable_since')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Stable since
+      </div>
+    </div>
+    <div class="field"
+        ng-repeat="field in fields | orderBy:predicate"
+        ng-click="field.load_details($event)"
+        ng-class="{inactive: !field.active, stable: field.stable}">
+      <div>{{ field.name }}</div>
+      <div>{{ field.discovery }}</div>
+      <div>{{ field.shut_down }}</div>
+      <div>{{ field.total_production_oil }}</div>
+      <div>{{ field.current_production_oil }}</div>
+      <div>{{ field.stable_since }}</div>
+      <div id="details-{{ field.id }}" class="details" ng-show="field.show_details">
+        <div class="container"></div>
+        <div information>
+          The production is fitted from the maximum of production onwards as a stretched exponential:
+          $$f(t) = A \times \exp \left( sign(\tau) \left( {t \over \left|\tau\right|}  \right)^\beta \right).$$
+        </div>
+        <div class="sum-error"></div>
+        <div information>
+          For production data $p_i$ and a fit $f(t)$ using data up to $t_{end}$,
+          the error on future total production is:
+          $$error = {\left( \int_{t_{end}}^{t_{now}} f(t)dt \right) - \sum_{i=t_{end}}^{t_{now}} p_i \over \sum_{i=t_{end}}^{t_{now}} p_i}.$$
+        </div>
+        <div class="tau"></div>
+        <div information>
+          The value of $\tau$ in the fit $f(t)$ over time, using data up to $t$.
+        </div>
+        <div class="beta"></div>
+        <div information>
+          The value of $\beta$ in the fit $f(t)$ over time, using data up to $t$.
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="sum-error"></div>
-  <div id="A"></div>
-  <div id="tau"></div>
-  <div id="beta"></div>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script src="/static/js/helpers.js"></script>
   <script src="/static/js/production_plot.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/controllers.js"></script>
+  <script src="/static/js/directives.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    MathJax.Hub.Config({
+        skipStartupTypeset: true,
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
   </script>
 </div>
 </body>

@@ -2,8 +2,10 @@ __author__ = 'lucas.fievet'
 
 from django.core import serializers
 from dateutil import relativedelta
+from datetime import date
 import abc
 import copy
+from numpy import average, std, abs
 
 from oil_and_gas.models import (Field, FieldProduction,
                                 Country, CountryProduction,
@@ -47,6 +49,7 @@ class ProductionProcessor():
     def compute_fits(self, processed, productions):
         dates, x, y = self.getPlotData(productions)
         x_min_guess, y0_guess, tau_guess, beta_guess = None, None, None, None
+        i_list, y0_list, tau_list, beta_list, error_list = [], [], [], [], []
         last_good_fit = None
         fit = None
 
@@ -73,6 +76,14 @@ class ProductionProcessor():
                     except ZeroDivisionError:
                         pass
 
+                    if len(i_list) > 0 and fit.x_min != last_good_fit.x_min:
+                        i_list, y0_list, tau_list, beta_list, error_list = [], [], [], [], []
+
+                    i_list.append(i)
+                    y0_list.append(fit.A)
+                    tau_list.append(fit.tau)
+                    beta_list.append(fit.beta)
+                    error_list.append(fit.sum_error)
                     last_good_fit = copy.copy(fit)
                     fit.save()
                     print "SUCCESS: " + productions[0].name + " - " + \
@@ -86,7 +97,25 @@ class ProductionProcessor():
                 fit.delete()
                 fit = None
 
+        avg_tau = None
+        for i in range(2, len(i_list)):
+            if i > (len(i_list) / 5.0) and avg_tau is not None:
+                if abs(tau_list[-i] - avg_tau) > 3 * std_tau:
+                    processed.stable_since = dates[i_list[-i+2]]
+                    break
+            avg_tau = average(tau_list[-i:-1])
+            std_tau = std(tau_list[-i:-1])
+
         if last_good_fit is not None:
+            processed.discovery = dates[0]
+            processed.total_production_oil = round(sum(y) / 1E6)
+            processed.current_production_oil = y[-1]
+            processed.active = (dates[-1].year == date.today().year and
+                                dates[-1].month > date.today().month - 6)
+            if processed.active is True:
+                processed.shut_down = None
+            else:
+                processed.shut_down = dates[-1]
             processed.x_min = last_good_fit.x_min
             processed.A = last_good_fit.A
             processed.tau = last_good_fit.tau

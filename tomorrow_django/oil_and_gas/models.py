@@ -1,7 +1,5 @@
 from django.db import models
-from django.core import serializers
 from django.db.models import Max
-from dateutil import relativedelta
 from datetime import datetime
 
 import math
@@ -67,9 +65,18 @@ class WellProduction(Production):
 class Field(models.Model):
     name = models.CharField(max_length=50, default="", unique=True)
     country = models.CharField(max_length=50, default="")
+    discovery = models.DateField(null=True, blank=True)
+    shut_down = models.DateField(null=True, blank=True)
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
+    total_production_oil = models.PositiveIntegerField(default=0)
+    total_production_gas = models.PositiveIntegerField(default=0)
+    current_production_oil = models.PositiveIntegerField(default=0)
+    current_production_gas = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+    stable = models.BooleanField(default=True)
+    stable_since = models.DateField(null=True, blank=True)
 
     # A * exp((x/a)**b)
     x_min = models.PositiveIntegerField(default=0)
@@ -85,9 +92,18 @@ class Field(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=50, default="", unique=True)
+    discovery = models.DateField(null=True, blank=True)
+    shut_down = models.DateField(null=True, blank=True)
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
+    total_production_oil = models.PositiveIntegerField(default=0)
+    total_production_gas = models.PositiveIntegerField(default=0)
+    current_production_oil = models.PositiveIntegerField(default=0)
+    current_production_gas = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+    stable = models.BooleanField(default=True)
+    stable_since = models.DateField(null=True, blank=True)
 
     # A * exp((x/a)**b)
     x_min = models.PositiveIntegerField(default=0)

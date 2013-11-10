@@ -11,21 +11,26 @@ logger = logging.getLogger("UsLoader")
 class StretchedExponentialSerializer(serializers.ModelSerializer):
     class Meta:
         model = StretchedExponential
-        fields = ('date_begin', 'date_end', 'x_min', 'length', 'A', 'tau', 'beta', 'r_squared', 'sum_error', 'field')
+        fields = ('date_begin', 'date_end', 'x_min', 'length', 'A', 'tau', 'beta',
+                  'r_squared', 'sum_error', 'field')
 
 
-class FieldProductionSerializer(serializers.ModelSerializer):
+class FieldFullSerializer(serializers.ModelSerializer):
     fits = StretchedExponentialSerializer(source="max_fits", many=True)
 
     class Meta:
         model = Field
-        fields = ('name', 'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')
+        fields = ('id', 'name', 'country', 'discovery', 'shut_down', 'total_production_oil',
+                  'current_production_oil', 'active', 'stable', 'stable_since',
+                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')
 
 
-class FieldSerializer(serializers.ModelSerializer):
+class FieldMinSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FieldProduction
-        fields = ('name',)
+        model = Field
+        fields = ('id', 'name', 'country', 'discovery', 'shut_down', 'total_production_oil',
+                  'current_production_oil', 'active', 'stable', 'stable_since',
+                  'x_min', 'A', 'tau', 'beta')
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -33,4 +38,6 @@ class CountrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Country
-        fields = ('name', 'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')
+        fields = ('id', 'name', 'discovery', 'shut_down', 'total_production_oil',
+                  'current_production_oil', 'active', 'stable', 'stable_since',
+                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')

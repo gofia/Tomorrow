@@ -6,13 +6,13 @@ from . import views
 
 oil_and_gas_urlpatterns = patterns(
     '',
-    url(r'^countries/',
+    url(r'^countries',
         views.CountryList.as_view(),
         name='country-list'),
     url(r'^fields/(?P<country>[\w-]*)',
         views.FieldList.as_view(),
         name='field-list'),
-    url(r'^productions/(?P<name>[\W|\w-]*)/$$',
+    url(r'^productions/(?P<pk>[\d]*)',
         views.FieldDetails.as_view(),
         name='production-list'),
 )

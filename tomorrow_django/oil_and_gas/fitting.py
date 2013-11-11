@@ -126,13 +126,6 @@ def fit_power_law(_x, _y=None, x_min=None, x_max=None, show=False,
     return alpha, y0
 
 
-def get_stretched_exponential(y0, tau, beta):
-    def func(x):
-        return y0 * exp(sign(tau) * (x / abs(tau)) ** beta)
-
-    return func;
-
-
 def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
                               x_min_guess=None, y0=None, tau=None, beta=None,
                               show=False, x_scale='linear', y_scale='linear',
@@ -159,6 +152,13 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
                  title=title)
  
     return x_min, tau, beta, y0
+
+
+def get_stretched_exponential(y0, tau, beta):
+    def func(x):
+        return y0 * exp(sign(tau) * (x / abs(tau)) ** beta)
+
+    return func
 
 
 def cost_function((tau, beta, y0), x, y):

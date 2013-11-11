@@ -1,6 +1,6 @@
-from numpy import array, exp, arange, isnan, where
+from numpy import array, exp, arange, where
 from datetime import datetime
-from scipy.stats import linregress, t
+from scipy.stats import t
 from scipy.optimize import fmin
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
@@ -11,7 +11,8 @@ from pandas import Timestamp
 #Quis pendit ipsa pretia: facebook valuation and diagnostic of a bubble based
 #on nonlinear demographic dynamics. Peter Cauwels, Didier Sornette (2011).
 #link: http://arxiv.org/pdf/1110.1319v2.pdf
-from erpy.ipshell import ipshell
+#from erpy.ipshell import ipshell
+
 
 def fit_logistic(dates, values, start_date, confid=None, show_plot=False, 
         xlabel='x', ylabel='y', init_conds=(2., 5.)):
@@ -28,14 +29,14 @@ def fit_logistic(dates, values, start_date, confid=None, show_plot=False,
     idxmax = where(values==values.max())[0][0]
     values /= valmax
 
-    #It can be shown that there is a linear dependance between the population 
+    #It can be shown that there is a linear dependence between the population
     #and the growth rate.
     r, k, p = 1. / dates[idxmax], 1., values[0]
 
     if p == 0:
         p = 0.01 
     #Sometimes the initial estimates of r, k, p are too far from the real values
-    #for the optimzer to converge. We therefore, chose other starting points.
+    #for the optimizer to converge. We therefore, chose other starting points.
     #p0 is usually the problematic parameter.
     mult, len_grid = init_conds
     grid = mult ** arange(-len_grid, len_grid+1)
@@ -64,7 +65,7 @@ def fit_logistic(dates, values, start_date, confid=None, show_plot=False,
                                                                      kconfid), disp=0, maxiter=10000)
                     rkp_f.append(((r, k, p), cost_function_const((r, p), dates, values, 
                                                               kconfid)))
-        #chosing the fit_parms with the smallest cost function
+        #chosing the fit parameters with the smallest cost function
         #for i, _rkp_f in enumerate(rkp_f):
         #    print '%s: %s' % (i, _rkp_f)
 
@@ -87,10 +88,10 @@ def fit_logistic(dates, values, start_date, confid=None, show_plot=False,
     if show_plot:
         show_logistic_fit(dates, values, (r, k, p), start_date, xlabel, ylabel)
       
-    return (r, k, p)
+    return r, k, p
 
-def fit_dlogistic(dates, values, start_date, show_plot=False,
-        xlabel='x', ylabel='y', init_conds=(2., 5.), **kwargs):
+
+def fit_d_logistic(dates, values, start_date, init_conditions=(2., 5.), **kwargs):
     """Fits the time-derivative of the logistic function (the bell shape).
     """
     dates = array([float(d.toordinal()) for d in dates])
@@ -102,14 +103,13 @@ def fit_dlogistic(dates, values, start_date, show_plot=False,
 
     if 'rkp' in kwargs.keys():
         r, k, p = kwargs['rkp']
-   
     else: 
         k = cum[-1]
         r = (4*values.max() / k)**0.5
         p = cum[1]
 
-    mult, len_grid = init_conds
-    grid = mult ** arange(-len_grid, len_grid+1)
+    multiplier, len_grid = init_conditions
+    grid = multiplier ** arange(-len_grid, len_grid+1)
     ps = p * grid
     rs = r * grid
     ks = k * grid    
@@ -122,26 +122,26 @@ def fit_dlogistic(dates, values, start_date, show_plot=False,
     for k in ks:
         for r in rs:
             for p in ps:
-                (_r, _k, _p) = fmin(cost_function_dlogistic, (r, k, p), args=(dates, values), disp=0)
-                rkp_f.append(((_r, _k, _p), cost_function_dlogistic((_r, _k, _p), dates, values)))
-
+                (_r, _k, _p) = fmin(cost_function_d_logistic, (r, k, p), args=(dates, values), disp=0)
+                rkp_f.append(((_r, _k, _p), cost_function_d_logistic((_r, _k, _p), dates, values)))
 
     print len(rkp_f)
-    rkp_f = array(sorted([(_r, _k, _p) for ((_r, _k, _p),_) in rkp_f], key=lambda x: x[1]))
+    rkp_f = array(sorted([(_r, _k, _p) for ((_r, _k, _p), _) in rkp_f], key=lambda x: x[1]))
     #rkp_f = [_rkp_f for _rkp_f in rkp_f if (_rkp_f[0] > 0) and (_rkp_f[1] > 0) and\
     #            (_rkp_f[1] < 1000 * cum[-1]) and (_rkp_f[2] > 0)]
     try:
         r, k, p = rkp_f[0]
-    except:
-        return (0., 0., 0.)
+    except IndexError:
+        return 0., 0., 0.
     
-    fname = 'test.pkl'
-    f = open(fname, 'w')
-    from pickle import dump
-    dump(rkp_f, f)
-    f.close()
+    # f_name = 'test.pkl'
+    # f = open(f_name, 'w')
+    # from pickle import dump
+    # dump(rkp_f, f)
+    # f.close()
 
-    return (r, k, p) 
+    return r, k, p
+
 
 def fit_double_cyclic(dates, values, init_guesses=2, **kwargs):
 
@@ -198,47 +198,69 @@ def fit_double_cyclic(dates, values, init_guesses=2, **kwargs):
     output = array(sorted([_res for (_res,_) in output], key=lambda x: x[1]))    
     return output
 
+
+def get_logistic(r, k, p):
+    def func(x):
+        return k * p * exp(r * x) / (k + p * (exp(r * x) - 1))
+
+    return func
+
+
+def get_d_logistic(r, k, p):
+    logistic = get_logistic(r, k, p)
+
+    def func(x):
+        logistic_value = logistic(x)
+        return r * logistic_value * (1 - logistic_value / k)
+
+    return func
+
+
 def cost_cyclic((qmax1, qmax2, tmax1, tmax2, a1, a2), x, y):
     fit = (4 * qmax1 * (exp(-a1*(x-tmax1))) / (1+exp(-a1*(x-tmax1)))**2) +\
           (4 * qmax2 * (exp(-a2*(x-tmax2))) / (1+exp(-a2*(x-tmax2)))**2)
     res = (y - fit)**2 / abs(fit)
     return sum(res)
 
+
 def cost_function((r, k, p), x, y):
-    fit = k * p * exp(r * x) / (k + p * (exp(r * x) - 1))
+    fit = get_logistic(r, k, p)(x)
     res = (y - fit)**2 / abs(fit)
     return sum(res)
 
-def cost_function_const((r, p), x, y, khe):
-   fit = khe * p * exp(r * x) / (khe + p * (exp(r * x) - 1)) 
-   res = (y - fit)**2 / abs(fit)
-   return sum(res)
 
-def cost_function_dlogistic((r, k, p), x, y):
-    fit = (k-p) * r* k * p * exp(r*x) / (k + p*(exp(r*x)-1))**2
+def cost_function_const((r, p), x, y, khe):
+    fit = get_logistic(r, khe, p)(x)
+    res = (y - fit)**2 / abs(fit)
+    return sum(res)
+
+
+def cost_function_d_logistic((r, k, p), x, y):
+    fit = get_d_logistic(r, k, p)(x)
     res = (y-fit)**2 / abs(fit)
     return sum(res)
+
 
 def compute_logistic(dates, (r, k, p), start_date):
     x = array([float(d.toordinal()) for d in dates])
     start_date = start_date.toordinal()
     x = x - start_date
-    return k * p * exp(r * x) / (k + p * (exp(r * x) - 1))
-    
+    return get_logistic(r, k, p)(x)
 
-def show_logistic_fit(x, y, (r, k, p), start_date, xlabel, ylabel): 
+
+def show_logistic_fit(x, y, (r, k, p), start_date, x_label, y_label):
     fig = plt.figure(figsize=(16,10))
     ax = fig.add_subplot(111)
-    xfit = arange(2*x[-1])
-    yfit = k * p * exp(r * xfit) / (k + p * (exp(r * xfit) -1))
+    x_fit = arange(2*x[-1])
+    y_fit = k * p * exp(r * x_fit) / (k + p * (exp(r * x_fit) -1))
     x = [datetime.fromordinal(int(d)) for d in x+start_date]
-    xfit = [datetime.fromordinal(int(d)) for d in xfit+start_date]
+    x_fit = [datetime.fromordinal(int(d)) for d in x_fit+start_date]
     ax.plot(x, y, 'ok')
-    ax.plot(xfit, yfit, '-k')
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    ax.set_xlim(xfit[0], xfit[-1])
-    tformat = DateFormatter("%b-%y")
-    ax.xaxis.set_major_formatter(tformat)
+    ax.plot(x_fit, y_fit, '-k')
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.set_xlim(x_fit[0], x_fit[-1])
+    t_format = DateFormatter("%b-%y")
+    ax.xaxis.set_major_formatter(t_format)
     plt.show()
 

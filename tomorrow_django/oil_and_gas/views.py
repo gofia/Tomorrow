@@ -1,15 +1,17 @@
-from contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.staticfiles.views import serve
 
-from rest_framework.generics import ListAPIView
-from rest_framework import permissions, views, decorators
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import permissions, views, decorators, status
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 
-from .models import (FieldProduction, Field, Country)
+from .models import (Field, Country)
+from oil_and_gas import tasks
+from oil_and_gas.processing import FieldProcessor
 from .serializers import (FieldFullSerializer, FieldMinSerializer, CountrySerializer)
 
 import logging
@@ -89,13 +91,39 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
             return Field.objects.all().order_by("name")
 
 
-class FieldDetails(AuthenticatedView, LoggedViewMixin, ListAPIView):
+class FieldDetails(AuthenticatedView, LoggedViewMixin, RetrieveAPIView):
     model = Field
     serializer_class = FieldFullSerializer
     view_name = "field production list"
 
-    def get_queryset(self):
-        return Field.objects.filter(name=self.kwargs['name'])
+
+class FieldStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
+    model = Field
+    view_name = "change stable"
+
+    def post(self, request, format=None):
+        try:
+            field_id = request.DATA['id']
+            field = Field.objects.get(id=field_id)
+            field.stable = request.DATA['stable'] == "true"
+            field.save()
+            return Response("", status=status.HTTP_200_OK)
+        except:
+            return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class FieldProcessing(AuthenticatedView, LoggedViewMixin, views.APIView):
+    model = Field
+    view_name = "change stable"
+
+    def post(self, request, format=None):
+        try:
+            field_id = request.DATA['id']
+            field = Field.objects.get(id=field_id)
+            tasks.process_field(field.name)
+            return Response("", status=status.HTTP_200_OK)
+        except:
+            return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @login_required

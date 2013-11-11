@@ -19,6 +19,13 @@ def process_fields(date=None):
 
 
 @task()
+def process_field(name):
+    logger.info("Process field " + name)
+    fieldProcessor = FieldProcessor()
+    return fieldProcessor.computeItem(name)
+
+
+@task()
 def process_countries(date=None):
     logger.info("Process countries.")
     countryProcessor = CountryProcessor()

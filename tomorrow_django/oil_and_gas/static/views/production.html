@@ -121,6 +121,74 @@
 </head>
 <body ng-controller="FieldList">
 <div class="global-container">
+
+  <div class="fields">
+    <div class="header">
+      <div ng-click="change_predicate('name')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Name
+      </div>
+      <div ng-click="change_predicate('discovery')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Discovery
+      </div>
+      <div ng-click="change_predicate('shut_down')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Shut down
+      </div>
+      <div ng-click="change_predicate('total_production_oil')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Total oil production<br>(Mio. barrels)
+      </div>
+      <div ng-click="change_predicate('current_production_oil')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Current oil production<br>(barrels/month)
+      </div>
+      <div ng-click="change_predicate('stable_since')" caret>
+        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
+        Stable since
+      </div>
+    </div>
+    <div class="field"
+        ng-repeat="country in countries | orderBy:predicate"
+        ng-click="country.load_details($event)"
+        ng-class="{inactive: !country.active, country: field.stable}">
+      <div>{{ country.name }}</div>
+      <div>{{ country.discovery }}</div>
+      <div>{{ country.shut_down }}</div>
+      <div>{{ country.total_production_oil }}</div>
+      <div>{{ country.current_production_oil }}</div>
+      <div>{{ country.stable_since }}</div>
+      <div id="country-details-{{ country.id }}" class="details" ng-show="country.show_details">
+        <div class="container"></div>
+        <div information>
+          The production is fitted from the maximum of production onwards as a stretched exponential:
+          $$f(t) = A \times \exp \left( sign(\tau) \left( {t \over \left|\tau\right|}  \right)^\beta \right).$$
+        </div>
+        <div class="sum-error"></div>
+        <div information>
+          For production data $p_i$ and a fit $f(t)$ using data up to $t_{end}$,
+          the error on future total production is:
+          $$error = {\left( \int_{t_{end}}^{t_{now}} f(t)dt \right) - \sum_{i=t_{end}}^{t_{now}} p_i \over \sum_{i=t_{end}}^{t_{now}} p_i}.$$
+        </div>
+        <div class="tau"></div>
+        <div information>
+          The value of $\tau$ in the fit $f(t)$ over time, using data up to $t$.
+        </div>
+        <div class="beta"></div>
+        <div information>
+          The value of $\beta$ in the fit $f(t)$ over time, using data up to $t$.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="fields">
     <div class="header">
       <div ng-click="change_predicate('name')" caret>

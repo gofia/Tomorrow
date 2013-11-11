@@ -1,5 +1,6 @@
 __author__ = 'Lucas-Fievet'
 
-from fitting_tests import *
-from field_processor_tests import *
-from aggregation_test import *
+# from fitting_tests import *
+# from field_processor_tests import *
+# from aggregation_tests import *
+from fit_logistic_tests import *

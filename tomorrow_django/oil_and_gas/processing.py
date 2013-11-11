@@ -35,8 +35,11 @@ class ProductionProcessor():
         productions = self.production_type.objects.filter(name=name).all().order_by('date')
         processed, created = self.processed_type.objects.get_or_create(name=name)
         processed.name = name
+
+        # Only concerns fields, not countries
         if hasattr(processed, 'country'):
             processed.country = productions[0].country
+
         serialized_productions = serializers.serialize(
             "json",
             productions,
@@ -49,7 +52,7 @@ class ProductionProcessor():
     def compute_fits(self, processed, productions):
         dates, x, y = self.getPlotData(productions)
         x_min_guess, y0_guess, tau_guess, beta_guess = None, None, None, None
-        i_list, y0_list, tau_list, beta_list, error_list = [], [], [], [], []
+        i_list, fit_list = [], []
         last_good_fit = None
         fit = None
 
@@ -77,13 +80,10 @@ class ProductionProcessor():
                         pass
 
                     if len(i_list) > 0 and fit.x_min != last_good_fit.x_min:
-                        i_list, y0_list, tau_list, beta_list, error_list = [], [], [], [], []
+                        i_list, fit_list = [], []
 
                     i_list.append(i)
-                    y0_list.append(fit.A)
-                    tau_list.append(fit.tau)
-                    beta_list.append(fit.beta)
-                    error_list.append(fit.sum_error)
+                    fit_list.append(copy.copy(fit))
                     last_good_fit = copy.copy(fit)
                     fit.save()
                     print "SUCCESS: " + productions[0].name + " - " + \
@@ -98,6 +98,7 @@ class ProductionProcessor():
                 fit = None
 
         avg_tau = None
+        tau_list = [fit.tau for fit in fit_list]
         for i in range(2, len(i_list)):
             if i > (len(i_list) / 5.0) and avg_tau is not None:
                 if abs(tau_list[-i] - avg_tau) > 3 * std_tau:
@@ -116,6 +117,7 @@ class ProductionProcessor():
                 processed.shut_down = None
             else:
                 processed.shut_down = dates[-1]
+            processed.stable = False
             processed.x_min = last_good_fit.x_min
             processed.A = last_good_fit.A
             processed.tau = last_good_fit.tau

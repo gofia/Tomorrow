@@ -4,9 +4,8 @@
 
 $(function () {
 
-    function plot_details(details_box) {
+    $.plot_details = function (details_box) {
         return function (data) {
-            data = data[0];
             var server_production = JSON.parse(data.production_oil),
                 productions = [],
                 total_oil_production = 0,
@@ -159,8 +158,8 @@ $(function () {
 
     //$.getJSON("/api/countries/").done(plot);
 
-    $.load_field_production = function (field_name, details_box) {
-        $.getJSON("/api/productions/" + field_name + "/")
-            .done(plot_details(details_box));
+    $.load_field_production = function (field_id, details_box) {
+        $.getJSON("/api/productions/" + field_id + "/")
+            .done($.plot_details(details_box));
     };
 });

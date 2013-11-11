@@ -20,7 +20,7 @@ DATABASES = {
         'USER': 'tomorrow',
         'PASSWORD': 't4ever!',
         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3307',                   # Set to empty string for default.
+        'PORT': '3306',                   # Set to empty string for default.
     }
 }
 
@@ -219,14 +219,14 @@ CELERYBEAT_SCHEDULE = {
     #     'task': 'oil_and_gas.tasks.aggregate_countries',
     #     'schedule': timedelta(seconds=5),
     # },
-    # 'process_fields': {
-    #      'task': 'oil_and_gas.tasks.process_fields',
-    #      'schedule': timedelta(seconds=5),
-    # },
-    'process_countries': {
-       'task': 'oil_and_gas.tasks.process_countries',
-       'schedule': timedelta(seconds=5),
+    'process_fields': {
+          'task': 'oil_and_gas.tasks.process_fields',
+          'schedule': timedelta(seconds=5),
     },
+    #'process_countries': {
+    #   'task': 'oil_and_gas.tasks.process_countries',
+    #   'schedule': timedelta(seconds=5),
+    #},
 }
 
 REST_FRAMEWORK = {

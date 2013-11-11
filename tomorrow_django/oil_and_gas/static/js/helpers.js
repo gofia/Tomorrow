@@ -26,4 +26,25 @@
         };
     };
 
+    /*
+     * Get a cookie.
+     * @param {string} name
+     * @return {string} cookie
+     */
+    $.get_cookie = function (name) {
+        var cookieValue = null, cookies, cookie, i;
+        if (document.cookie && document.cookie !== '') {
+            cookies = document.cookie.split(';');
+            for (i = 0; i < cookies.length; i++) {
+                cookie = $.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+
 }(window.jQuery));

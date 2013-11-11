@@ -124,32 +124,32 @@
 
   <div class="fields">
     <div class="header">
-      <div ng-click="change_predicate('name')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Name
       </div>
-      <div ng-click="change_predicate('discovery')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Discovery
       </div>
-      <div ng-click="change_predicate('shut_down')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Shut down
       </div>
-      <div ng-click="change_predicate('total_production_oil')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Total oil production<br>(Mio. barrels)
       </div>
-      <div ng-click="change_predicate('current_production_oil')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Current oil production<br>(barrels/month)
       </div>
-      <div ng-click="change_predicate('stable_since')" caret>
+      <div>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
         Stable since
@@ -223,7 +223,7 @@
       </div>
     </div>
     <div class="field"
-        ng-repeat="field in fields | orderBy:predicate"
+        ng-repeat="field in fields | orderBy:fields_predicate"
         ng-click="field.load_details($event)"
         ng-class="{inactive: !field.active, stable: field.stable}">
       <div>{{ field.name }}</div>
@@ -252,6 +252,7 @@
         <div information>
           The value of $\beta$ in the fit $f(t)$ over time, using data up to $t$.
         </div>
+        <div ng-click="field.process()">Process</div>
       </div>
     </div>
   </div>

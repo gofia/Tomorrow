@@ -5,7 +5,10 @@
 angular.module('tomorrow', [
   'tomorrow.controllers',
   'tomorrow.directives'
-]).
-config(['$routeProvider', function ($routeProvider) {
+])
+.config(['$routeProvider', function ($routeProvider) {
 
+}])
+.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = $.get_cookie("csrftoken");
 }]);

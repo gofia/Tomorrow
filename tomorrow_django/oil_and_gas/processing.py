@@ -3,6 +3,7 @@ __author__ = 'lucas.fievet'
 from django.core import serializers
 from dateutil import relativedelta
 from datetime import date
+from celery._state import current_task
 import abc
 import copy
 from numpy import average, std, abs
@@ -96,6 +97,8 @@ class ProductionProcessor():
                 print "FAILURE"
                 fit.delete()
                 fit = None
+
+            current_task.update_state(state='PROGRESS', meta={'current': round(i * 1.0 / len(x)), 'total': 100})
 
         avg_tau = None
         tau_list = [fit.tau for fit in fit_list]

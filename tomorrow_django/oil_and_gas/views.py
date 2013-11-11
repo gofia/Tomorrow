@@ -1,3 +1,5 @@
+from celery.result import AsyncResult
+from django.core.serializers import json
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
@@ -11,7 +13,6 @@ from rest_framework.response import Response
 
 from .models import (Field, Country)
 from oil_and_gas import tasks
-from oil_and_gas.processing import FieldProcessor
 from .serializers import (FieldFullSerializer, FieldMinSerializer, CountrySerializer)
 
 import logging
@@ -114,14 +115,28 @@ class FieldStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
 
 class FieldProcessing(AuthenticatedView, LoggedViewMixin, views.APIView):
     model = Field
-    view_name = "change stable"
+    view_name = "process field"
 
-    def post(self, request, format=None):
+    def post(self, request, *args, **kwargs):
         try:
             field_id = request.DATA['id']
             field = Field.objects.get(id=field_id)
-            tasks.process_field(field.name)
-            return Response("", status=status.HTTP_200_OK)
+            job = tasks.process_field.delay(field.name)
+            return Response("{job_id: " + job.id + "}", status=status.HTTP_200_OK)
+        except:
+            return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class FieldProcessingStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
+    model = Field
+    view_name = "field processing status"
+
+    def post(self, request, *args, **kwargs):
+        try:
+            job_id = request.DATA['job_id']
+            job = AsyncResult(job_id)
+            data = job.result or job.state
+            return HttpResponse(json.dumps(data), mimetype='application/json')
         except:
             return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

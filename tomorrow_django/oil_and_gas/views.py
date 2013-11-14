@@ -109,7 +109,8 @@ class FieldStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
             field.stable = request.DATA['stable'] == "true"
             field.save()
             return Response("", status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            logger("{0}".format(e))
             return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -119,12 +120,18 @@ class FieldProcessing(AuthenticatedView, LoggedViewMixin, views.APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            field_id = request.DATA['id']
+            field_id = request.DATA['field_id']
             field = Field.objects.get(id=field_id)
-            job = tasks.process_field.delay(field.name)
-            return Response("{job_id: " + job.id + "}", status=status.HTTP_200_OK)
-        except:
-            return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            options = {
+                'name': field.name,
+                # 'start_year': request.DATA['start_year'],
+                # 'start_month': request.DATA['start_month'],
+            }
+            job = tasks.process_field.delay(options)
+            return Response({'job_id': job.id}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger("{0}".format(e))
+            return Response("{0}".format(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class FieldProcessingStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
@@ -136,9 +143,10 @@ class FieldProcessingStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
             job_id = request.DATA['job_id']
             job = AsyncResult(job_id)
             data = job.result or job.state
-            return HttpResponse(json.dumps(data), mimetype='application/json')
-        except:
-            return Response("", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'status': data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger("{0}".format(e))
+            return Response("{0}".format(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @login_required

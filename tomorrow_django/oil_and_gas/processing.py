@@ -28,11 +28,11 @@ class ProductionProcessor():
 
     def computeAll(self, list):
         for item in list:
-            name = item['name']
-            self.computeItem(name)
+            self.computeItem(item)
         return len(list)
 
-    def computeItem(self, name):
+    def computeItem(self, options):
+        name = options['name']
         productions = self.production_type.objects.filter(name=name).all().order_by('date')
         processed, created = self.processed_type.objects.get_or_create(name=name)
         processed.name = name
@@ -48,10 +48,11 @@ class ProductionProcessor():
         )
         processed.production_oil = serialized_productions
         processed.save()
-        self.compute_fits(processed, productions)
 
-    def compute_fits(self, processed, productions):
-        dates, x, y = self.getPlotData(productions)
+        self.compute_fits(processed, productions, options)
+
+    def compute_fits(self, processed, productions, options):
+        dates, x, y = self.getPlotData(productions, options)
         x_min_guess, y0_guess, tau_guess, beta_guess = None, None, None, None
         i_list, fit_list = [], []
         last_good_fit = None
@@ -98,7 +99,7 @@ class ProductionProcessor():
                 fit.delete()
                 fit = None
 
-            current_task.update_state(state='PROGRESS', meta={'current': round(i * 1.0 / len(x)), 'total': 100})
+            current_task.update_state(state='PROGRESS', meta={'percent': round(100.0 * i / len(x))})
 
         avg_tau = None
         tau_list = [fit.tau for fit in fit_list]
@@ -131,14 +132,25 @@ class ProductionProcessor():
     def getStretchedExponential(self, processed, date_end):
         return
 
-    def getPlotData(self, productions):
+    def getPlotData(self, productions, options):
+        if 'start_year' in options:
+            start_year = options['start_year']
+        else:
+            start_year = 0
+
+        if 'start_month' in options:
+            start_month = options['start_month']
+        else:
+            start_month = 0
+
         first_date = productions[0].date
         dates, x, y = [], [], []
         for production in productions:
-            time_delta = relativedelta.relativedelta(production.date, first_date)
-            dates.append(production.date)
-            x.append(time_delta.years * 12 + time_delta.months)
-            y.append(production.production_oil)
+            if production.date.year > start_year and production.date.month > start_month:
+                time_delta = relativedelta.relativedelta(production.date, first_date)
+                dates.append(production.date)
+                x.append(time_delta.years * 12 + time_delta.months)
+                y.append(production.production_oil)
         return dates, x, y
 
 

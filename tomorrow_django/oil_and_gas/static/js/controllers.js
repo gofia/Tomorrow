@@ -36,11 +36,34 @@ angular.module('tomorrow.controllers', [])
                     $($event.target).scrollTop($($event.target).offset().top);
                 };
                 field.show_details = false;
-                field.process = function () {
-                    $http.post("/api/fields/process", { field_id: field.id }, function (data) {
-                        var test;
-                        $http.post("/api/fields/process/status", { job_id: data.job_id });
+                field.process_interval = undefined;
+                field.process = function ($event) {
+                    if (field.process_interval !== undefined) {
+                        return;
+                    }
+                    $http.post("/api/fields/process", { field_id: field.id }).success(function (data) {
+                        field.process_interval = window.setInterval(function () {
+                            $http.post("/api/fields/process/status", { job_id: data.job_id })
+                                .success(function (data) {
+                                    if (data.status === "PENDING") {
+                                        return;
+                                    }
+                                    if ($.isNumeric(data.status.percent)) {
+                                        $($event.target).text(data.status.percent);
+                                        return;
+                                    }
+                                    window.clearInterval(field.process_interval);
+                                    field.process_interval = undefined;
+                                    field.loaded = false;
+                                    field.load_details($event);
+                                })
+                                .error(function () {
+                                    window.clearInterval(field.process_interval);
+                                    field.process_interval = undefined;
+                                });
+                        }, 500);
                     });
+                    $event.stopPropagation();
                 };
             });
         });

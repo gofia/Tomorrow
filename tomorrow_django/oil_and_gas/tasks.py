@@ -19,10 +19,10 @@ def process_fields(date=None):
 
 
 @task()
-def process_field(name):
-    logger.info("Process field " + name)
+def process_field(options):
+    logger.info("Process field " + options['name'])
     fieldProcessor = FieldProcessor()
-    return fieldProcessor.computeItem(name)
+    return fieldProcessor.computeItem(options)
 
 
 @task()

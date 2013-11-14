@@ -41,13 +41,15 @@ $(function () {
                 As.push([date, data.fits[i].A]);
                 taus.push([date, data.fits[i].tau]);
                 betas.push([date, data.fits[i].beta]);
-                sum_errors.push([date, data.fits[i].sum_error * 100]);
+                if (data.fits[i].sum_error !== 0) {
+                    sum_errors.push([date, data.fits[i].sum_error * 100]);
+                }
             }
 
             As = As.slice(Math.round(As.length/3));
             taus = taus.slice(Math.round(taus.length/3));
             betas = betas.slice(Math.round(betas.length/3));
-            sum_errors = sum_errors.slice(Math.round(sum_errors.length/4));
+            //sum_errors = sum_errors.slice(Math.round(sum_errors.length/4));
 
             var plot_options = {
                 chart: {

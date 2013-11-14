@@ -46,9 +46,11 @@ class ProductionProcessor():
             productions,
             fields=('date', 'production_oil')
         )
+
         processed.production_oil = serialized_productions
         processed.save()
 
+        processed.fits.all().delete()
         self.compute_fits(processed, productions, options)
 
     def compute_fits(self, processed, productions, options):
@@ -67,19 +69,20 @@ class ProductionProcessor():
             fit, created = self.getStretchedExponential(processed, dates[i])
             if fit.compute_fit(x[0:i], y[0:i], x_min_guess, y0_guess, tau_guess, beta_guess):
                 try:
-                    fit.date_begin = dates[0] + relativedelta.relativedelta(months=fit.x_min)
+                    fit.date_begin = productions[0].date + relativedelta.relativedelta(months=fit.x_min)
                     fit.length = i
 
                     # Compute error
-                    try:
-                        func = get_stretched_exponential(fit.A, fit.tau, fit.beta)
-                        extrapolated_total_production = sum(func(x[i:-1]))
-                        real_total_production = sum(y[i:-1])
-                        error = extrapolated_total_production - real_total_production
-                        error /= real_total_production
-                        fit.sum_error = error
-                    except ZeroDivisionError:
-                        pass
+                    if diff_months(fit.date_end, fit.date_begin) > 12 and  len(y[i:-1]) > 12:
+                        try:
+                            func = get_stretched_exponential(fit.A, fit.tau, fit.beta)
+                            extrapolated_total_production = sum(func(x[i:-1]))
+                            real_total_production = sum(y[i:-1])
+                            error = extrapolated_total_production - real_total_production
+                            error /= real_total_production
+                            fit.sum_error = error
+                        except ZeroDivisionError:
+                            pass
 
                     if len(i_list) > 0 and fit.x_min != last_good_fit.x_min:
                         i_list, fit_list = [], []
@@ -111,46 +114,42 @@ class ProductionProcessor():
             avg_tau = average(tau_list[-i:-1])
             std_tau = std(tau_list[-i:-1])
 
-        if last_good_fit is not None:
-            processed.discovery = dates[0]
-            processed.total_production_oil = round(sum(y) / 1E6)
+        processed.discovery = dates[0]
+        processed.total_production_oil = round(sum(y) / 1E6)
+        processed.stable = False
+        processed.active = (dates[-1].year == date.today().year and
+                            dates[-1].month > date.today().month - 6)
+        if processed.active is True:
+            processed.shut_down = None
             processed.current_production_oil = y[-1]
-            processed.active = (dates[-1].year == date.today().year and
-                                dates[-1].month > date.today().month - 6)
-            if processed.active is True:
-                processed.shut_down = None
-            else:
-                processed.shut_down = dates[-1]
-            processed.stable = False
+        else:
+            processed.shut_down = dates[-1]
+            processed.current_production_oil = 0
+
+        if last_good_fit is not None:
             processed.x_min = last_good_fit.x_min
             processed.A = last_good_fit.A
             processed.tau = last_good_fit.tau
             processed.beta = last_good_fit.beta
-            processed.save()
+
+        processed.save()
 
     @abc.abstractmethod
     def getStretchedExponential(self, processed, date_end):
         return
 
     def getPlotData(self, productions, options):
-        if 'start_year' in options:
-            start_year = options['start_year']
-        else:
-            start_year = 0
-
-        if 'start_month' in options:
-            start_month = options['start_month']
-        else:
-            start_month = 0
+        start_year = int(options.get('start_year', 0))
+        start_month = int(options.get('start_month', 0))
 
         first_date = productions[0].date
         dates, x, y = [], [], []
         for production in productions:
-            if production.date.year > start_year and production.date.month > start_month:
-                time_delta = relativedelta.relativedelta(production.date, first_date)
+            if production.date.year >= start_year and production.date.month >= start_month:
                 dates.append(production.date)
-                x.append(time_delta.years * 12 + time_delta.months)
+                x.append(diff_months(production.date, first_date))
                 y.append(production.production_oil)
+
         return dates, x, y
 
 
@@ -174,3 +173,7 @@ class CountryProcessor(ProductionProcessor):
 
     def getStretchedExponential(self, processed, date_end):
         return StretchedExponential.objects.get_or_create(country=processed, date_end=date_end)
+
+def diff_months(date1, date2):
+    time_delta = relativedelta.relativedelta(date1, date2)
+    return time_delta.years * 12 + time_delta.months

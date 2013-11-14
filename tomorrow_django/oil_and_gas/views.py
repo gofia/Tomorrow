@@ -120,12 +120,16 @@ class FieldProcessing(AuthenticatedView, LoggedViewMixin, views.APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            field_id = request.DATA['field_id']
+            field_id = request.DATA.get('field_id', None)
+
+            if field_id is None:
+                raise Exception("No field id provided")
+
             field = Field.objects.get(id=field_id)
             options = {
                 'name': field.name,
-                # 'start_year': request.DATA['start_year'],
-                # 'start_month': request.DATA['start_month'],
+                'start_year': request.DATA.get('start_year', 0),
+                'start_month': request.DATA.get('start_month', 0),
             }
             job = tasks.process_field.delay(options)
             return Response({'job_id': job.id}, status=status.HTTP_200_OK)

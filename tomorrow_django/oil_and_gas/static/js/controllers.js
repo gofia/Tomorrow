@@ -32,18 +32,27 @@ angular.module('tomorrow.controllers', [])
                         field.loaded = true;
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "details-" + field.id]);
                     }
+                };
+                field.open_details = function ($event) {
                     field.show_details = !field.show_details;
                     $($event.target).scrollTop($($event.target).offset().top);
+                    field.load_details($event);
                 };
                 field.show_details = false;
                 field.process_interval = undefined;
+                field.process_start_year = 0;
+                field.process_start_month = 0;
                 field.process = function ($event) {
                     if (field.process_interval !== undefined) {
                         return;
                     }
-                    $http.post("/api/fields/process", { field_id: field.id }).success(function (data) {
+                    $http.post("/api/fields/process", {
+                        field_id: field.id,
+                        start_year: field.process_start_year,
+                        start_month: field.process_start_month
+                    }).success(function (data) {
                         field.process_interval = window.setInterval(function () {
-                            $http.post("/api/fields/process/status", { job_id: data.job_id })
+                            $http.post("/api/fields/process/status", {job_id: data.job_id})
                                 .success(function (data) {
                                     if (data.status === "PENDING") {
                                         return;

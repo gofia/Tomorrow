@@ -63,13 +63,13 @@
     .field.inactive.stable:hover {
       background: rgba(0, 255, 0, 0.5);
     }
-    .field > div {
+    .field div.property {
       display: inline-block;
       width: 15%;
       padding: 5px 0.5%;
       border-left: 1px solid gray;
     }
-    .field > div:first-child {
+    .field div.property:first-child {
       border-left: 0;
     }
     .field > div.details {
@@ -157,14 +157,15 @@
     </div>
     <div class="field"
         ng-repeat="country in countries | orderBy:predicate"
-        ng-click="country.load_details($event)"
         ng-class="{inactive: !country.active, country: field.stable}">
-      <div>{{ country.name }}</div>
-      <div>{{ country.discovery }}</div>
-      <div>{{ country.shut_down }}</div>
-      <div>{{ country.total_production_oil }}</div>
-      <div>{{ country.current_production_oil }}</div>
-      <div>{{ country.stable_since }}</div>
+      <div ng-click="country.load_details($event)">
+        <div class="property">{{ country.name }}</div>
+        <div class="property">{{ country.discovery }}</div>
+        <div class="property">{{ country.shut_down }}</div>
+        <div class="property">{{ country.total_production_oil }}</div>
+        <div class="property">{{ country.current_production_oil }}</div>
+        <div class="property">{{ country.stable_since }}</div>
+      </div>
       <div id="country-details-{{ country.id }}" class="details" ng-show="country.show_details">
         <div class="container"></div>
         <div information>
@@ -224,14 +225,15 @@
     </div>
     <div class="field"
         ng-repeat="field in fields | orderBy:fields_predicate"
-        ng-click="field.load_details($event)"
         ng-class="{inactive: !field.active, stable: field.stable}">
-      <div>{{ field.name }}</div>
-      <div>{{ field.discovery }}</div>
-      <div>{{ field.shut_down }}</div>
-      <div>{{ field.total_production_oil }}</div>
-      <div>{{ field.current_production_oil }}</div>
-      <div>{{ field.stable_since }}</div>
+      <div ng-click="field.open_details($event)">
+        <div class="property">{{ field.name }}</div>
+        <div class="property">{{ field.discovery }}</div>
+        <div class="property">{{ field.shut_down }}</div>
+        <div class="property">{{ field.total_production_oil }}</div>
+        <div class="property">{{ field.current_production_oil }}</div>
+        <div class="property">{{ field.stable_since }}</div>
+      </div>
       <div id="details-{{ field.id }}" class="details" ng-show="field.show_details">
         <div class="container"></div>
         <div information>
@@ -253,6 +255,8 @@
           The value of $\beta$ in the fit $f(t)$ over time, using data up to $t$.
         </div>
         <div ng-click="field.process($event)">Process</div>
+        <input type="text" ng-model="field.process_start_year" />
+        <input type="text" ng-model="field.process_start_month" />
       </div>
     </div>
   </div>

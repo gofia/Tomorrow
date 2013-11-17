@@ -219,14 +219,14 @@ CELERYBEAT_SCHEDULE = {
     #     'task': 'oil_and_gas.tasks.aggregate_countries',
     #     'schedule': timedelta(seconds=5),
     # },
-    'process_fields': {
-          'task': 'oil_and_gas.tasks.process_fields',
-          'schedule': timedelta(seconds=5),
-    },
-    #'process_countries': {
-    #   'task': 'oil_and_gas.tasks.process_countries',
-    #   'schedule': timedelta(seconds=5),
+    #'process_fields': {
+    #      'task': 'oil_and_gas.tasks.process_fields',
+    #      'schedule': timedelta(seconds=5),
     #},
+    'process_countries': {
+       'task': 'oil_and_gas.tasks.process_countries',
+       'schedule': timedelta(seconds=5),
+    },
 }
 
 REST_FRAMEWORK = {

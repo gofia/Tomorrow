@@ -79,10 +79,13 @@ class Field(models.Model):
     stable_since = models.DateField(null=True, blank=True)
 
     # A * exp((x/a)**b)
+    date_begin = models.DateField(default=datetime.today())
     x_min = models.PositiveIntegerField(default=0)
     A = models.FloatField(default=0.0)
     tau = models.FloatField(default=-1.0)
     beta = models.FloatField(default=1.0)
+    error_avg = models.FloatField(default=0.0, null=True)
+    error_std = models.FloatField(default=0.0, null=True)
 
     @property
     def max_fits(self):
@@ -106,10 +109,15 @@ class Country(models.Model):
     stable_since = models.DateField(null=True, blank=True)
 
     # A * exp((x/a)**b)
+    date_begin = models.DateField(default=datetime.today())
     x_min = models.PositiveIntegerField(default=0)
     A = models.FloatField(default=0.0)
     tau = models.FloatField(default=-1.0)
     beta = models.FloatField(default=1.0)
+    error_avg = models.FloatField(default=0.0, null=True)
+    error_std = models.FloatField(default=0.0, null=True)
+
+    forecasts = models.TextField(default="")
 
     @property
     def max_fits(self):
@@ -148,7 +156,8 @@ class StretchedExponential(models.Model):
                 x, y, x_min='max',
                 x_min_guess=x_min_guess, y0=y0_guess, tau=tau_guess, beta=beta_guess
             )
-        except:
+        except Exception as e:
+            print e
             return False
 
         if math.isnan(tau) or math.isnan(beta) or math.isnan(y0):
@@ -163,6 +172,17 @@ class StretchedExponential(models.Model):
         x_min_index = x.index(x_min)
         self.r_squared = r_squared(func, x[x_min_index:-1], y[x_min_index:-1])
         return True
+
+    def compute_error(self, x_s, y_s):
+        try:
+            func = get_stretched_exponential(self.A, self.tau, self.beta)
+            extrapolated_total_production = sum(func(x_s))
+            real_total_production = sum(y_s)
+            error = extrapolated_total_production - real_total_production
+            error /= real_total_production
+            return error
+        except ZeroDivisionError:
+            return 0
 
     class Meta:
         unique_together = (("field", "date_begin", "date_end"),)

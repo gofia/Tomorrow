@@ -220,7 +220,7 @@
       <div ng-click="change_predicate('stable_since')" caret>
         <span class="fa fa-caret-down"></span>
         <span class="fa fa-caret-up"></span>
-        Stable since
+        Average Error(%) / Std(%)
       </div>
     </div>
     <div class="field"
@@ -232,7 +232,7 @@
         <div class="property">{{ field.shut_down }}</div>
         <div class="property">{{ field.total_production_oil }}</div>
         <div class="property">{{ field.current_production_oil }}</div>
-        <div class="property">{{ field.stable_since }}</div>
+        <div class="property">{{ field.error_avg }}/{{ field.error_std }}</div>
       </div>
       <div id="details-{{ field.id }}" class="details" ng-show="field.show_details">
         <div class="container"></div>

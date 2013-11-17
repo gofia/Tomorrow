@@ -22,7 +22,7 @@ class FieldFullSerializer(serializers.ModelSerializer):
         model = Field
         fields = ('id', 'name', 'country', 'discovery', 'shut_down', 'total_production_oil',
                   'current_production_oil', 'active', 'stable', 'stable_since',
-                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')
+                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits', 'error_avg', 'error_std')
 
 
 class FieldMinSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class FieldMinSerializer(serializers.ModelSerializer):
         model = Field
         fields = ('id', 'name', 'country', 'discovery', 'shut_down', 'total_production_oil',
                   'current_production_oil', 'active', 'stable', 'stable_since',
-                  'x_min', 'A', 'tau', 'beta')
+                  'x_min', 'A', 'tau', 'beta', 'error_avg', 'error_std')
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -40,4 +40,5 @@ class CountrySerializer(serializers.ModelSerializer):
         model = Country
         fields = ('id', 'name', 'discovery', 'shut_down', 'total_production_oil',
                   'current_production_oil', 'active', 'stable', 'stable_since',
-                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits')
+                  'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits', 'error_avg',
+                  'error_std', 'forecasts')

@@ -42,6 +42,8 @@ angular.module('tomorrow.controllers', [])
                 field.process_interval = undefined;
                 field.process_start_year = 0;
                 field.process_start_month = 0;
+                field.error_avg = Math.round(field.error_avg * 100);
+                field.error_std = Math.round(field.error_std * 100);
                 field.process = function ($event) {
                     if (field.process_interval !== undefined) {
                         return;

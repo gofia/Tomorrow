@@ -40,7 +40,6 @@ class FieldProcessorTest(TestCase):
         )
 
     def tearDown(self):
-        pass
         self.production1.delete()
         self.production2.delete()
         self.production3.delete()

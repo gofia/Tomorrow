@@ -222,27 +222,17 @@ class CountryProcessor(ProductionProcessor):
     def compute_item(self, options):
         ProductionProcessor.compute_item(self, options)
 
-        print "forecasting"
-
-        forecasts = [{
-            'date': add_months(self.processed.date_begin, n),
-            'average': 0,
-            'sigma': 0,
-        } for n in range(0, 12*30)]
-
-        print "per field"
+        forecasts = self.init_forecasts(self.processed.date_begin, 12 * 30)
 
         fields = Field.objects.filter(country=self.processed.name).all()
         for field in fields:
             if field.error_avg != 0 and field.error_std != 0:
                 self.forecast(field, forecasts)
 
-        print "compute sigma"
-        sleep(5)
         for forecast in forecasts:
             forecast['date'] = str(forecast['date'])
             if forecast['average'] > 0 and forecast['sigma'] > 0:
-                forecast['sigma'] = sqrt(forecast['sigma']) / forecast['average']
+                forecast['sigma'] = float(sqrt(forecast['sigma']) / forecast['average'])
             print "{0}: {1} / {2}".format(forecast['date'], forecast['average'], forecast['sigma'])
 
         print "serialize"
@@ -251,13 +241,20 @@ class CountryProcessor(ProductionProcessor):
         self.processed.save()
 
     @staticmethod
+    def init_forecasts(start_date, N):
+        return [{
+            'date': add_months(start_date, n),
+            'average': 0,
+            'sigma': 0,
+        } for n in range(0, N)]
+
+    @staticmethod
     def forecast(field, forecasts):
-        print "{0}: {1}".format(field.name, field.date_begin)
         func = get_stretched_exponential(field.A, field.tau, field.beta)
         for forecast in forecasts:
             number_months = diff_months(field.date_begin, forecast['date'])
             if number_months <= 0:
-                production = func(field.x_min + number_months) * (1 - field.error_avg)
+                production = func(field.x_min - number_months) * (1 - field.error_avg)
                 forecast['average'] += production
                 forecast['sigma'] += (production * field.error_std)**2
 

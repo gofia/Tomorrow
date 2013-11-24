@@ -232,7 +232,7 @@ class CountryProcessor(ProductionProcessor):
         for forecast in forecasts:
             forecast['date'] = str(forecast['date'])
             if forecast['average'] > 0 and forecast['sigma'] > 0:
-                forecast['sigma'] = float(sqrt(forecast['sigma']) / forecast['average'])
+                forecast['sigma'] = sqrt(forecast['sigma']).real / forecast['average']
             print "{0}: {1} / {2}".format(forecast['date'], forecast['average'], forecast['sigma'])
 
         print "serialize"

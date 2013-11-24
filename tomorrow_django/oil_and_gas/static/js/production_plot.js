@@ -10,6 +10,7 @@ $(function () {
                 productions = [],
                 total_oil_production = 0,
                 fit = [],
+                fit_range = [],
                 As = [],
                 taus = [],
                 betas = [],
@@ -33,6 +34,36 @@ $(function () {
                         date,
                         fit_function(x)
                     ]);
+                    fit_range.push([
+                        date,
+                        fit_function(x) * (1 - data.error_avg) * (1 - data.error_std),
+                        fit_function(x) * (1 - data.error_avg) * (1 + data.error_std)
+                    ]);
+                }
+            }
+
+            if (data.forecasts) {
+                var forecasts = JSON.parse(data.forecasts),
+                    forecast_avg = [],
+                    forecast_range = [];
+                for (i = 0; i < forecasts.length; i++) {
+                    date = $.to_date(forecasts[i].date);
+                    forecast_avg.push([date, 8E6 + forecasts[i].average]);
+                    forecast_range.push([
+                        date,
+                        8E6 + forecasts[i].average * (1 - forecasts[i].sigma),
+                        8E6 + forecasts[i].average * (1 + forecasts[i].sigma)
+                    ]);
+                    x = $.month_diff(first_date, date);
+                    fit.push([
+                        date,
+                        fit_function(x)
+                    ]);
+                    fit_range.push([
+                        date,
+                        fit_function(x) * (1 - data.error_avg) * (1 - data.error_std),
+                        fit_function(x) * (1 - data.error_avg) * (1 + data.error_std)
+                    ]);
                 }
             }
 
@@ -46,9 +77,9 @@ $(function () {
                 }
             }
 
-            As = As.slice(Math.round(As.length/3));
-            taus = taus.slice(Math.round(taus.length/3));
-            betas = betas.slice(Math.round(betas.length/3));
+            As = As.slice(Math.round(As.length / 3));
+            taus = taus.slice(Math.round(taus.length / 3));
+            betas = betas.slice(Math.round(betas.length / 3));
             //sum_errors = sum_errors.slice(Math.round(sum_errors.length/4));
 
             var plot_options = {
@@ -110,13 +141,41 @@ $(function () {
                         name: 'Production',
                         data: productions
                     },
+//                    {
+//                        type: 'line',
+//                        name: 'Fit',
+//                        data: fit
+//                    },
                     {
-                        type: 'line',
-                        name: 'Fit',
-                        data: fit
+                        name: 'Range',
+                        data: fit_range,
+                        type: 'arearange',
+                        lineWidth: 0,
+                        linkedTo: ':previous',
+                        color: Highcharts.getOptions().colors[2],
+                        fillOpacity: 0.3,
+                        zIndex: 0
                     }
                 ]
             };
+
+            if (data.forecasts) {
+//                plot_options.series.push({
+//                    type: 'line',
+//                    name: 'Forecast',
+//                    data: forecast_avg
+//                });
+                plot_options.series.push({
+                    name: 'Range',
+                    data: forecast_range,
+                    type: 'arearange',
+                    lineWidth: 0,
+                    linkedTo: ':previous',
+                    color: Highcharts.getOptions().colors[1],
+                    fillOpacity: 0.3,
+                    zIndex: 0
+                });
+            }
 
             details_box.find('.container').highcharts(plot_options);
 

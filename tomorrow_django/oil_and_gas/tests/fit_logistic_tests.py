@@ -9,7 +9,6 @@ from ..fit_logistic import (get_logistic, fit_logistic, get_d_logistic, fit_d_lo
 class FittingTest(TestCase):
     def test_stretched_exponential(self):
         func = get_d_logistic(2.0, 10.0, 1.0)
-        print func([0.0, 1.0, 2.0, 3.0])
         _dates = [
             date(year=2010, month=1, day=1),
             date(year=2011, month=1, day=1),

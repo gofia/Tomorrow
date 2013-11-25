@@ -36,8 +36,8 @@ $(function () {
                     ]);
                     fit_range.push([
                         date,
-                        fit_function(x) * (1 - data.error_avg) * (1 - data.error_std),
-                        fit_function(x) * (1 - data.error_avg) * (1 + data.error_std)
+                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
+                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
                     ]);
                 }
             }
@@ -61,8 +61,8 @@ $(function () {
                     ]);
                     fit_range.push([
                         date,
-                        fit_function(x) * (1 - data.error_avg) * (1 - data.error_std),
-                        fit_function(x) * (1 - data.error_avg) * (1 + data.error_std)
+                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
+                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
                     ]);
                 }
             }

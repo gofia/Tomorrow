@@ -76,6 +76,12 @@ angular.module('tomorrow.controllers', [])
                     });
                     $event.stopPropagation();
                 };
+                field.status = function (status) {
+                    $http.post("/api/fields/status", {id: field.id, stable: status})
+                        .success(function () {
+                            field.stable = status;
+                        });
+                };
             });
         });
         $scope.fields_predicate = "name";

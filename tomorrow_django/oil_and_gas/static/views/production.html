@@ -237,6 +237,7 @@
       <div id="details-{{ field.id }}" class="details" ng-show="field.show_details">
         <div ng-click="field.status(true)" ng-show="!field.stable">Stable</div>
         <div ng-click="field.status(false)" ng-show="field.stable">Unstable</div>
+        <div style="margin-left:50px;">{{ field.stable_since }}</div>
         <div class="container"></div>
         <div information>
           The production is fitted from the maximum of production onwards as a stretched exponential:

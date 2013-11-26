@@ -17,12 +17,14 @@ $(function () {
                 sum_errors = [],
                 fit_function = $.stretched_exponential(data.A, data.tau, data.beta),
                 first_date = $.to_date(server_production[0].fields.date),
+                last_date = 0,
                 date = first_date,
                 x = 0,
                 i;
 
             for (i = 0; i < server_production.length; i++) {
                 date = $.to_date(server_production[i].fields.date);
+                last_date = date,
                 total_oil_production += server_production[i].fields.production_oil;
                 productions.push([
                     date,
@@ -34,11 +36,11 @@ $(function () {
                         date,
                         fit_function(x)
                     ]);
-                    fit_range.push([
-                        date,
-                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
-                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
-                    ]);
+//                    fit_range.push([
+//                        date,
+//                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
+//                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
+//                    ]);
                 }
             }
 
@@ -54,16 +56,18 @@ $(function () {
                         8E6 + forecasts[i].average * (1 - forecasts[i].sigma),
                         8E6 + forecasts[i].average * (1 + forecasts[i].sigma)
                     ]);
-                    x = $.month_diff(first_date, date);
-                    fit.push([
-                        date,
-                        fit_function(x)
-                    ]);
-                    fit_range.push([
-                        date,
-                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
-                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
-                    ]);
+                    if (date >= last_date) {
+                        x = $.month_diff(first_date, date);
+    //                    fit.push([
+    //                        date,
+    //                        fit_function(x)
+    //                    ]);
+                        fit_range.push([
+                            date,
+                            fit_function(x) * (1 - data.error_std) * (1 - data.error_avg),
+                            fit_function(x) * (1 + data.error_std) * (1 - data.error_avg)
+                        ]);
+                    }
                 }
             }
 
@@ -133,6 +137,11 @@ $(function () {
                             }
                         },
                         threshold: null
+                    },
+                    line: {
+                        marker: {
+                            enabled: false
+                        }
                     }
                 },
                 series: [
@@ -145,17 +154,17 @@ $(function () {
                         type: 'line',
                         name: 'Fit',
                         data: fit
+                    },
+                    {
+                        name: 'Range',
+                        data: fit_range,
+                        type: 'arearange',
+                        lineWidth: 0,
+                        linkedTo: ':previous',
+                        color: Highcharts.getOptions().colors[1],
+                        fillOpacity: 0.3,
+                        zIndex: 0
                     }
-//                    {
-//                        name: 'Range',
-//                        data: fit_range,
-//                        type: 'arearange',
-//                        lineWidth: 0,
-//                        linkedTo: ':previous',
-//                        color: Highcharts.getOptions().colors[2],
-//                        fillOpacity: 0.3,
-//                        zIndex: 0
-//                    }
                 ]
             };
 
@@ -165,16 +174,16 @@ $(function () {
 //                    name: 'Forecast',
 //                    data: forecast_avg
 //                });
-                plot_options.series.push({
-                    name: 'Range',
-                    data: forecast_range,
-                    type: 'arearange',
-                    lineWidth: 0,
-                    linkedTo: ':previous',
-                    color: Highcharts.getOptions().colors[1],
-                    fillOpacity: 0.3,
-                    zIndex: 0
-                });
+//                plot_options.series.push({
+//                    name: 'Range',
+//                    data: forecast_range,
+//                    type: 'arearange',
+//                    lineWidth: 0,
+//                    linkedTo: ':previous',
+//                    color: Highcharts.getOptions().colors[2],
+//                    fillOpacity: 0.5,
+//                    zIndex: 0
+//                });
             }
 
             details_box.find('.container').highcharts(plot_options);

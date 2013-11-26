@@ -180,6 +180,8 @@ class StretchedExponential(models.Model):
             real_total_production = sum(y_s)
             error = extrapolated_total_production - real_total_production
             error /= real_total_production
+            if error > 2:
+                error = 0
             return error
         except ZeroDivisionError:
             return 0

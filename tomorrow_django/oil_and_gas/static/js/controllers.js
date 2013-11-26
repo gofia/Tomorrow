@@ -84,7 +84,7 @@ angular.module('tomorrow.controllers', [])
                 };
             });
         });
-        $scope.fields_predicate = "name";
+        $scope.fields_predicate = "-current_production_oil";
         $scope.change_predicate = function (name) {
             if ($scope.fields_predicate === name) {
                 $scope.fields_predicate = '-' + name;

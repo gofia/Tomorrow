@@ -106,7 +106,7 @@ class FieldStatus(AuthenticatedView, LoggedViewMixin, views.APIView):
         try:
             field_id = request.DATA['id']
             field = Field.objects.get(id=field_id)
-            field.stable = request.DATA['stable'] == "true"
+            field.stable = request.DATA['stable']
             field.save()
             return Response("", status=status.HTTP_200_OK)
         except Exception as e:

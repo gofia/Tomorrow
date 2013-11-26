@@ -125,7 +125,7 @@ class ProductionProcessor():
 
     def get_maximum(self):
         try:
-            max_xs = argrelextrema(array(self.y_s), np.greater, order=36)[0]
+            max_xs = argrelextrema(array(self.y_s), np.greater, order=24)[0]
             max_ys = [self.y_s[i] for i in max_xs]
             max_y = max(max_ys)
             max_x = list(max_ys).index(max_y)
@@ -139,7 +139,7 @@ class ProductionProcessor():
 
     @staticmethod
     def set_maximum(date, options):
-        if 'start_year' not in options and 'start_month' not in options:
+        if options.get('start_year', 0) == 0 and options.get('start_month', 0) == 0:
             options['start_year'] = date.year
             options['start_month'] = date.month
 
@@ -158,7 +158,8 @@ class ProductionProcessor():
         first_date = self.productions[0].date
         dates, x, y = [], [], []
         for production in self.productions:
-            if production.date.year >= start_year and production.date.month >= start_month:
+            if production.date.year > start_year or (production.date.year == start_year and
+                                                     production.date.month >= start_month):
                 dates.append(production.date)
                 x.append(diff_months(production.date, first_date))
                 y.append(production.production_oil)

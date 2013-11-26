@@ -141,21 +141,21 @@ $(function () {
                         name: 'Production',
                         data: productions
                     },
-//                    {
-//                        type: 'line',
-//                        name: 'Fit',
-//                        data: fit
-//                    },
                     {
-                        name: 'Range',
-                        data: fit_range,
-                        type: 'arearange',
-                        lineWidth: 0,
-                        linkedTo: ':previous',
-                        color: Highcharts.getOptions().colors[2],
-                        fillOpacity: 0.3,
-                        zIndex: 0
+                        type: 'line',
+                        name: 'Fit',
+                        data: fit
                     }
+//                    {
+//                        name: 'Range',
+//                        data: fit_range,
+//                        type: 'arearange',
+//                        lineWidth: 0,
+//                        linkedTo: ':previous',
+//                        color: Highcharts.getOptions().colors[2],
+//                        fillOpacity: 0.3,
+//                        zIndex: 0
+//                    }
                 ]
             };
 

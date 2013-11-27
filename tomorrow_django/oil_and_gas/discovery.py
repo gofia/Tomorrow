@@ -41,6 +41,15 @@ class SizeBins(object):
     def m_s(self, i):
         return [self.bins[j].m[i] for j in range(0, len(self.bins))]
 
+    def get_ranges(self):
+        ranges = ()
+        probability_ranges = ()
+        for size_bin in self.bins:
+            ranges += (slice(size_bin.count + 1, size_bin.count * 2, 1.0),)
+            probability_ranges += (slice(0.05, 1.0, 0.05),)
+        ranges += probability_ranges[:-1]
+        return ranges
+
 
 class SizeBin(object):
     min = 0
@@ -61,11 +70,10 @@ class SizeBin(object):
         self.m = [0]
 
 
-def optimize(size_sequence):
-    sizes = [size.get('size', 0) for size in size_sequence]
+def optimize(sizes):
     size_bins = SizeBins(min(sizes), max(sizes), 2)
-    size_bins.process(size_sequence)
-    return optimize_sizes_cobyla(size_bins)
+    size_bins.process(sizes)
+    return optimize_sizes_brute(size_bins)
 
 
 def optimize_sizes_cobyla(size_bins):
@@ -77,7 +85,7 @@ def optimize_sizes_cobyla(size_bins):
 
 def optimize_sizes_brute(size_bins):
     likelihood_func = likelihood(size_bins)
-    ranges = (slice(8, 15, 1.0), slice(3, 10, 1.0), slice(0.05, 1.0, 0.05))
+    ranges = size_bins.get_ranges()
     return brute(likelihood_func, ranges, full_output=True, finish=None)
 
 

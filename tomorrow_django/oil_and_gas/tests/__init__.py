@@ -5,3 +5,4 @@ __author__ = 'Lucas-Fievet'
 # from aggregation_tests import *
 # from fit_logistic_tests import *
 from discovery_tests import *
+# from utils_test import *

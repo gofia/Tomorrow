@@ -50,11 +50,11 @@ $(function () {
                     forecast_range = [];
                 for (i = 0; i < forecasts.length; i++) {
                     date = $.to_date(forecasts[i].date);
-                    forecast_avg.push([date, 8E6 + forecasts[i].average]);
+                    forecast_avg.push([date, forecasts[i].average]);
                     forecast_range.push([
                         date,
-                        8E6 + forecasts[i].average * (1 - forecasts[i].sigma),
-                        8E6 + forecasts[i].average * (1 + forecasts[i].sigma)
+                        forecasts[i].average * (1 - forecasts[i].sigma),
+                        forecasts[i].average * (1 + forecasts[i].sigma)
                     ]);
                     if (date >= last_date) {
                         x = $.month_diff(first_date, date);
@@ -174,16 +174,16 @@ $(function () {
 //                    name: 'Forecast',
 //                    data: forecast_avg
 //                });
-//                plot_options.series.push({
-//                    name: 'Range',
-//                    data: forecast_range,
-//                    type: 'arearange',
-//                    lineWidth: 0,
-//                    linkedTo: ':previous',
-//                    color: Highcharts.getOptions().colors[2],
-//                    fillOpacity: 0.5,
-//                    zIndex: 0
-//                });
+                plot_options.series.push({
+                    name: 'Range',
+                    data: forecast_range,
+                    type: 'arearange',
+                    lineWidth: 0,
+                    linkedTo: ':previous',
+                    color: Highcharts.getOptions().colors[2],
+                    fillOpacity: 0.5,
+                    zIndex: 0
+                });
             }
 
             details_box.find('.container').highcharts(plot_options);

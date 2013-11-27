@@ -204,6 +204,14 @@ class ProductionProcessor():
             fields=('date', 'production_oil')
         )
 
+    @staticmethod
+    def deserialize_productions(productions):
+        return serializers.deserialize(
+            "json",
+            productions,
+            fields=('date', 'production_oil')
+        )
+
 
 class FieldProcessor(ProductionProcessor):
     production_type = FieldProduction
@@ -219,20 +227,21 @@ class FieldProcessor(ProductionProcessor):
 class CountryProcessor(ProductionProcessor):
     production_type = CountryProduction
     processed_type = Country
+    fields = []
 
     def compute_item(self, options):
         ProductionProcessor.compute_item(self, options)
 
         forecasts = self.init_forecasts(self.processed.date_begin, 12 * 30)
 
-        fields = Field.objects.filter(country=self.processed.name).all()
-        for field in fields:
+        self.fields = Field.objects.filter(country=self.processed.name).all()
+        for field in self.fields:
             if field.error_avg != 0 and field.error_std != 0:
                 self.forecast(field, forecasts)
 
         for forecast in forecasts:
             forecast['date'] = str(forecast['date'])
-            if forecast['average'] > 0 or forecast['sigma'] > 0:
+            if forecast['average'] > 0 and forecast['sigma'] > 0:
                 forecast['sigma'] = sqrt(forecast['sigma']).real / forecast['average']
             print "{0}: {1} / {2}".format(forecast['date'], forecast['average'], forecast['sigma'])
 
@@ -251,6 +260,8 @@ class CountryProcessor(ProductionProcessor):
 
     @staticmethod
     def forecast(field, forecasts):
+        if not field.stable:
+            return
         func = get_stretched_exponential(field.A, field.tau, field.beta)
         for forecast in forecasts:
             number_months = diff_months(field.date_begin, forecast['date'])
@@ -258,6 +269,17 @@ class CountryProcessor(ProductionProcessor):
                 production = func(field.x_min - number_months) * (1 - field.error_avg)
                 forecast['average'] += production
                 forecast['sigma'] += (production * field.error_std)**2
+
+    def forecast_recent(self, field, forecasts):
+        pass
+
+    def field_similarity(self, field1, field2):
+        production1 = self.deserialize_productions(field1.production_oil)
+        production2 = self.deserialize_productions(field2.production_oil)
+        max_len = max(len(production1), len(production2))
+        production1 = production1[:max_len]
+        production2 = production2[:max_len]
+
 
     def get_list(self, name):
         return CountryProduction.objects.filter(name=name).values("name").distinct()

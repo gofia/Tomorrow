@@ -1,9 +1,11 @@
+import copy
 from django.test import TestCase
 from numpy import array
 from numpy.testing import assert_array_equal
 
 from ..discovery import (SizeBins, optimize, optimize_sizes_brute, likelihood,
                          initial_x, get_constraints, size_constraints)
+from oil_and_gas.utils import traverse, list_get
 
 
 class DiscoveryTest(TestCase):
@@ -46,9 +48,19 @@ class DiscoveryTest(TestCase):
         self.assertEqual(L([4, 3, 0.5]), expected, "Likelihood is incorrect")
 
     def test_optimize_sizes(self):
-        size_bins = SizeBins(min(self.sizes), max(self.sizes), 2)
-        size_bins.process(self.sizes)
+        sizes = [5, 1, 4, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 4]
+        print len(sizes)
+        size_bins = SizeBins(min(sizes), max(sizes), 2)
+        size_bins.process(sizes)
         result = optimize_sizes_brute(size_bins)
-        print result[0]
-        print result[1]
-        print result[3]
+        grid_points = []
+        for i in traverse(result[3]):
+            grid_points.append(copy.deepcopy(i))
+        grid_points.sort(key=lambda item: item[0])
+        for i in grid_points:
+            print "{0}".format(i)
+            print "{0}".format(list_get(result[2], i[1]))
+        #print result[0]
+        #print result[1]
+        #print result[2]
+        #print result[3]

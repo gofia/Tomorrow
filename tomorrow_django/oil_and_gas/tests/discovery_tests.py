@@ -50,9 +50,7 @@ class DiscoveryTest(TestCase):
     def test_optimize_sizes(self):
         sizes = [5, 1, 4, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 4]
         print len(sizes)
-        size_bins = SizeBins(min(sizes), max(sizes), 2)
-        size_bins.process(sizes)
-        result = optimize_sizes_brute(size_bins)
+        result = optimize(sizes)
         grid_points = []
         for i in traverse(result[3]):
             grid_points.append(copy.deepcopy(i))

@@ -8,6 +8,8 @@ from fitting import fit_stretched_exponential, r_squared
 
 import logging
 from oil_and_gas.fitting import get_stretched_exponential
+from oil_and_gas.processing import diff_months
+from oil_and_gas.utils import add_months
 
 logger = logging.getLogger("OilAndGas")
 
@@ -91,6 +93,23 @@ class Field(models.Model):
     def max_fits(self):
         max_date = self.fits.all().aggregate(Max('date_begin'))['date_begin__max']
         return self.fits.filter(date_begin=max_date).all()
+    
+    @property
+    def extrapolated_total_production_oil(self):
+        if not self.active:
+            return self.total_production_oil
+
+        if not self.stable:
+            return None
+
+        extrapolated_production = self.total_production_oil
+        func = get_stretched_exponential(self.A, self.tau, self.beta)
+        month_start = diff_months(self.date_begin, datetime.now())
+        for month in range(0, 12*25):
+            production = func(self.x_min + month_start + month) * (1 - self.error_avg)
+            extrapolated_production += production
+
+        return extrapolated_production
 
 
 class Country(models.Model):

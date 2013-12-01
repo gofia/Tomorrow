@@ -290,4 +290,4 @@ class CountryProcessor(ProductionProcessor):
 
 def diff_months(date1, date2):
     time_delta = relativedelta.relativedelta(date1, date2)
-    return time_delta.years * 12 + time_delta.months
+    return abs(time_delta.years * 12 + time_delta.months)

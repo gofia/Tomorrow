@@ -1,9 +1,50 @@
+from cmath import log
 import copy
+import random
 from numpy.core.multiarray import array
-from numpy.core.numeric import ndarray
 import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
+from oil_and_gas.fitting import fit_exponential
+from oil_and_gas.utils import traverse, list_get
+
+
+class DiscoveryGenerator:
+    fields = []
+    sizes = []
+    size_bins = None
+    scenarios = []
+    pdf = []
+
+    def __init__(self, fields):
+        self.sizes = [field.extrapolated_total_production_oil for field in fields]
+        self.size_bins = SizeBins(min(self.sizes), max(self.sizes), 2)
+        self.size_bins.process(self.sizes)
+        self.init_scenarios()
+
+    def init_scenarios(self):
+        result = optimize_sizes_brute(self.size_bins)
+
+        for i in traverse(result[3]):
+            scenario = copy.deepcopy(i)
+            scenario[1] = list_get(result[2], i[1]) + [1]
+            self.scenarios.append(scenario)
+
+        self.scenarios.sort(key=lambda item: item[0])
+
+        probability = 0
+        for scenario in self.scenarios:
+            self.pdf.append(probability)
+            probability += scenario[0]
+
+        self.pdf = self.pdf / self.pdf[-1]
+
+    def random_scenario(self):
+        r = random.random()
+        scenario_idx = next(p for p in self.pdf if p > r)
+        return self.scenarios[scenario_idx]
+
+
 
 
 class SizeBins(object):
@@ -29,11 +70,8 @@ class SizeBins(object):
         # Process
         for size_idx, size in enumerate(size_sequence):
             for bin_idx, size_bin in enumerate(self.bins):
-                if size_bin.min < size <= size_bin.max or (bin_idx == 0 and size_bin.min == size):
-                    size_bin.append(1)
+                if size_bin.try_append(size, bin_idx):
                     self.sequence[size_idx] = bin_idx
-                else:
-                    size_bin.append(0)
 
     def m(self, i, j):
         return self.bins[j].m[i]
@@ -56,19 +94,53 @@ class SizeBin(object):
     max = 0
     count = 0
     m = [0]
+    sizes = []
+    tau = -1
+    y0 = 1
+    initialized = False
 
     def __init__(self, min, max):
         self.min = min
         self.max = max
 
     def append(self, n):
+        self.initialized = False
         self.count += n
         self.m.append(self.m[-1] + n)
 
     def reset(self):
+        self.initialized = False
         self.count = 0
         self.m = [0]
 
+    def try_append(self, size, bin_idx):
+        if self.min < size <= self.max or (bin_idx == 0 and self.min == size):
+            self.append(1)
+            self.sizes.append(size)
+            return True
+        else:
+            self.append(0)
+            return False
+
+    def init_generator(self):
+        if self.initialized:
+            return
+
+        self.initialized = True
+        total = self.sizes.count()
+        pdf = []
+        for i in range(0.0, 100.0):
+            max_size = self.min + (self.max - self.min) * i / 100
+            count = [1 for size in self.sizes if size >= max_size]
+            pdf.append(count/total)
+
+        self.tau, self.y0 = fit_exponential(pdf)
+
+    def generate_size(self):
+        self.init_generator()
+        r = random.random()
+        size = self.min + (log(r / self.y0) / self.tau) * (self.max - self.min) / 100
+        return size
 
 def optimize(sizes):
     size_bins = SizeBins(min(sizes), max(sizes), 2)

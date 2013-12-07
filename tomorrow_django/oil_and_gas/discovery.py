@@ -6,7 +6,7 @@ import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
 from oil_and_gas.fitting import fit_exponential
-from oil_and_gas.utils import traverse, list_get
+from oil_and_gas.utils import traverse, list_get, add_months
 
 
 class DiscoveryGenerator:
@@ -17,9 +17,11 @@ class DiscoveryGenerator:
     pdf = []
 
     def __init__(self, fields):
+        self.fields = fields
         self.sizes = [field.extrapolated_total_production_oil for field in fields]
         self.size_bins = SizeBins(min(self.sizes), max(self.sizes), 2)
         self.size_bins.process(self.sizes)
+        self.size_bins.init_date_sequences(self.fields)
         self.init_scenarios()
 
     def init_scenarios(self):
@@ -44,7 +46,8 @@ class DiscoveryGenerator:
         scenario_idx = next(p for p in self.pdf if p > r)
         return self.scenarios[scenario_idx]
 
-    def cumulated_discoveries(self):
+    def process_scenario(self, scenario):
+        scenario = self.random_scenario()
 
 
 
@@ -89,6 +92,11 @@ class SizeBins(object):
         ranges += probability_ranges[:-1]
         return ranges
 
+    def init_date_sequences(self, fields):
+        for field in fields:
+            for bin in self.bins:
+                bin.try_add_date_sequence(field)
+
 
 class SizeBin(object):
     min = 0
@@ -99,6 +107,7 @@ class SizeBin(object):
     tau = -1
     y0 = 1
     initialized = False
+    date_sequence = []
 
     def __init__(self, min, max):
         self.min = min
@@ -142,6 +151,31 @@ class SizeBin(object):
         r = random.random()
         size = self.min + (log(r / self.y0) / self.tau) * (self.max - self.min) / 100
         return size
+
+    def try_add_date_sequence(self, field):
+        if self.contains(field):
+            self.date_sequence.append(field.discovery)
+
+    def contains(self, field):
+        return self.min <= field.extrapolated_total_production_oil <= self.max
+
+    def cumulative_discoveries(self):
+        data = [0]
+        self.date_sequence.sort()
+        date = self.date_sequence[0]
+        counter = 0
+        while counter < len(self.date_sequence):
+            if date == self.date_sequence[counter]:
+                counter += 1
+                data.append(counter)
+            else:
+                data.append(data[-1])
+            date = add_months(date, 1)
+        return data
+
+    def compute_logistic(self, N):
+        pass
+
 
 def optimize(sizes):
     size_bins = SizeBins(min(sizes), max(sizes), 2)

@@ -1,6 +1,7 @@
 from cmath import sqrt
 import json
 from time import sleep
+from numpy.ma.core import mean
 from oil_and_gas.utils import add_months
 
 __author__ = 'lucas.fievet'
@@ -273,21 +274,29 @@ class CountryProcessor(ProductionProcessor):
     def forecast_recent(self, field, forecasts):
         pass
 
-    def field_similarity(self, field1, field2):
-        production1 = self.deserialize_productions(field1.production_oil)
-        production2 = self.deserialize_productions(field2.production_oil)
-        max_len = max(len(production1), len(production2))
-        production1 = production1[:max_len]
-        production2 = production2[:max_len]
-
     def average_production_curve(self):
         productions = {}
 
         for field in self.fields:
             total = field.extrapolated_total_production_oil()
-            production = self.deserialize_productions(field.production_oil)
-            if productions.get(production.date)
+            field_production = self.deserialize_productions(field.production_oil)
+            for production in field_production:
+                months = diff_months(production.date, field.discovery)
+                if not months in productions:
+                    productions[months] = []
+                productions[months].append(
+                    production.production_oil / total
+                )
 
+        for i in productions:
+            production_average = mean(productions[i])
+            production_std = std(productions[i])
+            productions[i] = {
+                'average': production_average,
+                'std': production_std
+            }
+
+        return productions
 
     def get_list(self, name):
         return CountryProduction.objects.filter(name=name).values("name").distinct()

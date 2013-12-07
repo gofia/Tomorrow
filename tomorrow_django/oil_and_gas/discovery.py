@@ -44,6 +44,7 @@ class DiscoveryGenerator:
         scenario_idx = next(p for p in self.pdf if p > r)
         return self.scenarios[scenario_idx]
 
+    def cumulated_discoveries(self):
 
 
 

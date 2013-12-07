@@ -280,6 +280,14 @@ class CountryProcessor(ProductionProcessor):
         production1 = production1[:max_len]
         production2 = production2[:max_len]
 
+    def average_production_curve(self):
+        productions = {}
+
+        for field in self.fields:
+            total = field.extrapolated_total_production_oil()
+            production = self.deserialize_productions(field.production_oil)
+            if productions.get(production.date)
+
 
     def get_list(self, name):
         return CountryProduction.objects.filter(name=name).values("name").distinct()

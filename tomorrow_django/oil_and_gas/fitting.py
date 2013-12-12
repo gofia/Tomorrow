@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 
 from pandas import DataFrame, Series, Timestamp
 
+from .fit_logistic import cost_function as cost_function_logistic
+
 
 def chop_xy(x, y, x_min, x_max):
     """Returns the indices of x_min corresponding to the
@@ -183,6 +185,29 @@ def r_squared(fit, x, y):
         return 0
     r_squared = 1 - ss_residual / ss_total
     return r_squared
+
+
+def fit_logistic(_x, _y, k, r=None):
+    """Fits a logistic curve.
+    """
+
+    x, y = prepare_xy(_x, _y)
+
+    if r is None:
+        r = 1
+
+    cost_func = cost_function_logistic_reduced(k, 1)
+
+    r, p = fmin(cost_func, (r,), args=(x, y), disp=0)
+
+    return r, k, p
+
+
+def cost_function_logistic_reduced(k, p):
+    def func((r,), x, y):
+        cost_function_logistic((r, k, p), x, y)
+
+    return func
 
 
 def show_fit(fit_style, **kwargs):

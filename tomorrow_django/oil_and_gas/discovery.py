@@ -174,6 +174,7 @@ class SizeBin(object):
         return data
 
     def compute_logistic(self, N):
+        x = range(0, len(self.date_sequence))
         pass
 
 

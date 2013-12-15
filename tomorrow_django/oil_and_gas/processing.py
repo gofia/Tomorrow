@@ -2,7 +2,7 @@ from cmath import sqrt
 import json
 from time import sleep
 from numpy.ma.core import mean
-from oil_and_gas.utils import add_months
+from oil_and_gas.utils import add_months, diff_months
 
 __author__ = 'lucas.fievet'
 
@@ -303,8 +303,3 @@ class CountryProcessor(ProductionProcessor):
 
     def get_stretched_exponential(self, processed, date_end):
         return StretchedExponential.objects.get_or_create(country=processed, date_end=date_end)
-
-
-def diff_months(date1, date2):
-    time_delta = relativedelta.relativedelta(date1, date2)
-    return abs(time_delta.years * 12 + time_delta.months)

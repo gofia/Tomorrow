@@ -1,5 +1,6 @@
 import calendar
 import datetime
+from dateutil import relativedelta
 
 __author__ = 'Lucas-Fievet'
 
@@ -32,3 +33,8 @@ def list_get(list, indices):
             item = item[index]
         results.append(item)
     return results
+
+
+def diff_months(date1, date2):
+    time_delta = relativedelta.relativedelta(date1, date2)
+    return abs(time_delta.years * 12 + time_delta.months)

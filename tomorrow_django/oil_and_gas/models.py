@@ -8,8 +8,7 @@ from fitting import fit_stretched_exponential, r_squared
 
 import logging
 from oil_and_gas.fitting import get_stretched_exponential
-from oil_and_gas.processing import diff_months
-from oil_and_gas.utils import add_months
+from oil_and_gas.utils import diff_months
 
 logger = logging.getLogger("OilAndGas")
 

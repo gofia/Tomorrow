@@ -1,5 +1,6 @@
 # Django settings for tomorrow_django project.
 import os
+import dj_database_url
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
@@ -12,17 +13,21 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tomorrow',                   # Or path to database file if using sqlite3.
-                                              # The following settings are not used with sqlite3:
-        'USER': 'tomorrow',
-        'PASSWORD': 't4ever!',
-        'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                   # Set to empty string for default.
-    }
-}
+DATABASES = {'default': dj_database_url.config(
+    default="postgres://postgres@localhost:5432/tomorrow"
+)}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': 'tomorrow',                   # Or path to database file if using sqlite3.
+#                                               # The following settings are not used with sqlite3:
+#         'USER': 'tomorrow',
+#         'PASSWORD': 't4ever!',
+#         'HOST': '127.0.0.1',          # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+#         'PORT': '3306',                   # Set to empty string for default.
+#     }
+# }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -184,6 +189,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True
         },
+        'NoLoader': {
+            'handlers': ['default', 'console'],
+            'level': 'ERROR',
+            'propagate': True
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
@@ -204,15 +214,15 @@ CELERY_TIMEZONE = 'Europe/London'
 
 CELERYBEAT_SCHEDULE = {
     # 'update_us': {
-    #     'task': 'us_loader.tasks.updateUs',
+    #     'task': 'us_loader.tasks.update_us',
     #     'schedule': timedelta(seconds=30),
     # },
     # 'update_uk': {
-    #     'task': 'uk_loader.tasks.updateUk',
+    #     'task': 'uk_loader.tasks.update_uk',
     #     'schedule': timedelta(seconds=30),
     # },
     # 'update_no': {
-    #    'task': 'no_loader.tasks.updateNo',
+    #    'task': 'no_loader.tasks.update_no',
     #    'schedule': timedelta(seconds=5),
     # },
     # 'aggregate_countries': {
@@ -224,8 +234,8 @@ CELERYBEAT_SCHEDULE = {
     #      'schedule': timedelta(seconds=5),
     #},
     'process_countries': {
-       'task': 'oil_and_gas.tasks.process_countries',
-       'schedule': timedelta(seconds=5),
+        'task': 'oil_and_gas.tasks.process_countries',
+        'schedule': timedelta(seconds=5),
     },
 }
 

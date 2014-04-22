@@ -1,10 +1,10 @@
+from mx.DateTime.DateTime import Timestamp
 from numpy import array, exp, arange, where
 from datetime import datetime
 from scipy.stats import t
 from scipy.optimize import fmin
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
-from pandas import Timestamp
 
 #This code is based on Peter Cauwel's matlab code.
 #Recommended article to read (explaining part of the methodology:

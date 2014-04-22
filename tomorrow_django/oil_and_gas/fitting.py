@@ -1,4 +1,5 @@
 from datetime import datetime
+from mx.DateTime.DateTime import Timestamp
 
 from numpy import array, ndarray, exp, log, sign, mean
 
@@ -7,7 +8,7 @@ from scipy.stats import linregress
 
 import matplotlib.pyplot as plt
 
-from pandas import DataFrame, Series, Timestamp
+from pandas import DataFrame, Series
 
 from .fit_logistic import cost_function as cost_function_logistic
 

@@ -7,10 +7,11 @@ import math
 from fitting import fit_stretched_exponential, r_squared
 
 import logging
-from oil_and_gas.fitting import get_stretched_exponential
-from oil_and_gas.utils import diff_months
+from .fitting import get_stretched_exponential
+from .utils import diff_months
 
 logger = logging.getLogger("OilAndGas")
+
 
 class Production(models.Model):
     logger.info("Created production.")

@@ -31,7 +31,7 @@ class BseeRequestTest(TestCase):
         soup = BeautifulSoup("<tr><td>G03229</td><td>5</td><td>2013</td><td>304</td>" +
                              "<td>0</td><td>0</td><td>516</td><td>13,129</td><td>1</td><td>18</td></tr>")
         bseeRequest = UsRequest()
-        production = bseeRequest.getProduction(soup)
+        production = bseeRequest.get_production(soup)
         expectedProduction = FieldProduction(
             name="G03229",
             country="US",
@@ -53,7 +53,7 @@ class BseeRequestTest(TestCase):
         """
         usRequest = UsRequest()
         usRequest.year_month = date(year=2013, month=1, day=1)
-        soup = usRequest.getSoup(page=1)
+        soup = usRequest.get_soup(page=1)
         table = soup.find('table', border=5, width=600)
         trs = table.findAll('tr')
         self.assertEqual(len(trs), 1002)

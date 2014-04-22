@@ -1,8 +1,23 @@
-__author__ = 'Lucas-Fievet'
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
+
 
 from celery import task
 
-from uk_loader.models import UkManager
+from .models import UkManager, UkAggregator
 import logging
 
 
@@ -10,24 +25,23 @@ logger = logging.getLogger("UkLoader")
 
 
 @task()
-def updateUk(toPage=None):
+def update_uk(to_page=None):
     logger.info("Update UK task started.")
-    ukManager = UkManager()
-    return ukManager.update(toPage)
+    uk_manager = UkManager()
+    return uk_manager.update(to_page)
 
 @task()
-def aggregateUk(fields=None):
+def aggregate_uk(fields=None):
     logger.info("Aggregate all UK wells into fields.")
-    ukAggregator = UkAggregator()
-    if field is None:
-        return ukAggregator.compute()
+    uk_aggregator = UkAggregator()
+    if fields is None:
+        return uk_aggregator.compute()
     else:
-        return ukAggregator.compute_all(fields)
-
+        return uk_aggregator.compute_all(fields)
 
 @task()
-def aggregateAndUpdateUk(fields=None):
+def aggregate_and_update_uk():
     logger.info("Update and aggregate all UK wells.")
-    result = updateUk.delay()
+    result = update_uk.delay()
     if result.get() > 0:
-        aggregateUk.delay()
+        aggregate_uk.delay()

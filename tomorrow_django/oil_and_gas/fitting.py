@@ -1,3 +1,22 @@
+#
+# Project: Tomorrow
+#
+# Original author: Zalan Forro
+# This code has been reused with his permission.
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
+
 from datetime import datetime
 from mx.DateTime.DateTime import Timestamp
 
@@ -184,8 +203,8 @@ def r_squared(fit, x, y):
     ss_residual = sum((y-fit(x))**2)
     if ss_total == 0:
         return 0
-    r_squared = 1 - ss_residual / ss_total
-    return r_squared
+    result = 1 - ss_residual / ss_total
+    return result
 
 
 def fit_logistic(_x, _y, k, r=None):

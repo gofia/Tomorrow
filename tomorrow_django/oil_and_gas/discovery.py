@@ -1,3 +1,19 @@
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
+
 from cmath import log
 import copy
 import random
@@ -5,8 +21,8 @@ from numpy.core.multiarray import array
 import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
-from oil_and_gas.fitting import fit_exponential
-from oil_and_gas.utils import traverse, list_get, add_months
+from .fitting import fit_exponential
+from .utils import traverse, list_get, add_months
 
 
 class DiscoveryGenerator:

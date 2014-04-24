@@ -1,9 +1,22 @@
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
+
 from celery.result import AsyncResult
-from django.core.serializers import json
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.http import HttpResponse
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.staticfiles.views import serve
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -12,15 +25,11 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 
 from .models import (Field, Country)
-from oil_and_gas import tasks
+from . import tasks
 from .serializers import (FieldFullSerializer, FieldMinSerializer, CountrySerializer)
 
 import logging
 logger = logging.getLogger("rh")
-
-
-def hello_world(request):
-    return HttpResponse(_("hello world"))
 
 
 class AuthenticatedOrReadOnlyView(object):

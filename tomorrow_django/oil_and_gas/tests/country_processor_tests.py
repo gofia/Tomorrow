@@ -1,12 +1,25 @@
-from oil_and_gas.fitting import get_stretched_exponential
-
-__author__ = 'lucas.fievet'
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
 
 from django.test import TestCase
 from datetime import date
 
-from oil_and_gas.models import Field
-from oil_and_gas.processing import CountryProcessor
+from ..models import Field
+from ..processing import CountryProcessor
+from ..fitting import get_stretched_exponential
 
 
 class CountryProcessorTest(TestCase):
@@ -49,7 +62,13 @@ class CountryProcessorTest(TestCase):
         func = get_stretched_exponential(field.A, field.tau, field.beta)
 
         y_23 = func(field.x_min + 11) * (1 - field.error_avg)
-        self.assertEqual(forecasts[23]['average'], y_23, "Wrong average")
+        f_23_avg = forecasts[23]['average']
+        self.assertEqual(f_23_avg, y_23, "Wrong average: {0} vs {1}.".format(f_23_avg, y_23))
 
         sigma_23 = (y_23 * field.error_std)**2
-        self.assertEqual(forecasts[23]['sigma'], sigma_23, "Wrong sigma")
+        f_23_sigma = forecasts[23]['sigma']
+        self.assertEqual(
+            f_23_sigma,
+            sigma_23,
+            "Wrong sigma: {0} vs {1}.".format(f_23_sigma, sigma_23)
+        )

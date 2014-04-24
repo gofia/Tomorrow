@@ -5,7 +5,7 @@ from numpy.testing import assert_array_equal
 
 from ..discovery import (SizeBins, optimize, optimize_sizes_brute, likelihood,
                          initial_x, get_constraints, size_constraints)
-from oil_and_gas.utils import traverse, list_get
+from ..utils import traverse, list_get
 
 
 class DiscoveryTest(TestCase):

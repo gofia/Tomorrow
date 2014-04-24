@@ -1,8 +1,8 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from get_data import get_production, get_classification
-from analysis import get_fit_parms, classify_fields_according_to_urr
+from _get_data import get_production, get_classification
+from _analysis import get_fit_parms, classify_fields_according_to_urr
 from fitting import prepare_xy
 
 from numpy import exp, sign, array, arange
@@ -13,7 +13,7 @@ from pickle import load, dump
 
 import os
 
-from constants import START
+from _constants import START
 
 mpl.rcParams['font.size'] = 15.0
 mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})

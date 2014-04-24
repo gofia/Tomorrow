@@ -1,12 +1,25 @@
-from oil_and_gas.fitting import get_stretched_exponential
-
-__author__ = 'lucas.fievet'
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
 
 from django.test import TestCase
 from datetime import datetime
 
-from oil_and_gas.models import FieldProduction, Field
-from oil_and_gas.processing import FieldProcessor
+from ..models import FieldProduction, Field
+from ..processing import FieldProcessor
+from ..fitting import get_stretched_exponential
 
 
 class FieldProcessorTest(TestCase):
@@ -46,14 +59,15 @@ class FieldProcessorTest(TestCase):
         self.production4.delete()
 
     def test_process_field(self):
-        fieldProcessor = FieldProcessor()
-        fieldProcessor.compute("B")
+        field_processor = FieldProcessor()
+        field_processor.compute("B")
         fields = Field.objects.all()
         self.assertEqual(len(fields), 1, "Wrong number of fields")
         field = fields[0]
         self.assertEqual(field.name, "A", "Wrong name")
         self.assertEqual(field.country, "B", "Wrong country")
-        self.assertEqual(len(field.fits.all()), 1, "Wrong number of fits")
+        n_fits = len(field.fits.all())
+        self.assertEqual(n_fits, 2, "Wrong number of fits: {0}/{1}.".format(n_fits, 1))
         self.assertAlmostEqual(field.A, 100, delta=1, msg="Wrong A")
         self.assertAlmostEqual(field.tau, -1.5, delta=0.05, msg="Wrong tau")
         self.assertAlmostEqual(field.beta, 2.0, delta=0.05, msg="Wrong beta")

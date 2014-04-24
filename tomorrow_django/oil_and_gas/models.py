@@ -1,3 +1,19 @@
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
+
 from django.db import models
 from django.db.models import Max
 from datetime import datetime
@@ -8,7 +24,7 @@ from fitting import fit_stretched_exponential, r_squared
 
 import logging
 from .fitting import get_stretched_exponential
-from .utils import diff_months
+from .utils import diff_months_abs
 
 logger = logging.getLogger("OilAndGas")
 
@@ -47,16 +63,6 @@ class CountryProduction(Production):
 
 class FieldProduction(Production):
     logger.info("Created field production.")
-    country = models.CharField(max_length=50, default="")
-    depth = models.PositiveIntegerField(null=True, default=None)
-
-    def __str__(self):
-        return self.name + " ; " + self.country + " ; " + self.date.__str__() + " ; "
-
-
-class WellProduction(Production):
-    logger.info("Created well production.")
-    field = models.CharField(max_length=50, default="")
     country = models.CharField(max_length=50, default="")
     depth = models.PositiveIntegerField(null=True, default=None)
 
@@ -104,7 +110,7 @@ class Field(models.Model):
 
         extrapolated_production = self.total_production_oil
         func = get_stretched_exponential(self.A, self.tau, self.beta)
-        month_start = diff_months(self.date_begin, datetime.now())
+        month_start = diff_months_abs(self.date_begin, datetime.now())
         for month in range(0, 12*25):
             production = func(self.x_min + month_start + month) * (1 - self.error_avg)
             extrapolated_production += production

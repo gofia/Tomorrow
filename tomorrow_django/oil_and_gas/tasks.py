@@ -1,9 +1,23 @@
-__author__ = 'Lucas-Fievet'
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
 
 from celery import task
 
-from oil_and_gas.processing import FieldProcessor, CountryProcessor
-from oil_and_gas.aggregation import CountryAggregator
+from .processing import FieldProcessor, CountryProcessor
+from .aggregation import CountryAggregator
 
 import logging
 
@@ -12,28 +26,28 @@ logger = logging.getLogger("OilAndGas")
 
 
 @task()
-def process_fields(date=None):
+def process_fields():
     logger.info("Process fields.")
-    fieldProcessor = FieldProcessor()
-    return fieldProcessor.compute("NO")
+    field_processor = FieldProcessor()
+    return field_processor.compute("NO")
 
 
 @task()
 def process_field(options):
     logger.info("Process field " + options['name'])
-    fieldProcessor = FieldProcessor()
-    return fieldProcessor.compute_item(options)
+    field_processor = FieldProcessor()
+    return field_processor.compute_item(options)
 
 
 @task()
-def process_countries(date=None):
+def process_countries():
     logger.info("Process countries.")
-    countryProcessor = CountryProcessor()
-    return countryProcessor.compute("NO")
+    country_processor = CountryProcessor()
+    return country_processor.compute("NO")
 
 
 @task()
-def aggregate_countries(date=None):
+def aggregate_countries():
     logger.info("Aggregate fields to country.")
     aggregator = CountryAggregator()
     return aggregator.compute([{'country': 'NO'}])

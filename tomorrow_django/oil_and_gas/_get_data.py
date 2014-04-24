@@ -16,9 +16,9 @@ import os
 
 import re
 
-from constants import M3_TO_BARRELS
+from _constants import M3_TO_BARRELS
 
-from config import DPATH
+from _config import DPATH
 
 def get_production(country, until='2013-02-01'):
     """Return a DataFrame where the index are the dates and columns are the

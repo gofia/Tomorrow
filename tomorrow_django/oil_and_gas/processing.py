@@ -1,27 +1,40 @@
-from cmath import sqrt
-import json
-from time import sleep
-from numpy.ma.core import mean
-from oil_and_gas.utils import add_months, diff_months
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
 
-__author__ = 'lucas.fievet'
-
-from django.core import serializers
-from dateutil import relativedelta
-from datetime import date
-from celery._state import current_task
 import abc
 import copy
-import datetime
 import numpy as np
-from numpy import average, std, abs, convolve
+import json
+
+from cmath import sqrt
+from numpy.ma.core import mean
+from numpy import average, std, abs
 from numpy.core.numeric import array
 from scipy.signal import argrelextrema
+from dateutil import relativedelta
+from datetime import date
 
-from oil_and_gas.models import (Field, FieldProduction,
-                                Country, CountryProduction,
-                                StretchedExponential)
-from oil_and_gas.fitting import get_stretched_exponential
+from celery._state import current_task
+
+from django.core import serializers
+
+from .models import (Field, FieldProduction, Country,
+                     CountryProduction, StretchedExponential)
+from .fitting import get_stretched_exponential
+from .utils import add_months, diff_months, diff_months_abs
 
 
 class ProductionProcessor():
@@ -33,6 +46,9 @@ class ProductionProcessor():
     x_s = None
     y_s = None
 
+    def __init__(self):
+        pass
+
     def compute(self, name):
         to_process = self.get_list(name)
         return self.compute_all(to_process)
@@ -41,10 +57,10 @@ class ProductionProcessor():
     def get_list(self, name):
         return
 
-    def compute_all(self, list):
-        for item in list:
+    def compute_all(self, field_list):
+        for item in field_list:
             self.compute_item(item)
-        return len(list)
+        return len(field_list)
 
     def compute_item(self, options):
         self.load_data(options)
@@ -81,7 +97,7 @@ class ProductionProcessor():
                     fit.length = i
 
                     # Compute error
-                    if diff_months(fit.date_end, fit.date_begin) > 12 and len(y[i:]) > 12:
+                    if diff_months_abs(fit.date_end, fit.date_begin) > 12 and len(y[i:]) > 12:
                         fit.sum_error = fit.compute_error(x[i:-1], y[i:-1])
 
                     if len(i_list) > 0 and fit.x_min != last_good_fit.x_min:
@@ -102,7 +118,11 @@ class ProductionProcessor():
                 fit.delete()
                 fit = None
 
-            current_task.update_state(state='PROGRESS', meta={'percent': round(100.0 * i / len(x))})
+            if hasattr(current_task, 'update_state'):
+                current_task.update_state(
+                    state='PROGRESS',
+                    meta={'percent': round(100.0 * i / len(x))}
+                )
 
         avg_tau = None
         tau_list = [fit.tau for fit in fit_list]
@@ -139,10 +159,10 @@ class ProductionProcessor():
             return date(year=1900, month=1, day=1)
 
     @staticmethod
-    def set_maximum(date, options):
+    def set_maximum(start_date, options):
         if options.get('start_year', 0) == 0 and options.get('start_month', 0) == 0:
-            options['start_year'] = date.year
-            options['start_month'] = date.month
+            options['start_year'] = start_date.year
+            options['start_month'] = start_date.month
 
     @abc.abstractmethod
     def get_stretched_exponential(self, processed, date_end):
@@ -162,7 +182,7 @@ class ProductionProcessor():
             if production.date.year > start_year or (production.date.year == start_year and
                                                      production.date.month >= start_month):
                 dates.append(production.date)
-                x.append(diff_months(production.date, first_date))
+                x.append(diff_months_abs(production.date, first_date))
                 y.append(production.production_oil)
 
         return dates, x, y
@@ -244,7 +264,10 @@ class CountryProcessor(ProductionProcessor):
             forecast['date'] = str(forecast['date'])
             if forecast['average'] > 0 and forecast['sigma'] > 0:
                 forecast['sigma'] = sqrt(forecast['sigma']).real / forecast['average']
-            print "{0}: {1} / {2}".format(forecast['date'], forecast['average'], forecast['sigma'])
+            print "{0}: {1} / {2}".format(
+                forecast['date'],
+                forecast['average'], forecast['sigma']
+            )
 
         print "serialize"
 
@@ -252,12 +275,12 @@ class CountryProcessor(ProductionProcessor):
         self.processed.save()
 
     @staticmethod
-    def init_forecasts(start_date, N):
+    def init_forecasts(start_date, number_month):
         return [{
             'date': add_months(start_date, n),
             'average': 0,
             'sigma': 0,
-        } for n in range(0, N)]
+        } for n in range(0, number_month)]
 
     @staticmethod
     def forecast(field, forecasts):
@@ -281,7 +304,7 @@ class CountryProcessor(ProductionProcessor):
             total = field.extrapolated_total_production_oil()
             field_production = self.deserialize_productions(field.production_oil)
             for production in field_production:
-                months = diff_months(production.date, field.discovery)
+                months = diff_months_abs(production.date, field.discovery)
                 if not months in productions:
                     productions[months] = []
                 productions[months].append(

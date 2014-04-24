@@ -1,19 +1,33 @@
-__author__ = 'lucas.fievet'
+#
+# Project: Tomorrow
+#
+# 07 February 2014
+#
+# Copyright 2014 by Lucas Fievet
+# Salerstrasse 19, 8050 Zuerich
+# All rights reserved.
+#
+# This software is the confidential and proprietary information
+# of Lucas Fievet. ("Confidential Information"). You
+# shall not disclose such Confidential Information and shall
+# use it only in accordance with the terms of the license
+# agreement you entered into with Lucas Fievet.
+#
 
 from django.test import TestCase
 from datetime import date
 
-from oil_and_gas.models import FieldProduction, CountryProduction
-from oil_and_gas.aggregation import CountryAggregator
+from ..models import FieldProduction, CountryProduction
+from ..aggregation import CountryAggregator
 
 
 class CountryAggregationTest(TestCase):
-    fieldProduction1, fieldProduction2 = None, None
-    fieldProduction3, fieldProduction4 = None, None
-    fieldProduction5 = None
+    field_production1, field_production2 = None, None
+    field_production3, field_production4 = None, None
+    field_production5 = None
 
     def setUp(self):
-        self.fieldProduction1 = FieldProduction.objects.create(
+        self.field_production1 = FieldProduction.objects.create(
             name="NO-Field1",
             country="NO",
             date=date(year=1995, month=1, day=1),
@@ -21,7 +35,7 @@ class CountryAggregationTest(TestCase):
             production_gas=2184,
             production_water=1035,
         )
-        self.fieldProduction2 = FieldProduction.objects.create(
+        self.field_production2 = FieldProduction.objects.create(
             name="NO-Field2",
             country="NO",
             date=date(year=1995, month=1, day=1),
@@ -29,7 +43,7 @@ class CountryAggregationTest(TestCase):
             production_gas=2184,
             production_water=1035,
         )
-        self.fieldProduction3 = FieldProduction.objects.create(
+        self.field_production3 = FieldProduction.objects.create(
             name="UK-Field1",
             country="UK",
             date=date(year=1995, month=1, day=1),
@@ -37,7 +51,7 @@ class CountryAggregationTest(TestCase):
             production_gas=2,
             production_water=3,
         )
-        self.fieldProduction4 = FieldProduction.objects.create(
+        self.field_production4 = FieldProduction.objects.create(
             name="UK-Field1",
             country="UK",
             date=date(year=1996, month=1, day=1),
@@ -45,7 +59,7 @@ class CountryAggregationTest(TestCase):
             production_gas=5,
             production_water=6,
         )
-        self.fieldProduction5 = FieldProduction.objects.create(
+        self.field_production5 = FieldProduction.objects.create(
             name="UK-Field2",
             country="UK",
             date=date(year=1995, month=1, day=1),
@@ -53,7 +67,7 @@ class CountryAggregationTest(TestCase):
             production_gas=20,
             production_water=30,
         )
-        self.fieldProduction6 = FieldProduction.objects.create(
+        self.field_production6 = FieldProduction.objects.create(
             name="UK-Field2",
             country="UK",
             date=date(year=1996, month=1, day=1),
@@ -63,36 +77,39 @@ class CountryAggregationTest(TestCase):
         )
 
     def tearDown(self):
-        self.fieldProduction1.delete()
-        self.fieldProduction2.delete()
-        self.fieldProduction3.delete()
-        self.fieldProduction4.delete()
-        self.fieldProduction5.delete()
+        self.field_production1.delete()
+        self.field_production2.delete()
+        self.field_production3.delete()
+        self.field_production4.delete()
+        self.field_production5.delete()
 
     def test_countries(self):
         """
         Tests get countries.
         """
-        country_Aggregator = CountryAggregator()
-        countries = country_Aggregator.getCountries()
-        self.assertEqual(countries[0]['country'], self.fieldProduction1.country)
-        self.assertEqual(countries[1]['country'], self.fieldProduction3.country)
+        country_aggregator = CountryAggregator()
+        countries = country_aggregator.get_countries()
+        self.assertEqual(countries[0]['country'], self.field_production1.country)
+        self.assertEqual(countries[1]['country'], self.field_production3.country)
 
     def test_aggregate_fields(self):
         """
         Tests aggregate single country.
         """
-        country_Aggregator = CountryAggregator()
-        aggregate_fields = country_Aggregator.aggregateFields("UK")
+        country_aggregator = CountryAggregator()
+        aggregate_fields = sorted(
+            country_aggregator.aggregate_fields("UK"),
+            key=lambda x: x['date']
+        )
         expected = [{
             'date': date(1995, 1, 1),
-            'total_gas': 11,
-            'total_oil': 22,
+            'total_oil': 11,
+            'total_gas': 22,
             'total_water': 33
         }, {
             'date': date(1996, 1, 1),
-            'total_gas': 104,
-            'total_oil': 205,
+            'total_oil': 104,
+            'total_gas': 205,
             'total_water': 306
         }]
         self.assertDictEqual(aggregate_fields[0], expected[0])
@@ -102,27 +119,19 @@ class CountryAggregationTest(TestCase):
         """
         Tests compute aggregate wells for all fields.
         """
-        country_Aggregator = CountryAggregator()
-        country_Aggregator.compute()
-        countryProductions = CountryProduction.objects.filter(name="UK").all()
-        expected = [{
-            'date': date(1995, 1, 1),
-            'total_gas': 11,
-            'total_oil': 22,
-            'total_water': 33
-        }, {
-            'date': date(1996, 1, 1),
-            'total_gas': 104,
-            'total_oil': 205,
-            'total_water': 306
-        }]
-        self.assertEqual(countryProductions[0].name, "UK")
-        self.assertEqual(countryProductions[0].date, date(1995, 1, 1))
-        self.assertEqual(countryProductions[0].production_gas, 11)
-        self.assertEqual(countryProductions[0].production_oil, 22)
-        self.assertEqual(countryProductions[0].production_water, 33)
-        self.assertEqual(countryProductions[1].name, "UK")
-        self.assertEqual(countryProductions[1].date, date(1996, 1, 1))
-        self.assertEqual(countryProductions[1].production_gas, 104)
-        self.assertEqual(countryProductions[1].production_oil, 205)
-        self.assertEqual(countryProductions[1].production_water, 306)
+        country_aggregator = CountryAggregator()
+        country_aggregator.compute()
+        country_productions = sorted(
+            CountryProduction.objects.filter(name="UK").all(),
+            key=lambda x: x.date
+        )
+        self.assertEqual(country_productions[0].name, "UK")
+        self.assertEqual(country_productions[0].date, date(1995, 1, 1))
+        self.assertEqual(country_productions[0].production_oil, 11)
+        self.assertEqual(country_productions[0].production_gas, 22)
+        self.assertEqual(country_productions[0].production_water, 33)
+        self.assertEqual(country_productions[1].name, "UK")
+        self.assertEqual(country_productions[1].date, date(1996, 1, 1))
+        self.assertEqual(country_productions[1].production_oil, 104)
+        self.assertEqual(country_productions[1].production_gas, 205)
+        self.assertEqual(country_productions[1].production_water, 306)

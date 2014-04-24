@@ -14,10 +14,9 @@
 # agreement you entered into with Lucas Fievet.
 #
 
-
 from celery import task
 
-from .models import UkManager, UkAggregator
+from .models import UkManager
 import logging
 
 
@@ -29,19 +28,3 @@ def update_uk(to_page=None):
     logger.info("Update UK task started.")
     uk_manager = UkManager()
     return uk_manager.update(to_page)
-
-@task()
-def aggregate_uk(fields=None):
-    logger.info("Aggregate all UK wells into fields.")
-    uk_aggregator = UkAggregator()
-    if fields is None:
-        return uk_aggregator.compute()
-    else:
-        return uk_aggregator.compute_all(fields)
-
-@task()
-def aggregate_and_update_uk():
-    logger.info("Update and aggregate all UK wells.")
-    result = update_uk.delay()
-    if result.get() > 0:
-        aggregate_uk.delay()

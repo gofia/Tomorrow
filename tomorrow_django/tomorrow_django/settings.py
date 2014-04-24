@@ -184,12 +184,17 @@ LOGGING = {
         },
     },
     'loggers': {
-        'UsLoader': {
+        'NoLoader': {
             'handlers': ['default', 'console'],
             'level': 'ERROR',
             'propagate': True
         },
-        'NoLoader': {
+        'UkLoader': {
+            'handlers': ['default', 'console'],
+            'level': 'ERROR',
+            'propagate': True
+        },
+        'UsLoader': {
             'handlers': ['default', 'console'],
             'level': 'ERROR',
             'propagate': True

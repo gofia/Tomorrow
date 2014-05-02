@@ -199,6 +199,19 @@ def fit_double_cyclic(dates, values, init_guesses=2, **kwargs):
     return output
 
 
+def fit_logistic_k_r(p, x, y):
+    k, r = 2.5, 3.5
+    results = fmin(
+        cost_function_k_r,
+        (k, r),
+        args=(p, x, y),
+        maxiter=100000,
+        disp=0
+    )
+    residual = cost_function_k_r((r, k), p, x, y)
+    return results[0], results[1], residual
+
+
 def get_logistic(r, k, p):
     def func(x):
         return k * p * exp(r * x) / (k + p * (exp(r * x) - 1))
@@ -224,6 +237,12 @@ def cost_cyclic((qmax1, qmax2, tmax1, tmax2, a1, a2), x, y):
 
 
 def cost_function((r, k, p), x, y):
+    fit = get_logistic(r, k, p)(x)
+    res = (y - fit)**2 / abs(fit)
+    return sum(res)
+
+
+def cost_function_k_r((k, r), p, x, y):
     fit = get_logistic(r, k, p)(x)
     res = (y - fit)**2 / abs(fit)
     return sum(res)

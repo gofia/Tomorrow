@@ -119,10 +119,11 @@ class ProductionProcessor():
                 fit = None
 
             if hasattr(current_task, 'update_state'):
-                current_task.update_state(
-                    state='PROGRESS',
-                    meta={'percent': round(100.0 * i / len(x))}
-                )
+                pass
+                # current_task.update_state(
+                #     state='PROGRESS',
+                #     meta={'percent': round(100.0 * i / len(x))}
+                # )
 
         avg_tau = None
         tau_list = [fit.tau for fit in fit_list]
@@ -208,8 +209,7 @@ class ProductionProcessor():
         processed.discovery = productions[0].date
         processed.total_production_oil = round(sum(y) / 1E6)
         processed.stable = False
-        processed.active = (dates[-1].year == date.today().year and
-                            dates[-1].month > date.today().month - 6)
+        processed.active = diff_months(dates[-1], date.today()) < 12
         if processed.active is True:
             processed.shut_down = None
             processed.current_production_oil = y[-1]

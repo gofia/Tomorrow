@@ -26,10 +26,10 @@ logger = logging.getLogger("OilAndGas")
 
 
 @task()
-def process_fields():
+def process_fields(country="NO"):
     logger.info("Process fields.")
     field_processor = FieldProcessor()
-    return field_processor.compute("NO")
+    return field_processor.compute(country)
 
 
 @task()
@@ -40,14 +40,14 @@ def process_field(options):
 
 
 @task()
-def process_countries():
+def process_countries(country="NO"):
     logger.info("Process countries.")
     country_processor = CountryProcessor()
-    return country_processor.compute("NO")
+    return country_processor.compute(country)
 
 
 @task()
-def aggregate_countries():
+def aggregate_countries(country="NO"):
     logger.info("Aggregate fields to country.")
     aggregator = CountryAggregator()
-    return aggregator.compute([{'country': 'NO'}])
+    return aggregator.compute([{'country': country}])

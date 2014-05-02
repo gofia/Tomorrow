@@ -28,6 +28,8 @@ from .models import (Field, Country)
 from . import tasks
 from .serializers import (FieldFullSerializer, FieldMinSerializer, CountrySerializer)
 
+from numpy import isnan
+
 import logging
 logger = logging.getLogger("rh")
 
@@ -96,7 +98,7 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
 
     def get_queryset(self):
         if self.kwargs.has_key("country") and len(self.kwargs['country']) > 0:
-            return Field.objects.filter(country=self.kwargs['country']).all().order_by("name")
+            return Field.objects.filter(country=self.kwargs['country']).order_by("name").all()
         else:
             return Field.objects.all().order_by("name")
 

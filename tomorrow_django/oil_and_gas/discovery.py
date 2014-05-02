@@ -33,7 +33,7 @@ class DiscoveryGenerator:
     pdf = []
 
     def __init__(self, fields):
-        self.fields = fields
+        self.fields = fields.sort(lambda x: x.discovery)
         self.sizes = [field.extrapolated_total_production_oil for field in fields]
         self.size_bins = SizeBins(min(self.sizes), max(self.sizes), 2)
         self.size_bins.process(self.sizes)
@@ -66,7 +66,6 @@ class DiscoveryGenerator:
         scenario = self.random_scenario()
 
 
-
 class SizeBins(object):
     bins = []
     sequence = []
@@ -76,8 +75,8 @@ class SizeBins(object):
         step = float(size_max - size_min) / divisions
         for i in range(0, divisions):
             self.bins.append(SizeBin(
-                min=size_min + i * step,
-                max=size_min + (i + 1) * step,
+                bin_min=size_min + i * step,
+                bin_max=size_min + (i + 1) * step,
             ))
 
     def append(self, size_bin):
@@ -86,7 +85,8 @@ class SizeBins(object):
     def process(self, size_sequence):
         self.sequence = copy.copy(size_sequence)
         # Reset
-        for size_bin in self.bins: size_bin.reset()
+        for size_bin in self.bins:
+            size_bin.reset()
         # Process
         for size_idx, size in enumerate(size_sequence):
             for bin_idx, size_bin in enumerate(self.bins):
@@ -110,8 +110,8 @@ class SizeBins(object):
 
     def init_date_sequences(self, fields):
         for field in fields:
-            for bin in self.bins:
-                bin.try_add_date_sequence(field)
+            for bin_item in self.bins:
+                bin_item.try_add_date_sequence(field)
 
 
 class SizeBin(object):
@@ -125,9 +125,9 @@ class SizeBin(object):
     initialized = False
     date_sequence = []
 
-    def __init__(self, min, max):
-        self.min = min
-        self.max = max
+    def __init__(self, bin_min, bin_max):
+        self.min = bin_min
+        self.max = bin_max
 
     def append(self, n):
         self.initialized = False
@@ -189,7 +189,7 @@ class SizeBin(object):
             date = add_months(date, 1)
         return data
 
-    def compute_logistic(self, N):
+    def compute_logistic(self):
         x = range(0, len(self.date_sequence))
         pass
 
@@ -224,14 +224,14 @@ def likelihood(size_bins):
         vec_s = list(x[l:])
         vec_s = vec_s + [1]
 
-        L = -1.0
+        likelihood_value = -1.0
 
         for idx, size in enumerate(size_bins.sequence):
-            L *= vec_n[size] - size_bins.m(idx, size)
-            L *= vec_s[size]
-            L /= np.dot(subtract(vec_n, size_bins.m_s(idx)), vec_s)
+            likelihood_value *= vec_n[size] - size_bins.m(idx, size)
+            likelihood_value *= vec_s[size]
+            likelihood_value /= np.dot(subtract(vec_n, size_bins.m_s(idx)), vec_s)
 
-        return L
+        return likelihood_value
 
     return func
 
@@ -277,5 +277,5 @@ def size_constraint(idx, size):
     return func
 
 
-def subtract(A, B):
-    return [a - b for a, b in zip(A, B)]
+def subtract(list_a, list_b):
+    return [a - b for a, b in zip(list_a, list_b)]

@@ -36,11 +36,11 @@ $(function () {
                         date,
                         fit_function(x)
                     ]);
-//                    fit_range.push([
-//                        date,
-//                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
-//                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
-//                    ]);
+                    fit_range.push([
+                        date,
+                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
+                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
+                    ]);
                 }
             }
 
@@ -58,10 +58,10 @@ $(function () {
                     ]);
                     if (date >= last_date) {
                         x = $.month_diff(first_date, date);
-    //                    fit.push([
-    //                        date,
-    //                        fit_function(x)
-    //                    ]);
+                        fit.push([
+                            date,
+                            fit_function(x)
+                        ]);
                         fit_range.push([
                             date,
                             fit_function(x) * (1 - data.error_std) * (1 - data.error_avg),

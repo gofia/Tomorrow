@@ -213,3 +213,29 @@ class StretchedExponential(models.Model):
 
     class Meta:
         unique_together = (("field", "date_begin", "date_end"),)
+
+
+class DiscoveryScenario(models.Model):
+    country = models.ForeignKey(
+        Country,
+        null=True,
+        blank=True,
+        default=None,
+        related_name="discovery_scenarios",
+    )
+    probability = models.FloatField(default=0.0)
+    pdf = models.FloatField(default=0.0)
+    number_dwarfs = models.PositiveIntegerField(default=0)
+    number_giants = models.PositiveIntegerField(default=0)
+    probability_dwarf = models.FloatField(default=0.0)
+    probability_giant = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "{0} - {1} - {2}/{3} - {4}/{5}".format(
+            self.country.name,
+            self.probability,
+            self.number_dwarfs,
+            self.number_giants,
+            self.probability_dwarf,
+            self.probability_giant,
+        )

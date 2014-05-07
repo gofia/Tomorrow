@@ -17,6 +17,7 @@
 import calendar
 import datetime
 from dateutil import relativedelta
+import matplotlib.pyplot as plt
 
 
 def add_months(date, months):
@@ -56,3 +57,14 @@ def diff_months(date1, date2):
 
 def diff_months_abs(date1, date2):
     return abs(diff_months(date1, date2))
+
+
+def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None):
+    fig = plt.figure(figsize=(16,10))
+    ax = fig.add_subplot(111)
+    ax.plot(x, y, 'ok')
+    if x_fit is not None and y_fit is not None:
+        ax.plot(x_fit, y_fit, '-k')
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    plt.show()

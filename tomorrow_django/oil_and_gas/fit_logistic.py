@@ -1,5 +1,7 @@
+import numpy as np
+
 from mx.DateTime.DateTime import Timestamp
-from numpy import array, exp, arange, where
+from numpy import array, exp, arange, where, ndarray
 from datetime import datetime
 from scipy.stats import t
 from scipy.optimize import fmin
@@ -199,16 +201,15 @@ def fit_double_cyclic(dates, values, init_guesses=2, **kwargs):
     return output
 
 
-def fit_logistic_k_r(p, x, y):
-    k, r = 2.5, 3.5
+def fit_logistic_r_p(k, x, y, r=2.5, p=5.5):
     results = fmin(
-        cost_function_k_r,
-        (k, r),
-        args=(p, x, y),
+        cost_function_r_p,
+        (r, p),
+        args=(k, x, y),
         maxiter=100000,
         disp=0
     )
-    residual = cost_function_k_r((r, k), p, x, y)
+    residual = cost_function_r_p((r, p), k, x, y)
     return results[0], results[1], residual
 
 
@@ -242,8 +243,8 @@ def cost_function((r, k, p), x, y):
     return sum(res)
 
 
-def cost_function_k_r((k, r), p, x, y):
-    fit = get_logistic(r, k, p)(x)
+def cost_function_r_p((r, p), k, x, y):
+    fit = get_logistic(r, k, p)(np.array(x))
     res = (y - fit)**2 / abs(fit)
     return sum(res)
 
@@ -282,4 +283,3 @@ def show_logistic_fit(x, y, (r, k, p), start_date, x_label, y_label):
     t_format = DateFormatter("%b-%y")
     ax.xaxis.set_major_formatter(t_format)
     plt.show()
-

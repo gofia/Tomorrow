@@ -21,7 +21,7 @@ import json
 
 from cmath import sqrt
 from numpy.ma.core import mean
-from numpy import average, std, abs
+from numpy import average, std, abs, fft
 from numpy.core.numeric import array
 from scipy.signal import argrelextrema
 from dateutil import relativedelta
@@ -268,8 +268,6 @@ class CountryProcessor(ProductionProcessor):
                 forecast['date'],
                 forecast['average'], forecast['sigma']
             )
-
-        print "serialize"
 
         self.processed.forecasts = json.dumps(forecasts)
         self.processed.save()

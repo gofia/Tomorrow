@@ -17,6 +17,7 @@
 from celery import task
 
 from .processing import FieldProcessor, CountryProcessor
+from .discovery import DiscoveryGenerator
 from .aggregation import CountryAggregator
 
 import logging
@@ -44,6 +45,13 @@ def process_countries(country="NO"):
     logger.info("Process countries.")
     country_processor = CountryProcessor()
     return country_processor.compute(country)
+
+
+@task()
+def discovery_countries(country="NO"):
+    logger.info("Generate discoveries for country.")
+    generator = DiscoveryGenerator(country)
+    generator.compute_future_dwarfs()
 
 
 @task()

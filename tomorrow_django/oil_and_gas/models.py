@@ -103,12 +103,12 @@ class Field(models.Model):
     @property
     def extrapolated_total_production_oil(self):
         if not self.active:
-            return self.total_production_oil
+            return self.total_production_oil * 1E6
 
         if not self.stable:
             return None
 
-        extrapolated_production = self.total_production_oil
+        extrapolated_production = self.total_production_oil * 1E6
         func = get_stretched_exponential(self.A, self.tau, self.beta)
         month_start = diff_months_abs(self.date_begin, datetime.now())
         for month in range(0, 12*25):

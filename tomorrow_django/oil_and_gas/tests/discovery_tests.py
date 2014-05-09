@@ -29,7 +29,7 @@ class DiscoveryTest(TestCase):
 
     def test_size_bins_processing(self):
         # Initialising
-        size_bins = SizeBins(min(self.sizes), max(self.sizes), 2)
+        size_bins = SizeBins(min(self.sizes), max(self.sizes), 3)
         self.assertEqual(len(size_bins.bins), 2, "Number bins is incorrect")
         size_bin1 = size_bins.bins[0]
         size_bin2 = size_bins.bins[1]

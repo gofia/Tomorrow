@@ -23,10 +23,11 @@ import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
 
-from .models import Country, Field, DiscoveryScenario, FieldProduction
+from .models import Country, Field, DiscoveryScenario
 from .processing import FieldProcessor
 from .fitting import fit_exponential
 from .fit_logistic import fit_logistic_r_p, get_logistic
+from .fitting import fit_stretched_exponential, get_stretched_exponential
 from .utils import traverse, list_get, add_months, diff_months_abs, make_plot
 
 
@@ -67,7 +68,18 @@ class DiscoveryGenerator:
         self.init_scenarios()
 
         print "Initialize average productions"
-        self.average_dwarf_production = self.get_average_production(0, self.median_size)
+        self.average_dwarf_production = self.get_average_production(
+            0,
+            self.median_size,
+        )
+        # self.average_giant_production = self.get_average_production(
+        #     self.median_size,
+        #     self.max_size,
+        # )
+
+        print "Initialize size fits"
+        self.dwarf_size_fit = self.get_size_fit(0, self.median_size)
+        self.giant_size_fit = self.get_size_fit(self.median_size, self.max_size)
 
         print "Plot logistics"
         self.logistic_dwarf = self.get_logistic(0, self.median_size)
@@ -178,8 +190,6 @@ class DiscoveryGenerator:
             for idx, production in enumerate(field.oil_productions):
                 if len(productions) <= idx:
                     productions.append([])
-                if field.extrapolated_total_production_oil <= production.object.production_oil:
-                    print field.name
                 productions[idx].append(
                     production.object.production_oil / field.extrapolated_total_production_oil
                 )
@@ -188,14 +198,50 @@ class DiscoveryGenerator:
         for production in productions:
             avg_production.append((np.average(production), np.std(production)))
 
-        make_plot(
-            np.array(range(0, len(avg_production))),
-            map(lambda x: x[0], avg_production),
-            "Month",
-            "Average dwarf production",
-        )
+        # make_plot(
+        #     np.array(range(0, len(avg_production))),
+        #     map(lambda x: x[0], avg_production),
+        #     "Month",
+        #     "Average production",
+        # )
 
-        return productions
+        return avg_production
+
+    def get_size_fit(self, min_size, max_size):
+        print "Get size fit"
+        sizes = []
+        for field in self.fields:
+            if min_size < field.extrapolated_total_production_oil <= max_size:
+                sizes.append(field.extrapolated_total_production_oil)
+
+        print "Found {0} fields between {1} and {2}.".format(len(sizes), min_size, max_size)
+
+        sizes = np.array(sizes)
+        bins = np.linspace(min_size, max_size, 50)
+        digitized = np.digitize(sizes, bins)
+        size_pdf = np.bincount(digitized)[1:]
+        size_pdf = np.cumsum(size_pdf)[::-1]
+        size_pdf = [(np.float(s) / np.float(len(sizes))) for s in size_pdf]
+
+        x_min, tau, beta, y0 = fit_stretched_exponential(
+            bins,
+            size_pdf,
+            y0=sizes[0],
+            show=False
+        )
+        return get_stretched_exponential(y0, tau, beta)
+
+    @staticmethod
+    def get_random_size(fit, min_size, max_size):
+        r = random.random()
+        found_size = 0
+        for size in np.linspace(min_size, max_size, 100):
+            if fit(size) < r:
+                found_size = size
+                break
+        if found_size == 0:
+            found_size = max_size
+        return found_size
 
     def compute_future_dwarfs(self):
         for i in range(0, 1):
@@ -228,10 +274,17 @@ class DiscoveryGenerator:
         x_discoveries = range(0, future_len)
         discoveries = (fit - self.logistic_dwarf[-1])[len(self.x_dwarf):]
         production = np.zeros(future_len)
-        next_step = 1
+        production_err = np.zeros(future_len)
+        next_step = 0
         for x in x_discoveries:
             if discoveries[x] > next_step:
-                production += np.concatenate((np.zeros(x), np.ones(future_len - x)), axis=0)
+                field_size = self.get_random_size(self.dwarf_size_fit, 0, self.median_size)
+                avg = map(lambda p: p[0], self.average_dwarf_production)
+                err = map(lambda p: p[1], self.average_dwarf_production)
+                field_production = np.array((avg * field_size)[0:(future_len - x)])
+                field_production_err = np.array((err * field_size)[0:(future_len - x)])
+                production += np.concatenate((np.zeros(x), field_production), axis=0)
+                production_err += np.concatenate((np.zeros(x), field_production_err), axis=0)
                 next_step += 1
 
         make_plot(

@@ -295,30 +295,6 @@ class CountryProcessor(ProductionProcessor):
     def forecast_recent(self, field, forecasts):
         pass
 
-    def average_production_curve(self):
-        productions = {}
-
-        for field in self.fields:
-            total = field.extrapolated_total_production_oil()
-            field_production = self.deserialize_productions(field.production_oil)
-            for production in field_production:
-                months = diff_months_abs(production.date, field.discovery)
-                if not months in productions:
-                    productions[months] = []
-                productions[months].append(
-                    production.production_oil / total
-                )
-
-        for i in productions:
-            production_average = mean(productions[i])
-            production_std = std(productions[i])
-            productions[i] = {
-                'average': production_average,
-                'std': production_std
-            }
-
-        return productions
-
     def get_list(self, name):
         return CountryProduction.objects.filter(name=name).values("name").distinct()
 

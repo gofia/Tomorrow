@@ -17,14 +17,14 @@
 from django.test import TestCase
 from numpy import array
 
-from ..fit_logistic import fit_logistic_k_r, get_logistic
+from ..fit_logistic import fit_logistic_r_p, get_logistic
 
 
 class FittingTest(TestCase):
-    def test_stretched_exponential(self):
+    def test_get_logistic_r_p(self):
         func = get_logistic(2.0, 3.0, 5.0)
         x = array([0, 1, 2, 3])
         y = [func(0.0), func(1.0), func(2.0), func(3.0)]
-        k, r, residual = fit_logistic_k_r(5.0, x, y)
-        self.assertAlmostEqual(k, 3.0, delta=0.01, msg="k is incorrect")
+        r, p, residual = fit_logistic_r_p(3.0, x, y)
         self.assertAlmostEqual(r, 2.0, delta=0.01, msg="r is incorrect")
+        self.assertAlmostEqual(p, 5.0, delta=0.01, msg="p is incorrect")

@@ -72,10 +72,10 @@ class DiscoveryGenerator:
             0,
             self.median_size,
         )
-        # self.average_giant_production = self.get_average_production(
-        #     self.median_size,
-        #     self.max_size,
-        # )
+        self.average_giant_production = self.get_average_production(
+            self.median_size,
+            self.max_size,
+        )
 
         print "Initialize size fits"
         self.dwarf_size_fit = self.get_size_fit(0, self.median_size)
@@ -249,38 +249,47 @@ class DiscoveryGenerator:
             self.process_scenario(scenario)
 
     def process_scenario(self, scenario):
-        print "Scenario has {0} dwarfs.".format(scenario.number_dwarfs)
-        r_dwarf, p_dwarf, residual_dwarf = fit_logistic_r_p(
+        self.process_size(
             scenario.number_dwarfs,
             self.x_dwarf,
             self.logistic_dwarf,
+            self.dwarf_size_fit,
+            self.average_dwarf_production,
+        )
+
+    def process_size(self, number, time, logistic, size_fit, avg_production):
+        print "Scenario has {0} dwarfs.".format(number)
+        r_dwarf, p_dwarf, residual_dwarf = fit_logistic_r_p(
+            number,
+            time,
+            logistic,
             0.1,
             1
         )
-        last_month = self.x_dwarf[-1]
+        last_month = time[-1]
         range_future = range(last_month + 1, last_month + 12 * 20)
-        x_future = np.array(self.x_dwarf + range_future)
-        fit = get_logistic(r_dwarf, scenario.number_dwarfs, p_dwarf)(x_future)
+        x_future = np.array(time + range_future)
+        fit = get_logistic(r_dwarf, number, p_dwarf)(x_future)
         make_plot(
-            self.x_dwarf,
-            self.logistic_dwarf,
+            time,
+            logistic,
             "Month",
-            "Number dwarf fields",
+            "Number fields",
             x_future,
             fit,
         )
 
-        future_len = len(x_future) - len(self.x_dwarf)
+        future_len = len(x_future) - len(time)
         x_discoveries = range(0, future_len)
-        discoveries = (fit - self.logistic_dwarf[-1])[len(self.x_dwarf):]
+        discoveries = (fit - logistic[-1])[len(time):]
         production = np.zeros(future_len)
         production_err = np.zeros(future_len)
         next_step = 0
         for x in x_discoveries:
             if discoveries[x] > next_step:
-                field_size = self.get_random_size(self.dwarf_size_fit, 0, self.median_size)
-                avg = map(lambda p: p[0], self.average_dwarf_production)
-                err = map(lambda p: p[1], self.average_dwarf_production)
+                field_size = self.get_random_size(size_fit, 0, self.median_size)
+                avg = map(lambda p: p[0], avg_production)
+                err = map(lambda p: p[1], avg_production)
                 field_production = np.array((avg * field_size)[0:(future_len - x)])
                 field_production_err = np.array((err * field_size)[0:(future_len - x)])
                 production += np.concatenate((np.zeros(x), field_production), axis=0)

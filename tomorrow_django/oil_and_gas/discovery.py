@@ -15,20 +15,24 @@
 #
 
 from cmath import log
+
 import copy
 import random
 import datetime
+import json
+
 from numpy.core.multiarray import array
 import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
+from matplotlib.pyplot import legend
 
 from .models import Country, Field, DiscoveryScenario
 from .processing import FieldProcessor
 from .fitting import fit_exponential
 from .fit_logistic import fit_logistic_r_p, get_logistic
 from .fitting import fit_stretched_exponential, get_stretched_exponential
-from .utils import traverse, list_get, add_months, diff_months_abs, make_plot
+from .utils import traverse, list_get, add_months, diff_months_abs, make_plot, start_plot
 
 
 class DiscoveryGenerator:
@@ -37,6 +41,7 @@ class DiscoveryGenerator:
     size_bins = None
     scenarios = []
     pdf = []
+    _oldest_unstable_field = None
 
     def __init__(self, country):
         self.country = Country.objects.get(name=country)
@@ -48,8 +53,9 @@ class DiscoveryGenerator:
         self.sizes = [field.extrapolated_total_production_oil for field in self.fields]
         self.sizes = [size for size in self.sizes if size > 0]
         self.min_size = min(self.sizes)
-        self.median_size = np.median(self.sizes)
         self.max_size = max(self.sizes)
+        # self.median_size = np.median(self.sizes)
+        self.median_size = self.max_size / 10
         print "Number sizes: {0}".format(len(self.sizes))
         print "Sizes: {0}".format(self.sizes)
         print "Min size: {0}".format(self.min_size)
@@ -82,13 +88,28 @@ class DiscoveryGenerator:
         self.giant_size_fit = self.get_size_fit(self.median_size, self.max_size)
 
         print "Plot logistics"
-        self.logistic_dwarf = self.get_logistic(0, self.median_size)
+        self.time_dwarf, self.logistic_dwarf = self.get_logistic(
+            0,
+            self.median_size
+        )
         self.x_dwarf = range(0, len(self.logistic_dwarf))
         # make_plot(self.x_dwarf, self.logistic_dwarf, "Month", "Number dwarf fields")
 
-        self.logistic_giants = self.get_logistic(self.median_size, self.max_size)
-        self.x_giant = range(0, len(self.logistic_giants))
-        # make_plot(self.x_giant, self.logistic_giants, "Month", "Number giant fields")
+        self.time_giant, self.logistic_giant = self.get_logistic(
+            self.median_size,
+            self.max_size
+        )
+        self.x_giant = range(0, len(self.logistic_giant))
+        # make_plot(self.x_giant, self.logistic_giant, "Month", "Number giant fields")
+
+        self.logistic_plot = start_plot(
+            "Time",
+            "Number of discovered fields",
+            "Extrapolating Norwegian Field Discoveries"
+        )
+        p1 = self.logistic_plot.plot(self.time_dwarf, self.logistic_dwarf, 'bo', label="Dwarf")
+        p2 = self.logistic_plot.plot(self.time_giant, self.logistic_giant, 'go', label="Giants")
+        self.logistic_plot.legend(("Dwarfs", "Giants"), loc='upper left')
 
     def init_scenarios(self):
         db_scenarios = DiscoveryScenario.objects.filter(country=self.country)
@@ -142,12 +163,6 @@ class DiscoveryGenerator:
         self.pdf /= self.pdf[-1]
         self.scenarios = discovery_scenarios
 
-    def random_scenario(self):
-        r = random.random()
-        scenario_idx = next(idx for idx, p in enumerate(self.pdf) if p > r)
-        print "Selected scenarios {0}.".format(scenario_idx)
-        return self.scenarios[scenario_idx]
-
     def get_logistic(self, min_size, max_size):
         print "Get logistic"
         fields = []
@@ -159,6 +174,7 @@ class DiscoveryGenerator:
 
         youngest = min(map(lambda x: x.discovery, fields))
         n_months = diff_months_abs(youngest, datetime.datetime.today())
+        times = [add_months(copy.copy(youngest), n) for n in range(0, n_months)]
         discoveries = np.zeros(n_months)
 
         for field in fields:
@@ -168,7 +184,7 @@ class DiscoveryGenerator:
             )
             discoveries = discoveries + field_discovery
 
-        return discoveries
+        return times, discoveries
 
     def get_average_production(self, min_size, max_size):
         print "Get average production"
@@ -190,6 +206,13 @@ class DiscoveryGenerator:
             for idx, production in enumerate(field.oil_productions):
                 if len(productions) <= idx:
                     productions.append([])
+                if field.extrapolated_total_production_oil < production.object.production_oil:
+                    print "{0}, {1}, {2}, {3}".format(
+                        field.name,
+                        production.object.production_oil,
+                        field.extrapolated_total_production_oil,
+                        field.total_production_oil,
+                    )
                 productions[idx].append(
                     production.object.production_oil / field.extrapolated_total_production_oil
                 )
@@ -222,6 +245,7 @@ class DiscoveryGenerator:
         size_pdf = np.bincount(digitized)[1:]
         size_pdf = np.cumsum(size_pdf)[::-1]
         size_pdf = [(np.float(s) / np.float(len(sizes))) for s in size_pdf]
+        bins = np.linspace(min_size, max_size, len(size_pdf))
 
         x_min, tau, beta, y0 = fit_stretched_exponential(
             bins,
@@ -243,21 +267,118 @@ class DiscoveryGenerator:
             found_size = max_size
         return found_size
 
+    def oldest_unstable_field(self):
+        if self._oldest_unstable_field is not None:
+            return self._oldest_unstable_field
+        unstable_fields = [field for field in self.fields
+                           if not field.stable
+                           and field.active
+                           and field.current_production_oil > 0]
+        discovery_dates = map(lambda x: x.discovery, unstable_fields)
+        self._oldest_unstable_field = min(discovery_dates)
+        return self._oldest_unstable_field
+
+    def random_scenario(self):
+        r = random.random()
+        scenario_idx = next(idx for idx, p in enumerate(self.pdf) if p > r)
+        print "Selected scenarios {0}.".format(scenario_idx)
+        return self.scenarios[scenario_idx]
+
     def compute_future_dwarfs(self):
-        for i in range(0, 1):
-            scenario = self.random_scenario()
-            self.process_scenario(scenario)
+        print "Compute future dwarfs."
+        avg, err = None, None
+        total_p = 0.0
+        for i in range(0, 5):
+            try:
+                scenario = self.random_scenario()
+                p = scenario.probability
+                total_p += p
+                scenario_avg, scenario_err = self.process_size(
+                    scenario.number_dwarfs,
+                    self.x_dwarf,
+                    self.logistic_dwarf,
+                    self.dwarf_size_fit,
+                    self.average_dwarf_production,
+                    self.time_dwarf,
+                )
+                if avg is None:
+                    avg, err = p * scenario_avg, p * scenario_err
+                else:
+                    avg += p * scenario_avg
+                    err += p * scenario_err
+            except Exception:
+                pass
+        avg /= total_p
+        err /= total_p
+        # make_plot(
+        #     range(0, len(scenario_avg)),
+        #     avg,
+        #     "Month",
+        #     "Discovery production",
+        # )
 
-    def process_scenario(self, scenario):
-        self.process_size(
-            scenario.number_dwarfs,
-            self.x_dwarf,
-            self.logistic_dwarf,
-            self.dwarf_size_fit,
-            self.average_dwarf_production,
-        )
+        start_date = copy.copy(self.oldest_unstable_field())
+        print "Dwarf discovery start date {0}.".format(start_date)
+        future = []
+        for idx, production in enumerate(avg):
+            if production > 0:
+                future.append({
+                    'date': str(start_date),
+                    'average': production,
+                    'sigma': err[idx],
+                })
+                start_date = add_months(start_date, 1)
+        self.country.future_dwarfs = json.dumps(future)
+        self.country.save()
 
-    def process_size(self, number, time, logistic, size_fit, avg_production):
+    def compute_future_giants(self):
+        print "Compute future giants."
+        avg, err = None, None
+        total_p = 0.0
+        for i in range(0, 5):
+            try:
+                scenario = self.random_scenario()
+                p = scenario.probability
+                total_p += p
+                scenario_avg, scenario_err = self.process_size(
+                    scenario.number_giants,
+                    self.x_giant,
+                    self.logistic_giant,
+                    self.giant_size_fit,
+                    self.average_giant_production,
+                    self.time_giant,
+                )
+                if avg is None:
+                    avg, err = p * scenario_avg, p * scenario_err
+                else:
+                    avg += p * scenario_avg
+                    err += p * scenario_err
+            except Exception:
+                pass
+        avg /= total_p
+        err /= total_p
+        # make_plot(
+        #     range(0, len(scenario_avg)),
+        #     avg,
+        #     "Month",
+        #     "Discovery production",
+        # )
+
+        start_date = copy.copy(self.oldest_unstable_field())
+        print "Giant discovery start date {0}.".format(start_date)
+        future = []
+        for idx, production in enumerate(avg):
+            if production > 0:
+                future.append({
+                    'date': str(start_date),
+                    'average': production,
+                    'sigma': err[idx],
+                })
+                start_date = add_months(start_date, 1)
+        self.country.future_giants = json.dumps(future)
+        self.country.save()
+
+    def process_size(self, number, time, logistic, size_fit, avg_production, lol):
         print "Scenario has {0} dwarfs.".format(number)
         r_dwarf, p_dwarf, residual_dwarf = fit_logistic_r_p(
             number,
@@ -267,17 +388,19 @@ class DiscoveryGenerator:
             1
         )
         last_month = time[-1]
-        range_future = range(last_month + 1, last_month + 12 * 20)
+        range_future = range(last_month + 1, last_month + 12 * 30)
         x_future = np.array(time + range_future)
         fit = get_logistic(r_dwarf, number, p_dwarf)(x_future)
-        make_plot(
-            time,
-            logistic,
-            "Month",
-            "Number fields",
-            x_future,
-            fit,
-        )
+        times = [add_months(copy.copy(lol[0]), n) for n in range(0, len(x_future))]
+        self.logistic_plot.plot(times, fit)
+        # make_plot(
+        #     self.x_dwarf,
+        #     logistic,
+        #     "Month",
+        #     "Number fields",
+        #     x_future,
+        #     fit,
+        # )
 
         future_len = len(x_future) - len(time)
         x_discoveries = range(0, future_len)
@@ -285,43 +408,30 @@ class DiscoveryGenerator:
         production = np.zeros(future_len)
         production_err = np.zeros(future_len)
         next_step = 0
+        avg = map(lambda p: p[0], avg_production)
+        err = map(lambda p: p[1], avg_production)
         for x in x_discoveries:
             if discoveries[x] > next_step:
                 field_size = self.get_random_size(size_fit, 0, self.median_size)
-                avg = map(lambda p: p[0], avg_production)
-                err = map(lambda p: p[1], avg_production)
-                field_production = np.array((avg * field_size)[0:(future_len - x)])
-                field_production_err = np.array((err * field_size)[0:(future_len - x)])
+                field_production = np.zeros(len(avg))
+                field_production_err = np.zeros(len(err))
+                for idx, e in enumerate(avg):
+                    field_production[idx] = e * field_size
+                for idx, e in enumerate(err):
+                    field_production_err[idx] = e * field_size
+                field_production = np.array(field_production[0:(future_len - x)])
+                field_production_err = np.array(field_production_err[0:(future_len - x)])
                 production += np.concatenate((np.zeros(x), field_production), axis=0)
                 production_err += np.concatenate((np.zeros(x), field_production_err), axis=0)
                 next_step += 1
 
-        make_plot(
-            x_discoveries,
-            production,
-            "Month",
-            "Dwarf discovery production",
-        )
-
-    # def process_dwarfs(self, scenario):
-    #     n_dwarfs = scenario[1][0]
-    #     logistic_dwarfs = self.get_logistic(0, self.median_size)
-    #     months = range(0, len(logistic_dwarfs))
-    #     dwarf_r, dwarf_k, dwarf_residual = fit_logistic_k_r(n_dwarfs, months, logistic_dwarfs)
-    #     future = range(len(logistic_dwarfs), len(logistic_dwarfs) + 12 * 20)
-    #     logistic_fit = get_logistic(dwarf_r, dwarf_k, n_dwarfs)(future) - logistic_dwarfs[-1]
-    #
-    #     dwarfs = []
-    #     next_step = 1
-    #     for value in logistic_fit:
-    #
-    #
-    # def process_giants(self, scenario):
-    #     n_giants = scenario[1][1]
-    #     logistic_giants = self.get_logistic(self.median_size, self.max_size)
-    #     months = range(0, len(logistic_giants))
-    #     giant_r, giant_k, giant_residual = fit_logistic_k_r(n_giants, months, logistic_giants)
-
+        # make_plot(
+        #     x_discoveries,
+        #     production,
+        #     "Month",
+        #     "Discovery production",
+        # )
+        return production, production_err
 
 class SizeBins(object):
     bins = []

@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from ...tasks import discovery_countries
+from ...tasks import process_fields
 
 
 class Command(BaseCommand):
@@ -8,4 +8,4 @@ class Command(BaseCommand):
         country = "NO"
         if len(args) > 0 and args[0] == "UK":
             country = "UK"
-        discovery_countries(country)
+        process_fields(country)

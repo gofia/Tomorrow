@@ -52,6 +52,8 @@ def discovery_countries(country="NO"):
     logger.info("Generate discoveries for country.")
     generator = DiscoveryGenerator(country)
     generator.compute_future_dwarfs()
+    generator.compute_future_giants()
+    generator.logistic_plot.show()
 
 
 @task()

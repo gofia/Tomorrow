@@ -52,4 +52,4 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'discovery', 'shut_down', 'total_production_oil',
                   'current_production_oil', 'active', 'stable', 'stable_since',
                   'production_oil', 'x_min', 'A', 'tau', 'beta', 'fits', 'error_avg',
-                  'error_std', 'forecasts')
+                  'error_std', 'forecasts', 'future_dwarfs', 'future_giants')

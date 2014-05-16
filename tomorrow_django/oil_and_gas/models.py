@@ -78,7 +78,7 @@ class Field(models.Model):
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
-    total_production_oil = models.PositiveIntegerField(default=0)
+    total_production_oil = models.FloatField(default=0)
     total_production_gas = models.PositiveIntegerField(default=0)
     current_production_oil = models.PositiveIntegerField(default=0)
     current_production_gas = models.PositiveIntegerField(default=0)
@@ -125,7 +125,7 @@ class Country(models.Model):
     production_oil = models.TextField(default="")
     production_gas = models.TextField(default="")
     production = models.TextField(default="")
-    total_production_oil = models.PositiveIntegerField(default=0)
+    total_production_oil = models.FloatField(default=0)
     total_production_gas = models.PositiveIntegerField(default=0)
     current_production_oil = models.PositiveIntegerField(default=0)
     current_production_gas = models.PositiveIntegerField(default=0)
@@ -143,6 +143,8 @@ class Country(models.Model):
     error_std = models.FloatField(default=0.0, null=True)
 
     forecasts = models.TextField(default="")
+    future_dwarfs = models.TextField(default="")
+    future_giants = models.TextField(default="")
 
     @property
     def max_fits(self):

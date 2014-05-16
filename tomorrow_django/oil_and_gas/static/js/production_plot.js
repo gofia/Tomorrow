@@ -45,9 +45,13 @@ $(function () {
             }
 
             if (data.forecasts) {
-                var forecasts = JSON.parse(data.forecasts),
+                var dwarfs = JSON.parse(data.future_dwarfs),
+                    giants = JSON.parse(data.future_giants),
+                    forecasts = JSON.parse(data.forecasts),
                     forecast_avg = [],
-                    forecast_range = [];
+                    forecast_range = [],
+                    dates,
+                    idx;
                 for (i = 0; i < forecasts.length; i++) {
                     date = $.to_date(forecasts[i].date);
                     forecast_avg.push([date, forecasts[i].average]);
@@ -69,6 +73,22 @@ $(function () {
                         ]);
                     }
                 }
+                dates = $.map(forecast_range, function (e) { return e[0]; });
+                for (i = 0; i < dwarfs.length; i++) {
+                    date = $.to_date(dwarfs[i].date);
+                    idx = dates.indexOf(date);
+                    if (idx === -1) { continue; }
+                    forecast_range[idx][1] += dwarfs[i].average - dwarfs[i].sigma;
+                    forecast_range[idx][2] += dwarfs[i].average + dwarfs[i].sigma;
+                }
+                for (i = 0; i < giants.length; i++) {
+                    date = $.to_date(giants[i].date);
+                    idx = dates.indexOf(date);
+                    if (idx === -1) { continue; }
+                    forecast_range[idx][1] += giants[i].average - giants[i].sigma;
+                    forecast_range[idx][2] += giants[i].average + giants[i].sigma;
+                }
+                $.staked_plot(details_box, data);
             }
 
             for (i = 0; i < data.fits.length; i++) {
@@ -149,22 +169,22 @@ $(function () {
                         type: 'area',
                         name: 'Production',
                         data: productions
-                    },
-                    {
-                        type: 'line',
-                        name: 'Fit',
-                        data: fit
-                    },
-                    {
-                        name: 'Range',
-                        data: fit_range,
-                        type: 'arearange',
-                        lineWidth: 0,
-                        linkedTo: ':previous',
-                        color: Highcharts.getOptions().colors[1],
-                        fillOpacity: 0.3,
-                        zIndex: 0
-                    }
+                    }//,
+//                    {
+//                        type: 'line',
+//                        name: 'Fit',
+//                        data: fit
+//                    },
+//                    {
+//                        name: 'Range',
+//                        data: fit_range,
+//                        type: 'arearange',
+//                        lineWidth: 0,
+//                        linkedTo: ':previous',
+//                        color: Highcharts.getOptions().colors[1],
+//                        fillOpacity: 0.3,
+//                        zIndex: 0
+//                    }
                 ]
             };
 

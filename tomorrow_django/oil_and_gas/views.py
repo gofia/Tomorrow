@@ -98,7 +98,10 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
 
     def get_queryset(self):
         if self.kwargs.has_key("country") and len(self.kwargs['country']) > 0:
-            return Field.objects.filter(country=self.kwargs['country']).order_by("name").all()
+            return Field.objects.filter(
+                country=self.kwargs['country'],
+                current_production_oil__gt=0,
+            ).order_by("name").all()
         else:
             return Field.objects.all().order_by("name")
 

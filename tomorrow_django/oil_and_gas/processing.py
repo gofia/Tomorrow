@@ -20,8 +20,7 @@ import numpy as np
 import json
 
 from cmath import sqrt
-from numpy.ma.core import mean
-from numpy import average, std, abs, fft
+from numpy import average, std, abs
 from numpy.core.numeric import array
 from scipy.signal import argrelextrema
 from dateutil import relativedelta
@@ -88,6 +87,7 @@ class ProductionProcessor():
         for i in range(2, len(x)):
             # If the fit is not zero, reuse the previous values as a first guess
             if fit is not None:
+                # print fit.x_min
                 x_min_guess, y0_guess, tau_guess, beta_guess = fit.x_min, fit.A, fit.tau, fit.beta
 
             fit, created = self.get_stretched_exponential(processed, dates[i])
@@ -116,7 +116,8 @@ class ProductionProcessor():
             else:
                 print "FAILURE"
                 fit.delete()
-                fit = None
+                # print "last {0}".format(last_good_fit.x_min)
+                fit = last_good_fit
 
             if hasattr(current_task, 'update_state'):
                 pass
@@ -207,9 +208,11 @@ class ProductionProcessor():
 
         processed.production_oil = self.serialize_productions(productions)
         processed.discovery = productions[0].date
-        processed.total_production_oil = round(sum(y) / 1E6)
-        processed.stable = False
-        processed.active = diff_months(dates[-1], date.today()) < 12
+        processed.total_production_oil = sum(y) / 1.0E6
+        if processed.total_production_oil > 1.0:
+            processed.total_production_oil = round(processed.total_production_oil)
+        processed.stable = processed.stable
+        processed.active = diff_months_abs(dates[-1], date.today()) < 12
         if processed.active is True:
             processed.shut_down = None
             processed.current_production_oil = y[-1]
@@ -266,7 +269,8 @@ class CountryProcessor(ProductionProcessor):
                 forecast['sigma'] = sqrt(forecast['sigma']).real / forecast['average']
             print "{0}: {1} / {2}".format(
                 forecast['date'],
-                forecast['average'], forecast['sigma']
+                forecast['average'],
+                forecast['sigma'],
             )
 
         self.processed.forecasts = json.dumps(forecasts)

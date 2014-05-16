@@ -68,3 +68,12 @@ def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None):
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     plt.show()
+
+
+def start_plot(x_label, y_label, title):
+    fig = plt.figure(figsize=(16,10))
+    ax = fig.add_subplot(111)
+    plt.title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    return plt

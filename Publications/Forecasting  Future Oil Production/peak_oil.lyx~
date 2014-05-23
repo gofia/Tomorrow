@@ -406,7 +406,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename oseberg.pdf
+	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/oseberg.pdf
 	width 50text%
 
 \end_inset
@@ -416,7 +416,17 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename vale.pdf
+	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/vale.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename skarv.pdf
 	width 50text%
 
 \end_inset
@@ -453,7 +463,10 @@ name "regular_and_irregular"
 
 \begin_layout Standard
 \noindent
-As of January 2013, regular fields make up 85% and 87% of the number of
+All the fields have been fitted using an automated algorithm, afterwards
+ the results have been checked visually to sort out the irregular fields
+ which could not be fitterd.
+ As of January 2013, regular fields make up 85% and 87% of the number of
  fields and 94% and 71% of the total produced oil volume in the Norway and
  the U.K.
  respectively.
@@ -556,17 +569,17 @@ The future production predicted by the extrapolation
  This allows us to compute the resulting error in the extrapolated total
  production
 \begin_inset Formula 
-\[
+\begin{equation}
 P_{e}(t)=\int_{t}^{t_{f}}f(\tau)d\tau
-\]
+\end{equation}
 
 \end_inset
 
 and the error
 \begin_inset Formula 
-\[
+\begin{equation}
 e(t)=\frac{P_{e}(t)-\sum_{i=t}^{t_{f}}p_{i}}{P_{e}(t)}
-\]
+\end{equation}
 
 \end_inset
 
@@ -584,15 +597,26 @@ Repeating such a back test for every possible date in the past, allows us
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\begin_inset Graphics
+	filename oesberg-error.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Error on predicted total production until 2014
+Oesberg field - Error on predicted total production until 2014
 \end_layout
 
 \end_inset
@@ -630,9 +654,9 @@ From the complete back-test, on can compute the average error
 
  confidence interval, as
 \begin_inset Formula 
-\[
+\begin{equation}
 p(t)=(1-\bar{e})\, f(t)\pm\sigma_{e}.
-\]
+\end{equation}
 
 \end_inset
 
@@ -656,14 +680,14 @@ Aggregate error
 \end_layout
 
 \begin_layout Standard
-Once we have extrapolated all the individual fields, we have to compute
- the aggregated extrapolation for the country.
+Once we have extrapolated all the individual fields, the aggregated extrapolatio
+n for the country has to be computed.
  While this is straightforward for the expected production, some care has
  to be taken with respect to the error on the production at the country
  level.
- As shown later, the same extrapolation including a complete back-test,
- has been performed at the country level, and the resulting error is much
- smaller then the average error observed on a individual field.
+ As shown later, the same extrapolation including a complete back-test has
+ been performed at the country level and the resulting error is much smaller
+ than the average error observed on an individual field.
  To account for this observation, the necessary assumption is that the error
  between the individual fields is largely uncorrelated.
  Therefore, the fields can be considered as a portfolio of stocks with an
@@ -671,9 +695,9 @@ Once we have extrapolated all the individual fields, we have to compute
  This means that the error at the country level from the extrapolated production
  is to be computed as 
 \begin_inset Formula 
-\[
+\begin{equation}
 \sigma_{country}^{2}=\frac{1}{\#fields}\sum_{field\in fields}\sigma_{field}^{2}.
-\]
+\end{equation}
 
 \end_inset
 
@@ -696,10 +720,17 @@ As example, a country with 100 fields having each an error of
 
 \begin_layout Subsection
 Discovery rate of new fields
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Discovery-rate-of"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Knowing the future production rate of existing fields is not enough; new
+Knowing the future production rate of existing fields is not enough as new
  fields will be discovered in the future.
  The model describing the discovery rate of new fields should satisfy two
  fundamental observations.
@@ -716,6 +747,17 @@ The rate of new discoveries should depend on the size of the oil fields.
  As of today, giant oil fields are discovered much less frequently than
  dwarfs.
  
+\end_layout
+
+\begin_layout Subsubsection
+Discoveries modeled as logistic growth
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Discoveries-modeled-as"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -764,8 +806,9 @@ reference "rate_of_discovery"
 \begin_inset Formula $N(t)$
 \end_inset
 
- for Norwegian fields classified according to their size.The logistic curve
- is a good fit to the data (integral form of equation 
+ for Norwegian fields classified according to their size.
+ The logistic curve is a good fit to the data (integral form of equation
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "logistic"
@@ -776,8 +819,42 @@ reference "logistic"
  This implies that after an initial increase, the rate of new discoveries
  reaches a peak followed by a decrease until no more oil fields are to be
  found, consistent with our fundamental observations.
- The results are qualitatively similar for the U.K.
- and the U.S.
+\end_layout
+
+\begin_layout Standard
+The larger an oil field is, the easier it should be discovered and the more
+ profitable its production will be.
+ Therefore, it is expectable that the large oil fields have all been found,
+ and that future discoveries will mostly be made up of dwarf fields.
+ For the purpose of this model, the fields have been split into two groups:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Dwarfs
+\series default
+: Fields which are smaller than 
+\begin_inset Formula $1/10^{th}$
+\end_inset
+
+ of the largest existing oil field.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Giants
+\series default
+: Fields which are larger than
+\series bold
+ 
+\series default
+
+\begin_inset Formula $1/10^{th}$
+\end_inset
+
+ of the largest existing oil field.
 \end_layout
 
 \begin_layout Standard
@@ -789,7 +866,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename rate_of_discoveries.pdf
+	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/extrapolating-no-discoveries.pdf
 	width 50text%
 
 \end_inset
@@ -800,10 +877,9 @@ status open
 \begin_layout Plain Layout
 Logistic fit to the number of discoveries for Norway.
  The discovery rate of new oil fields is dependent on their size.
- The logistic model suggests that the majority of small oil fields have
- not yet been discovered, while the rate of discovery of medium oil fields
- is in its decreasing phase.
- Big oil fields are not expected to be discovered anymore.
+ The logistic model suggests that a large number of dwarf oil fields has
+ not yet been discovered, while the rate of discovery of giant oil fields
+ is almost zero.
  
 \end_layout
 
@@ -828,21 +904,335 @@ name "rate_of_discovery"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
+The resulting plot shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
 
-\begin_layout Plain Layout
+\end_inset
 
-%------------------------------------------------
+ confirms our hypothesis.
+ Giant oil fields are mostly all found while the discovery process for dwarf
+ fields is still ongoing.
+ The logistic growth curve fit to the giant discoveries is stable, however
+ the fit for the dwarfs is unstable.
+ As can be seen on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+, the carrying capacity 
+\begin_inset Formula $K$
+\end_inset
+
+ of the logistic growth model is not well constrained by the available data.
+ A large spectrum of values for 
+\begin_inset Formula $K$
+\end_inset
+
+ leads to a good fit to the data.
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
+\begin_layout Subsubsection
+Likelihood function for the number of discoveries
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Likelihood-function-for"
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+To overcome the logistic fitting issue for the dwarf fields, a method already
+ used by Smith 1980 has been implemented.
+ This method makes the following two postulates:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Quotes eld
+\end_inset
+
+The discovery of reservoirs in a petroleum play can be modeled statistically
+ as sampling without replacement from the underlying population of reservoirs.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Quotes eld
+\end_inset
+
+The discovery of a particular reservoir from among the existing population
+ is random, with a probability of discovery being dependent on reservoir
+ size.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fields are splitted into 
+\begin_inset Formula $J$
+\end_inset
+
+ size bins denoted 
+\begin_inset Formula $S_{1},\,\ldots,\, S_{J}$
+\end_inset
+
+ occuring with frequency 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+.
+ Each discovery is considered as a step 
+\begin_inset Formula $i$
+\end_inset
+
+ at which a field of size 
+\begin_inset Formula $I(i)\in\{S_{1},\,\ldots,\, S_{J}\}$
+\end_inset
+
+ is found and we will denote by 
+\begin_inset Formula $m_{ij}$
+\end_inset
+
+ the number of fields of size 
+\begin_inset Formula $j\in\{1,\,\ldots,\, J\}$
+\end_inset
+
+ discovered before the 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ step.
+ Than the probability that the discovery at step 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ is of size 
+\begin_inset Formula $j$
+\end_inset
+
+ can be expressed as
+\begin_inset Formula 
+\begin{equation}
+P\left(I(i)=S_{j}\right)=\frac{\left(n_{j}-m_{ij}\right)\cdot S_{j}}{\sum_{k=1}^{J}\left(n_{k}-m_{ik}\right)\cdot S_{k}}.
+\end{equation}
+
+\end_inset
+
+The likelihood 
+\begin_inset Formula $L$
+\end_inset
+
+ for a complete sequence of 
+\begin_inset Formula $N$
+\end_inset
+
+ discoveries 
+\begin_inset Formula $\{I(1),\,\ldots,\, I(N)\}$
+\end_inset
+
+ can than be expressed as
+\begin_inset Formula 
+\begin{equation}
+L=\prod_{i=1}^{N}\frac{\left(n_{I(i)}-m_{iI(i)}\right)\cdot S_{I(i)}}{\sum_{j=1}^{J}\left(n_{j}-m_{ij}\right)\cdot S_{j}}.
+\end{equation}
+
+\end_inset
+
+The unknown parameters are the number of fields 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+, whose likelihood can now be estimated based on the existing discoveries.
+ Using a brute force approach, the entire space of plausible values for
+ the variables 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+ has been sampled.
+ The values 
+\begin_inset Formula $n_{j}$
+\end_inset
+
+ have been sampled between the number of existing fields 
+\begin_inset Formula $m_{Nj}$
+\end_inset
+
+ in the bin 
+\begin_inset Formula $j$
+\end_inset
+
+ and up to a value 
+\begin_inset Formula $n_{j}^{upper}$
+\end_inset
+
+ such that the most likely scenario 
+\begin_inset Formula $n_{j}^{max}=n_{j}^{upper}/2$
+\end_inset
+
+.
+ Subsequently, the likelihood of each scenario (value of the tuple 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+) has been normalized such that the total likelihood of all generated scenarios
+ equals one.
+\end_layout
+
+\begin_layout Standard
+For the analysis of the north sea oil field discoveries, the number of size
+ bins has been fixed to 
+\begin_inset Formula $J=2$
+\end_inset
+
+ splitting between dwarfs and giants as described section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discoveries-modeled-as"
+
+\end_inset
+
+.
+ The results are coherent with the intuitive expectation that discovering
+ a new giant field is unlikely and that the future discoveries of dwarf
+ fields can only be constrainted to a range as presented on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Future production from discoveries
+\end_layout
+
+\begin_layout Standard
+The goal is to compute an expected oil production coming from future discoveries
+, which requires to combine the steps described in sections 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discoveries-modeled-as"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Likelihood-function-for"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The method described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Likelihood-function-for"
+
+\end_inset
+
+ yields probabilities for the total number of fields (including the not
+ yet discovered fields) in each size bins (called a scenario).
+ However, this likelihood method does not give the time distribution of
+ future discoveries.
+ The aim is to use the likelihood function to generate scenarios with their
+ respective occurence probability.
+\end_layout
+
+\begin_layout Standard
+For a given scenario, the carrying capactiy 
+\begin_inset Formula $K$
+\end_inset
+
+ (= total number of fields) is given for each size class.
+ This is useful, because it resolves the instability in fitting the logistic
+ curve to the number of discovered fields.
+ The time distribution of the discoveries is then given for each size class
+ by the fitted logistic curve.
+\end_layout
+
+\begin_layout Standard
+The actual size of a newly discovered field is generated according to the
+ size distribution of the existing fields in its size class.
+ The probability distribution function of field sizes in a given size bin
+ has been fitted by an exponential function.
+\end_layout
+
+\begin_layout Standard
+The production curve is computed based on the average production curve of
+ all existing fields in the same size category.
+ The production curves of the existing fields have all been normalized to
+ a total production of one and then been averaged.
+ This yields an average production curve including a one standard deviation
+ error.
+ For a new field, this average production curve is than multiplied by the
+ size of the field.
+\end_layout
+
+\begin_layout Standard
+Superposing the production curves results in the expected production curve
+ from future oil field for a given scenario.
+\end_layout
+
+\begin_layout Standard
+As the total parameter space is too large to be sampled entirely, a Monte
+ Carlo technique is applied to compute the expected production from future
+ discoveries and standard deviation.
+ In a nutshell, the algorithm works as follows:
+\end_layout
+
+\begin_layout Enumerate
+Draw a scenario based on its probability
+\end_layout
+
+\begin_layout Enumerate
+Compute the time distribution of new discoveries by fitting a logistic curve
+ for each size class.
+\end_layout
+
+\begin_layout Enumerate
+For each discovery generate a size and the resulting production curve based
+ on the size distribution and production curves of existing fields.
+\end_layout
+
+\begin_layout Enumerate
+Superpose all the production curves.
+\end_layout
+
+\begin_layout Enumerate
+Repeat and average over all drawn scenarios.
+\end_layout
+
+\begin_layout Standard
+The result is the expected production curve of future oil field discoveries.
+ The distribution between all the generated scenarios yields the confidence
+ interval.
 \end_layout
 
 \begin_layout Section
@@ -850,15 +1240,16 @@ Results
 \end_layout
 
 \begin_layout Standard
-Simulating future oil production was straightforward.
- For each country, new oil fields were generated according to the poisson
- process, with 
-\begin_inset Formula $\lambda(t)$
+Based on the methodology described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discovery-rate-of"
+
 \end_inset
 
- chosen according to their size.
- For each of the generated oil fields, its production profile was chosen
- randomly from one of existing fields within the same size category.
+, simulating future oil production was straightforward.
+ For each country, the existing fields were extrapolated and the future
+ discoveries were simulated.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -866,7 +1257,7 @@ reference "no_uk_2013"
 
 \end_inset
 
- shows the average of 1000 (50 on these plots) simulations.
+ shows the average of 1000 simulations.
  For each country, we can immediately notice the non-symmetric shape of
  the production's dynamics contrary to what Hubbert would have predicted.
 \end_layout
@@ -905,7 +1296,7 @@ centering
 
  
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="4">
+<lyxtabular version="3" rows="4" columns="4">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0">
 <column alignment="left" valignment="top" width="0">
@@ -916,60 +1307,6 @@ centering
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-toprule
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-multicolumn{2}{c}{Name} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-cmidrule(r){1-2}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
 Country 
 \end_layout
 
@@ -1118,54 +1455,6 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-U.S.A.
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $x$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $y$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $z\%$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 \begin_inset ERT
 status open
 
@@ -1232,7 +1521,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename no_and_uk_2013.pdf
+	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/no_and_uk_2013.pdf
 	width 50text%
 
 \end_inset
@@ -1300,275 +1589,6 @@ The difference between our and the Hubbert-based forecast is striking.
  The only way to answer this question is to backtest them.
  In other words we ask: "What would have each of the models predicted had
  we used them 10, 15, 20 years in the past?"
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-begin{table}[H]
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-caption{Example table}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-centering
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-begin{tabular}{llr}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-toprule
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-multicolumn{2}{c}{Name} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-cmidrule(r){1-2}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%First name & Last Name & Grade 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-midrule
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%John & Doe & $7.5$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%Richard & Miles & $2$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-bottomrule
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-end{tabular}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-end{table}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%------------------------------------------------
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -1644,7 +1664,7 @@ centering
 
  
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="5">
+<lyxtabular version="3" rows="4" columns="5">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0">
 <column alignment="left" valignment="top" width="0">
@@ -1656,60 +1676,6 @@ centering
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-toprule
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-multicolumn{2}{c}{Name} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-cmidrule(r){1-2}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
 Start 
 \end_layout
 
@@ -1885,63 +1851,6 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-1993 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-U.S.A.
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $x'$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $y'$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $z'\%$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 \begin_inset ERT
 status open
 
@@ -2089,200 +1998,24 @@ We have presented a Monte-Carlo based methodology to forecast future oil
  However, our backtesting results seriously questions the credibility of
  that forecast, since the Hubbert-model clearly outperforms the Monte-Carlo
  simulation.
- 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%-------------------------------------------------------------------------------
----------
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "Smith"
 
 \end_inset
 
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%	REFERENCE LIST
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%-------------------------------------------------------------------------------
----------
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-begin{thebibliography}{99} % Bibliography - this is intentionally simple
- in this template
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%Figueredo, A.~J.
- and Wolf, P.
- S.~A.
- (2009).
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-newblock Assortative pairing and life history strategy - a cross-cultural
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%study.
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-newblock {
-\backslash
-em Human Nature}, 20:317--330.
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-end{thebibliography}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%-------------------------------------------------------------------------------
----------
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+J.
+ L.
+ Smith A Probablilistic Model of Oil Discovery, The Review of Economics
+ and Statistics, Vol.
+ 62, No.
+ 4 (Nov.
+ 1980), pp.
+ 587-594
 \end_layout
 
 \begin_layout Standard

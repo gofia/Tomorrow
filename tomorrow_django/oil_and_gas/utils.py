@@ -16,9 +16,10 @@
 
 import calendar
 import datetime
-from dateutil import relativedelta
+import matplotlib
 import matplotlib.pyplot as plt
 
+from dateutil import relativedelta
 
 def add_months(date, months):
     month = date.month - 1 + months
@@ -76,4 +77,10 @@ def start_plot(x_label, y_label, title):
     plt.title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    font = {
+        'family': 'Arial',
+        'weight': 'bold',
+        'size': 26
+    }
+    matplotlib.rc('font', **font)
     return plt

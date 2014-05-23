@@ -25,9 +25,8 @@ from numpy.core.multiarray import array
 import numpy as np
 from scipy.optimize.cobyla import fmin_cobyla
 from scipy.optimize.optimize import brute
-from matplotlib.pyplot import legend
 
-from .models import Country, Field, DiscoveryScenario
+from .models import Country, Field, DiscoveryScenario, CachedResult
 from .processing import FieldProcessor
 from .fitting import fit_exponential
 from .fit_logistic import fit_logistic_r_p, get_logistic
@@ -42,6 +41,7 @@ class DiscoveryGenerator:
     scenarios = []
     pdf = []
     _oldest_unstable_field = None
+    n_scenarios = 5
 
     def __init__(self, country):
         self.country = Country.objects.get(name=country)
@@ -55,7 +55,7 @@ class DiscoveryGenerator:
         self.min_size = min(self.sizes)
         self.max_size = max(self.sizes)
         # self.median_size = np.median(self.sizes)
-        self.median_size = self.max_size / 10
+        self.median_size = 50E6 # 40 for UK
         print "Number sizes: {0}".format(len(self.sizes))
         print "Sizes: {0}".format(self.sizes)
         print "Min size: {0}".format(self.min_size)
@@ -113,6 +113,7 @@ class DiscoveryGenerator:
 
     def init_scenarios(self):
         db_scenarios = DiscoveryScenario.objects.filter(country=self.country)
+        db_scenarios.delete()
 
         if db_scenarios.count() > 0:
             self.scenarios = db_scenarios.order_by('pdf').all()
@@ -173,7 +174,7 @@ class DiscoveryGenerator:
         print "Found {0} fields between {1} and {2}.".format(len(fields), min_size, max_size)
 
         youngest = min(map(lambda x: x.discovery, fields))
-        n_months = diff_months_abs(youngest, datetime.datetime.today())
+        n_months = diff_months_abs(youngest, datetime.datetime(2014, 4, 1))
         times = [add_months(copy.copy(youngest), n) for n in range(0, n_months)]
         discoveries = np.zeros(n_months)
 
@@ -188,6 +189,11 @@ class DiscoveryGenerator:
 
     def get_average_production(self, min_size, max_size):
         print "Get average production"
+        cache_name = "average-production-{0}-{1}-{2}".format(self.country.name, min_size, max_size)
+        cached_result, created = CachedResult.objects.get_or_create(name=cache_name)
+        if not created:
+            return np.array(cached_result.data)
+
         fields = []
         max_length = 0
         for field in self.fields:
@@ -217,9 +223,11 @@ class DiscoveryGenerator:
                     production.object.production_oil / field.extrapolated_total_production_oil
                 )
 
-        avg_production = []
         for production in productions:
-            avg_production.append((np.average(production), np.std(production)))
+            cached_result.data.append((np.average(production), np.std(production)))
+
+        cached_result.set_data()
+        cached_result.save()
 
         # make_plot(
         #     np.array(range(0, len(avg_production))),
@@ -227,8 +235,7 @@ class DiscoveryGenerator:
         #     "Month",
         #     "Average production",
         # )
-
-        return avg_production
+        return cached_result.data
 
     def get_size_fit(self, min_size, max_size):
         print "Get size fit"
@@ -243,23 +250,39 @@ class DiscoveryGenerator:
         bins = np.linspace(min_size, max_size, 50)
         digitized = np.digitize(sizes, bins)
         size_pdf = np.bincount(digitized)[1:]
-        size_pdf = np.cumsum(size_pdf)[::-1]
+        size_pdf = np.cumsum(size_pdf)
         size_pdf = [(np.float(s) / np.float(len(sizes))) for s in size_pdf]
+        size_pdf = np.ones(len(size_pdf)) - size_pdf
         bins = np.linspace(min_size, max_size, len(size_pdf))
 
         x_min, tau, beta, y0 = fit_stretched_exponential(
             bins,
             size_pdf,
-            y0=sizes[0],
-            show=False
+            y0=1,
+            tau=-1.0,
+            beta=1.0,
+            show=False,
         )
+
+        # make_plot(
+        #     bins,
+        #     size_pdf,
+        #     "Bin",
+        #     "Number fields",
+        #     bins,
+        #     get_stretched_exponential(y0, tau, beta)(bins),
+        # )
+
         return get_stretched_exponential(y0, tau, beta)
 
     @staticmethod
     def get_random_size(fit, min_size, max_size):
         r = random.random()
         found_size = 0
+        # print "{0} / {1}".format(min_size, max_size)
         for size in np.linspace(min_size, max_size, 100):
+            # print "fit: {0}".format(fit(size))
+            # print "r: {0}".format(r)
             if fit(size) < r:
                 found_size = size
                 break
@@ -282,17 +305,15 @@ class DiscoveryGenerator:
         r = random.random()
         scenario_idx = next(idx for idx, p in enumerate(self.pdf) if p > r)
         print "Selected scenarios {0}.".format(scenario_idx)
+        print "Dwarf probability {0}.".format(self.scenarios[scenario_idx].probability_dwarf)
         return self.scenarios[scenario_idx]
 
     def compute_future_dwarfs(self):
         print "Compute future dwarfs."
         avg, err = None, None
-        total_p = 0.0
-        for i in range(0, 5):
+        for i in range(0, self.n_scenarios):
             try:
                 scenario = self.random_scenario()
-                p = scenario.probability
-                total_p += p
                 scenario_avg, scenario_err = self.process_size(
                     scenario.number_dwarfs,
                     self.x_dwarf,
@@ -300,16 +321,18 @@ class DiscoveryGenerator:
                     self.dwarf_size_fit,
                     self.average_dwarf_production,
                     self.time_dwarf,
+                    0.0,
+                    self.median_size,
                 )
                 if avg is None:
-                    avg, err = p * scenario_avg, p * scenario_err
+                    avg, err = scenario_avg, scenario_err
                 else:
-                    avg += p * scenario_avg
-                    err += p * scenario_err
+                    avg += scenario_avg
+                    err += scenario_err
             except Exception:
                 pass
-        avg /= total_p
-        err /= total_p
+        avg /= self.n_scenarios
+        err /= self.n_scenarios
         # make_plot(
         #     range(0, len(scenario_avg)),
         #     avg,
@@ -317,7 +340,9 @@ class DiscoveryGenerator:
         #     "Discovery production",
         # )
 
-        start_date = copy.copy(self.oldest_unstable_field())
+        # start_date = copy.copy(self.oldest_unstable_field())
+        # start_date = add_months(start_date, 36)
+        start_date = add_months(datetime.date(2012, 8, 1), 0)
         print "Dwarf discovery start date {0}.".format(start_date)
         future = []
         for idx, production in enumerate(avg):
@@ -334,12 +359,9 @@ class DiscoveryGenerator:
     def compute_future_giants(self):
         print "Compute future giants."
         avg, err = None, None
-        total_p = 0.0
-        for i in range(0, 5):
+        for i in range(0, self.n_scenarios):
             try:
                 scenario = self.random_scenario()
-                p = scenario.probability
-                total_p += p
                 scenario_avg, scenario_err = self.process_size(
                     scenario.number_giants,
                     self.x_giant,
@@ -347,16 +369,18 @@ class DiscoveryGenerator:
                     self.giant_size_fit,
                     self.average_giant_production,
                     self.time_giant,
+                    self.median_size,
+                    self.max_size,
                 )
                 if avg is None:
-                    avg, err = p * scenario_avg, p * scenario_err
+                    avg, err = scenario_avg, scenario_err
                 else:
-                    avg += p * scenario_avg
-                    err += p * scenario_err
+                    avg += scenario_avg
+                    err += scenario_err
             except Exception:
                 pass
-        avg /= total_p
-        err /= total_p
+        avg /= self.n_scenarios
+        err /= self.n_scenarios
         # make_plot(
         #     range(0, len(scenario_avg)),
         #     avg,
@@ -364,7 +388,9 @@ class DiscoveryGenerator:
         #     "Discovery production",
         # )
 
-        start_date = copy.copy(self.oldest_unstable_field())
+        # start_date = copy.copy(self.oldest_unstable_field())
+        # start_date = add_months(start_date, 36)
+        start_date = add_months(datetime.date(2012, 8, 1), 0)
         print "Giant discovery start date {0}.".format(start_date)
         future = []
         for idx, production in enumerate(avg):
@@ -378,7 +404,7 @@ class DiscoveryGenerator:
         self.country.future_giants = json.dumps(future)
         self.country.save()
 
-    def process_size(self, number, time, logistic, size_fit, avg_production, lol):
+    def process_size(self, number, time, logistic, size_fit, avg_production, lol, min_size, max_size):
         print "Scenario has {0} dwarfs.".format(number)
         r_dwarf, p_dwarf, residual_dwarf = fit_logistic_r_p(
             number,
@@ -405,14 +431,24 @@ class DiscoveryGenerator:
         future_len = len(x_future) - len(time)
         x_discoveries = range(0, future_len)
         discoveries = (fit - logistic[-1])[len(time):]
+        discoveries_max = max(discoveries)
+        randoms = [2 * (0.5 - random.random()) for i in range(0, len(discoveries))]
+        randoms = np.cumsum(randoms)
+        randoms /= max(abs(randoms))
+        randoms = [2 * r * (discoveries_max - discoveries[idx]) for idx, r in enumerate(randoms)]
+        discoveries = discoveries + randoms
+        discoveries = [min(discovery, discoveries_max) for discovery in discoveries]
         production = np.zeros(future_len)
         production_err = np.zeros(future_len)
         next_step = 0
         avg = map(lambda p: p[0], avg_production)
         err = map(lambda p: p[1], avg_production)
+        count = 0
         for x in x_discoveries:
             if discoveries[x] > next_step:
-                field_size = self.get_random_size(size_fit, 0, self.median_size)
+                count += 1
+                field_size = self.get_random_size(size_fit, min_size, max_size)
+                # print field_size
                 field_production = np.zeros(len(avg))
                 field_production_err = np.zeros(len(err))
                 for idx, e in enumerate(avg):
@@ -421,9 +457,15 @@ class DiscoveryGenerator:
                     field_production_err[idx] = e * field_size
                 field_production = np.array(field_production[0:(future_len - x)])
                 field_production_err = np.array(field_production_err[0:(future_len - x)])
-                production += np.concatenate((np.zeros(x), field_production), axis=0)
-                production_err += np.concatenate((np.zeros(x), field_production_err), axis=0)
+                try:
+                    for idx, e in enumerate(np.concatenate((np.zeros(x), field_production), axis=0)):
+                        production[idx] += e
+                    for idx, e in enumerate(np.concatenate((np.zeros(x), field_production_err), axis=0)):
+                        production_err[idx] += e
+                except:
+                    print np.concatenate((np.zeros(x), field_production), axis=0)
                 next_step += 1
+        print "{0}/{1}".format(count, discoveries_max)
 
         # make_plot(
         #     x_discoveries,
@@ -472,8 +514,12 @@ class SizeBins(object):
         ranges = ()
         probability_ranges = ()
         for size_bin in self.bins:
-            ranges += (slice(size_bin.count + 1, size_bin.count * 2, 1.0),)
-            probability_ranges += (slice(0.05, 1.0, 0.05),)
+            if size_bin.count > 45:  # < 150 for UK
+                ranges += (slice(size_bin.count + 1, size_bin.count + 10, 1.0),)
+                probability_ranges += (slice(0.05, 1.0, 0.05),)
+            else:
+                ranges += (slice(size_bin.count * 2, size_bin.count * 3, 1.0),)  # +1 and * 1.25 for U.K.
+                probability_ranges += (slice(0.05, 1.0, 0.05),)
         ranges += probability_ranges[:-1]
         return ranges
 

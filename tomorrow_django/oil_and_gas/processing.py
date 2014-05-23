@@ -37,6 +37,7 @@ from .utils import add_months, diff_months, diff_months_abs
 
 
 class ProductionProcessor():
+    date_max = date.today()
     production_type = None
     processed_type = None
     processed = None
@@ -71,7 +72,10 @@ class ProductionProcessor():
 
     def load_data(self, options):
         name = options.get('name', '')
-        self.productions = self.production_type.objects.filter(name=name).all().order_by('date')
+        self.productions = self.production_type.objects.filter(
+            name=name,
+            date__lte=self.date_max,
+        ).all().order_by('date')
         self.processed, created = self.processed_type.objects.get_or_create(name=name)
         self.dates, self.x_s, self.y_s = self.get_plot_data()
 
@@ -197,6 +201,13 @@ class ProductionProcessor():
             self.processed.tau = fit.tau
             self.processed.beta = fit.beta
 
+    @staticmethod
+    def last_not_zero(numeric_array):
+        for e in reversed(numeric_array):
+            if e > 0:
+                return e
+        return 0
+
     def set_information(self):
         processed = self.processed
         productions = self.productions
@@ -215,7 +226,7 @@ class ProductionProcessor():
         processed.active = diff_months_abs(dates[-1], date.today()) < 12
         if processed.active is True:
             processed.shut_down = None
-            processed.current_production_oil = y[-1]
+            processed.current_production_oil = self.last_not_zero(y)
         else:
             processed.shut_down = dates[-1]
             processed.current_production_oil = 0

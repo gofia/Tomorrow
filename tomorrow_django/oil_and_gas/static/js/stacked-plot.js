@@ -19,17 +19,17 @@
             if (date < start_date) { continue; }
             dates.push(new Date(date));
             end_date = date;
-            future_existing.push([date, forecasts[i].average]);
+            future_existing.push([date, forecasts[i].average / 30]);
         }
         for (i = 0; i < dwarfs.length; i++) {
             date = $.to_date(dwarfs[i].date);
             if (date < start_date || end_date < date) { continue; }
-            future_dwarfs.push([date, dwarfs[i].average]);
+            future_dwarfs.push([date, dwarfs[i].average / 30]);
         }
         for (i = 0; i < giants.length; i++) {
             date = $.to_date(giants[i].date);
             if (date < start_date || end_date < date) { continue; }
-            future_giants.push([date, giants[i].average]);
+            future_giants.push([date, giants[i].average / 30]);
         }
 
         container.find('.stacked-plot').highcharts({
@@ -37,23 +37,42 @@
                 type: 'area'
             },
             title: {
-                text: 'Future production extrapolation and new discoveries'
+                text: 'U.K. future production extrapolation and new discoveries',
+                style: {
+                    fontSize: "30px"
+                }
             },
             xAxis: {
                 type: 'datetime',
                 tickmarkPlacement: 'on',
                 title: {
                     enabled: false
+                },
+                labels: {
+                    style: {
+                        fontSize: "20px"
+                    }
                 }
             },
             yAxis: {
                 title: {
-                    text: 'barrels (million) / month'
+                    text: 'barrels / days',
+                    style: {
+                        fontSize: "20px"
+                    }
                 },
                 labels: {
                     formatter: function() {
-                        return this.value / 1E6;
+                        return this.value / 1E6 + "M";
+                    },
+                    style: {
+                        fontSize: "20px"
                     }
+                }
+            },
+            legend: {
+                itemStyle: {
+                    fontSize: "14px"
                 }
             },
             tooltip: {

@@ -39,7 +39,7 @@ class NoManager():
 
     def get_csv(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("gmail.com",80))
+        s.connect(("gmail.com", 80))
         ip = s.getsockname()[0]
         s.close()
         r = requests.get(self.url.format(ip))
@@ -62,7 +62,7 @@ class NoManager():
         month = self.to_int_or_zero(columns[2])
         production_date = date(year=year, month=month, day=1)
         p, created = FieldProduction.objects.get_or_create(name=field_name, country="NO", date=production_date)
-        p.production_oil = self.to_positive_float_or_zero(columns[3]) * 1E6 * 8.3864
+        p.production_oil = self.to_positive_float_or_zero(columns[3]) * 1E6 * 6.2898
         p.production_gas = self.to_positive_float_or_zero(columns[4]) * 1E6
         p.production_water = self.to_positive_float_or_zero(columns[8]) * 1E6
         p.save()

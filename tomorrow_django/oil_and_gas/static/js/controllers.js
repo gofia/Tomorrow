@@ -22,7 +22,7 @@ angular.module('tomorrow.controllers', [])
             });
         });
         $scope.fields = [];
-        $http.get("/api/fields/NO").success(function (data) {
+        $http.get("/api/fields/UK").success(function (data) {
             $scope.fields = data;
             angular.forEach($scope.fields, function (field) {
                 field.load_details = function ($event) {

@@ -28,48 +28,49 @@ $(function () {
                 total_oil_production += server_production[i].fields.production_oil;
                 productions.push([
                     date,
-                    server_production[i].fields.production_oil
+                    server_production[i].fields.production_oil / 30
                 ]);
                 x = $.month_diff(first_date, date);
                 if (x >= data.x_min) {
                     fit.push([
                         date,
-                        fit_function(x)
+                        fit_function(x) / 30
                     ]);
                     fit_range.push([
                         date,
-                        fit_function(x) * (1 - data.error_std),// * (1 - data.error_avg),
-                        fit_function(x) * (1 + data.error_std)// * (1 - data.error_avg)
+                        fit_function(x) * (1 - data.error_std) / 30,// * (1 - data.error_avg),
+                        fit_function(x) * (1 + data.error_std) / 30// * (1 - data.error_avg)
                     ]);
                 }
             }
 
-            if (data.forecasts) {
+            if (data.future_dwarfs && data.future_giants) {
                 var dwarfs = JSON.parse(data.future_dwarfs),
                     giants = JSON.parse(data.future_giants),
                     forecasts = JSON.parse(data.forecasts),
-                    forecast_avg = [],
+                    forecast_avg = {},
                     forecast_range = [],
                     dates,
                     idx;
                 for (i = 0; i < forecasts.length; i++) {
                     date = $.to_date(forecasts[i].date);
-                    forecast_avg.push([date, forecasts[i].average]);
+                    if (date < productions.last()[0]) { continue; }
+                    forecast_avg[date] = forecasts[i].average;
                     forecast_range.push([
                         date,
-                        forecasts[i].average * (1 - forecasts[i].sigma),
-                        forecasts[i].average * (1 + forecasts[i].sigma)
+                        forecasts[i].average * (1 - forecasts[i].sigma) / 30,
+                        forecasts[i].average * (1 + forecasts[i].sigma) / 30
                     ]);
                     if (date >= last_date) {
                         x = $.month_diff(first_date, date);
                         fit.push([
                             date,
-                            fit_function(x)
+                            fit_function(x) / 30
                         ]);
                         fit_range.push([
                             date,
-                            fit_function(x) * (1 - data.error_std) * (1 - data.error_avg),
-                            fit_function(x) * (1 + data.error_std) * (1 - data.error_avg)
+                            fit_function(x) * (1 - data.error_std) * (1 - data.error_avg) / 30,
+                            fit_function(x) * (1 + data.error_std) * (1 - data.error_avg) / 30
                         ]);
                     }
                 }
@@ -78,17 +79,26 @@ $(function () {
                     date = $.to_date(dwarfs[i].date);
                     idx = dates.indexOf(date);
                     if (idx === -1) { continue; }
-                    forecast_range[idx][1] += dwarfs[i].average - dwarfs[i].sigma;
-                    forecast_range[idx][2] += dwarfs[i].average + dwarfs[i].sigma;
+                    forecast_avg[date] += dwarfs[i].average;
+                    forecast_range[idx][1] += (dwarfs[i].average - dwarfs[i].sigma) / 30;
+                    forecast_range[idx][2] += (dwarfs[i].average + dwarfs[i].sigma) / 30;
                 }
                 for (i = 0; i < giants.length; i++) {
                     date = $.to_date(giants[i].date);
                     idx = dates.indexOf(date);
                     if (idx === -1) { continue; }
-                    forecast_range[idx][1] += giants[i].average - giants[i].sigma;
-                    forecast_range[idx][2] += giants[i].average + giants[i].sigma;
+                    forecast_avg[date] += giants[i].average;
+                    forecast_range[idx][1] += (giants[i].average - giants[i].sigma) / 30;
+                    forecast_range[idx][2] += (giants[i].average + giants[i].sigma) / 30;
                 }
                 $.staked_plot(details_box, data);
+                console.log(JSON.stringify(forecast_avg));
+                var array = [];
+                for (var key in forecast_avg) {
+                    array.push([parseInt(key, 10), forecast_avg[key] / 30]);
+                }
+                forecast_avg = array;
+                console.log(JSON.stringify(forecast_avg));
             }
 
             for (i = 0; i < data.fits.length; i++) {
@@ -106,13 +116,24 @@ $(function () {
             betas = betas.slice(Math.round(betas.length / 3));
             //sum_errors = sum_errors.slice(Math.round(sum_errors.length/4));
 
+            var title = 'Production of the field ' + data.name;
+            if (data.name === "NO") {
+                title = "Norwegian oil production and forecast"
+            }
+            if (data.name === "UK") {
+                title = "U.K. oil production and forecast"
+            }
+
             var plot_options = {
                 chart: {
                     zoomType: 'x',
                     spacingRight: 20
                 },
                 title: {
-                    text: 'Production of the field ' + data.name
+                    text: title,
+                    style: {
+                        fontSize: "30px"
+                    }
                 },
                 subtitle: {
                     text: document.ontouchstart === undefined ?
@@ -124,18 +145,34 @@ $(function () {
                     maxZoom: 14 * 24 * 3600000, // fourteen days
                     title: {
                         text: null
+                    },
+                    labels: {
+                        style: {
+                            fontSize: "20px"
+                        }
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'barrel/month'
+                        text: 'barrels/day',
+                        style: {
+                            fontSize: "20px"
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: "20px"
+                        }
                     }
                 },
                 tooltip: {
                     shared: true
                 },
                 legend: {
-                    enabled: false
+                    itemStyle: {
+                        fontSize: "14px"
+                    }
                 },
                 plotOptions: {
                     area: {
@@ -169,31 +206,31 @@ $(function () {
                         type: 'area',
                         name: 'Production',
                         data: productions
-                    }//,
-//                    {
-//                        type: 'line',
-//                        name: 'Fit',
-//                        data: fit
-//                    },
-//                    {
-//                        name: 'Range',
-//                        data: fit_range,
-//                        type: 'arearange',
-//                        lineWidth: 0,
-//                        linkedTo: ':previous',
-//                        color: Highcharts.getOptions().colors[1],
-//                        fillOpacity: 0.3,
-//                        zIndex: 0
-//                    }
+                    },
+                    {
+                        type: 'line',
+                        name: 'Fit',
+                        data: fit
+                    },
+                    {
+                        name: 'Range',
+                        data: fit_range,
+                        type: 'arearange',
+                        lineWidth: 0,
+                        linkedTo: ':previous',
+                        color: Highcharts.getOptions().colors[1],
+                        fillOpacity: 0.3,
+                        zIndex: 0
+                    }
                 ]
             };
 
             if (data.forecasts) {
-//                plot_options.series.push({
-//                    type: 'line',
-//                    name: 'Forecast',
-//                    data: forecast_avg
-//                });
+                plot_options.series.push({
+                    type: 'line',
+                    name: 'Forecast',
+                    data: forecast_avg
+                });
                 plot_options.series.push({
                     name: 'Range',
                     data: forecast_range,
@@ -204,6 +241,22 @@ $(function () {
                     fillOpacity: 0.5,
                     zIndex: 0
                 });
+                var forecast_total = $.map(
+                    forecast_avg,
+                    function (e) { return e[1]; }
+                ).reduce(function (a, b) {
+                    return a + b;
+                }, 0);
+
+                var fit_total = $.map(
+                    $.grep(fit, function (e) { return e[0] > productions.last()[0]; }),
+                    function (e) { return e[1]; }
+                ).reduce(function (a, b) {
+                    return a + b;
+                }, 0);
+
+                console.log("Forecast total: " + forecast_total);
+                console.log("Fit total: " + fit_total);
             }
 
             details_box.find('.container').highcharts(plot_options);
@@ -211,12 +264,13 @@ $(function () {
             plot_options.series = [
                 {
                     type: 'area',
-                    name: 'forecast error',
+                    name: 'Fit error',
                     data: sum_errors
                 }
             ];
-            plot_options.title.text = "Error on future total production";
+            plot_options.title.text = "OSEBERG - Error on future total production";
             plot_options.yAxis.title.text = "%";
+            plot_options.yAxis.min = undefined;
 
             details_box.find('.sum-error').highcharts(plot_options);
 
@@ -244,7 +298,7 @@ $(function () {
 
             details_box.find('.beta').highcharts(plot_options);
         };
-    }
+    };
 
     //$.getJSON("/api/countries/").done(plot);
 

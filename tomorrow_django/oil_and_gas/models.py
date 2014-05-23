@@ -14,9 +14,14 @@
 # agreement you entered into with Lucas Fievet.
 #
 
+import json
+
 from django.db import models
 from django.db.models import Max
 from datetime import datetime
+
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 import math
 
@@ -241,3 +246,32 @@ class DiscoveryScenario(models.Model):
             self.probability_dwarf,
             self.probability_giant,
         )
+
+
+class CachedResult(models.Model):
+    name = models.TextField(
+        _("Name"),
+        help_text=_("Name of the query"),
+        default="",
+        unique=True,
+    )
+    result = models.TextField(
+        _("Result"),
+        help_text=_("Result of the query"),
+        default="[]"
+    )
+    updated = models.DateTimeField(
+        verbose_name=_("Datetime"),
+        help_text=_("The last date at which this query has been saved."),
+        default=timezone.now
+    )
+    _data = None
+
+    @property
+    def data(self):
+        if self._data is None:
+            self._data = json.loads(self.result)
+        return self._data
+
+    def set_data(self):
+        self.result = json.dumps(self._data)

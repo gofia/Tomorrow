@@ -116,7 +116,7 @@ class UkRequest():
             p.name = field_name
             year = self.to_int_or_zero(tds[0].text)
             p.date = date(year=year, month=idx+1, day=1)
-            p.production_oil = self.to_int_or_zero(td.text)
+            p.production_oil = self.to_int_or_zero(td.text) * 6.2898
             productions.append(p)
 
         return productions

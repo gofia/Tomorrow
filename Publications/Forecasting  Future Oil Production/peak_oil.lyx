@@ -1316,7 +1316,7 @@ Country
 \begin_inset Text
 
 \begin_layout Plain Layout
-Hubbert 
+Fit
 \end_layout
 
 \end_inset
@@ -1325,7 +1325,7 @@ Hubbert
 \begin_inset Text
 
 \begin_layout Plain Layout
-our model 
+Our model 
 \end_layout
 
 \end_inset
@@ -1369,7 +1369,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $81\cdot10^{6}$
+\begin_inset Formula $130\cdot10^{6}$
 \end_inset
 
  
@@ -1381,7 +1381,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $270\cdot10^{6}$
+\begin_inset Formula $188\cdot10^{6}$
 \end_inset
 
  
@@ -1393,7 +1393,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-70\%$
+\begin_inset Formula $-31\%$
 \end_inset
 
 
@@ -1417,7 +1417,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $275\cdot10^{6}$
+\begin_inset Formula $59\cdot10^{6}$
 \end_inset
 
  
@@ -1429,7 +1429,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $959\cdot10^{6}$
+\begin_inset Formula $98\cdot10^{6}$
 \end_inset
 
  
@@ -1441,7 +1441,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-71\%$
+\begin_inset Formula $-40\%$
 \end_inset
 
  
@@ -1521,7 +1521,17 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/no_and_uk_2013.pdf
+	filename NO-future.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-future.pdf
 	width 50text%
 
 \end_inset
@@ -2016,6 +2026,26 @@ J.
  4 (Nov.
  1980), pp.
  587-594
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+norway fact sheet
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+uk fact sheet
 \end_layout
 
 \begin_layout Standard

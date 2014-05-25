@@ -57,30 +57,8 @@
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
 %\fancyhead[C]{Running title $\bullet$ November 2012 $\bullet$ Vol. XXI, No. 1} % Custom header text
-\fancyhead[C]{Forecasting future oil production $\bullet$ July 2013} % Custom header text
+\fancyhead[C]{Forecasting future oil production $\bullet$ July 2014} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
-
-%----------------------------------------------------------------------------------------
-%	TITLE SECTION
-%----------------------------------------------------------------------------------------
-
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Forecasting future oil production}} % Article title
-
-\author{
-\large
-%\textsc{John Smith}\thanks{A thank you or further information}, % Your name
-\textsc{Z. Forr\'o}, % Your name
-\textsc{P. Cauwels},
-\textsc{L. Fi\'evet}, 
-\textsc{M. del Degan} and 
-\textsc{D. Sornette}\\[2mm] 
-\normalsize D-MTEC, ETHZ, Z\"urich \\ % Your institution
-%\normalsize \href{mailto:zforro@ethz.ch}{zforro@ethz.ch} % Your email address
-\vspace{-5mm}
-}
-
-
-%----------------------------------------------------------------------------------------
 \end_preamble
 \use_default_options false
 \maintain_unincluded_children false
@@ -164,6 +142,27 @@ thispagestyle{fancy}
  
 \end_layout
 
+\begin_layout Title
+Forecasting future oil production
+\end_layout
+
+\begin_layout Author
+L.
+ Fiévet, Z.
+ Forró, P.
+ Cauwels, M.
+ del Degan and D.
+ Sornette
+\end_layout
+
+\begin_layout Author
+D-MTEC, ETH Zürich
+\end_layout
+
+\begin_layout Date
+05/25/14
+\end_layout
+
 \begin_layout Abstract
 \noindent
 We have developed a Monte-Carlo methodology to forecast the crude oil production
@@ -176,8 +175,8 @@ We have developed a Monte-Carlo methodology to forecast the crude oil production
  remaining oil reserves.
  We compare our model to those methodologies by making predictions from
  various points in time the past.
- It shows that our model gives a better description (hopefully soon) of
- the evolution of the oil production.
+ It shows that our model gives a better description of the evolution of
+ the oil production.
  
 \end_layout
 
@@ -241,17 +240,48 @@ lettrine[nindent=0em,lines=3]
  economy.
  Its importance ranges from energy production, through manufacturing to
  pharmaceuticals industry.
- Petroleum is a non-renewable, finite resource.
- It is primordial to be able to forecast future oil production since a misestima
-tion of its reserves can have huge consequences on our society.
- 
+ As petroleum is a non-renewable and finite resource, it is primordial to
+ be able to forecast future oil production.
+ The fear of a global oil peak, beyond which production will inevitably
+ decline, has been growing due to stagnating supplies and high oil prices
+ since the crisis in 2008/2009 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Murray 2012"
+
+\end_inset
+
+.
+ As any industrialized country, Europe is strongly dependent on oil supply
+ to maintain its economic power.
+ In the nowadays difficult geo-political environment, it is important to
+ know how much of the oil needed in Europe will come from reliable sources.
+ In the past, a big share has been coming from Norway and the U.K.
+ which have been reliable exporters.
+ However, the U.K.
+ already became a net importer in 2005 and Norways production has been declining
+ rapidly as well 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Höök 2008"
+
+\end_inset
+
+.
 \begin_inset Newline newline
 \end_inset
 
  The methodology behind forecasting future oil production has not evolved
  much since M.
- King Hubbert who, in 1956, famously predicted that the U.S.
- oil production would peak around 1965-1970.
+ King Hubbert, who in 1956 famously predicted that the U.S.
+ oil production would peak around 1965-1970 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hubbert 1956"
+
+\end_inset
+
+.
  That prediction has proven itself to be correct.
  His main argument was based on the finiteness of oil reserves and use of
  the logistic differential equation
@@ -299,10 +329,37 @@ to model oil production.
  King Hubbert predicted with surprising accuracy to peak.
  From a methodological point of view, the Hubbert model has enjoyed a longstandi
 ng popularity in modeling future oil production given its simplicity.
- 
+ Various extensions have been studied to account for multi-cycled or asymetric
+ production curves 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brandt 2006"
+
+\end_inset
+
+.
 \begin_inset Newline newline
 \end_inset
 
+The existing forecasts of future oil production use some form of the Hubbert
+ model 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brecha 2012,Laherrère 2002,Lynch 2002"
+
+\end_inset
+
+ or economical model 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Greiner 2012"
+
+\end_inset
+
+ applied to aggregate production, but none goes into the details of study
+ the underlying dynamics.
+ The main reason for the lack of details is certainly the lack of available
+ data.
  In this paper, we introduce a new methodology to forecast future oil production.
  Instead of taking the aggregate oil production profile and fitting it with
  the Hubbert curve or its variants (such as the multi cyclic Hubbert curve),
@@ -311,8 +368,21 @@ ng popularity in modeling future oil production given its simplicity.
  rate of discovery of new fields, we are able to forecast future oil production
  by the means of a Monte Carlo simulation.
  To demonstrate the universality of the methodology presented here, we apply
- it to 2 major oil producing countries with publically available data: Norway
- and the U.K.
+ it to 2 major oil producing countries with publically available data: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Norwegian Data"
+
+\end_inset
+
+ and the 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "U.K. Data"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -406,7 +476,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/oseberg.pdf
+	filename oseberg.pdf
 	width 50text%
 
 \end_inset
@@ -416,7 +486,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/vale.pdf
+	filename vale.pdf
 	width 50text%
 
 \end_inset
@@ -866,7 +936,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/extrapolating-no-discoveries.pdf
+	filename extrapolating-no-discoveries.pdf
 	width 50text%
 
 \end_inset
@@ -1316,7 +1386,7 @@ Country
 \begin_inset Text
 
 \begin_layout Plain Layout
-Hubbert 
+Fit
 \end_layout
 
 \end_inset
@@ -1325,7 +1395,7 @@ Hubbert
 \begin_inset Text
 
 \begin_layout Plain Layout
-our model 
+Our model 
 \end_layout
 
 \end_inset
@@ -1369,7 +1439,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $81\cdot10^{6}$
+\begin_inset Formula $130\cdot10^{6}$
 \end_inset
 
  
@@ -1381,7 +1451,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $270\cdot10^{6}$
+\begin_inset Formula $188\cdot10^{6}$
 \end_inset
 
  
@@ -1393,7 +1463,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-70\%$
+\begin_inset Formula $-31\%$
 \end_inset
 
 
@@ -1417,7 +1487,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $275\cdot10^{6}$
+\begin_inset Formula $59\cdot10^{6}$
 \end_inset
 
  
@@ -1429,7 +1499,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $959\cdot10^{6}$
+\begin_inset Formula $98\cdot10^{6}$
 \end_inset
 
  
@@ -1441,7 +1511,7 @@ U.K.
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-71\%$
+\begin_inset Formula $-40\%$
 \end_inset
 
  
@@ -1521,7 +1591,17 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/lfi/Documents/Projects/Tomorrow/Publications/Forecasting  Future Oil Production/no_and_uk_2013.pdf
+	filename NO-future.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-future.pdf
 	width 50text%
 
 \end_inset
@@ -1962,24 +2042,6 @@ name "bt"
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-%------------------------------------------------
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Conclusion
 \end_layout
@@ -2000,24 +2062,6 @@ We have presented a Monte-Carlo based methodology to forecast future oil
  simulation.
 \end_layout
 
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "1"
-key "Smith"
-
-\end_inset
-
-J.
- L.
- Smith A Probablilistic Model of Oil Discovery, The Review of Economics
- and Statistics, Vol.
- 62, No.
- 4 (Nov.
- 1980), pp.
- 587-594
-\end_layout
-
 \begin_layout Standard
 \begin_inset ERT
 status open
@@ -2032,6 +2076,239 @@ end{multicols}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Brandt 2006"
+key "Brandt 2006"
+
+\end_inset
+
+Brandt, Adam R.
+ “Testing Hubbert.” Energy Policy 35, no.
+ 5 (May 2007): 3074–88.
+ doi:10.1016/j.enpol.2006.11.004.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Brecha 2012"
+key "Brecha 2012"
+
+\end_inset
+
+Brecha, Robert J.
+ “Logistic Curves, Extraction Costs and Effective Peak Oil.” Energy Policy
+ 51 (December 2012): 586–97.
+ doi:10.1016/j.enpol.2012.09.016.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "key-3"
+
+\end_inset
+
+Forró, Zalán, Peter Cauwels, and Didier Sornette.
+ “When Games Meet Reality: Is Zynga Overvalued?” Journal of Investment Strategie
+s 1 (3), 119-145 (2012).
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "U.K. Data"
+key "U.K. Data"
+
+\end_inset
+
+GOV.UK (2014, Mai 25).
+ Exploration and production - Oil and gas: field data.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.og.decc.gov.uk/pprs/full_production.htm"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Greiner 2012"
+key "Greiner 2012"
+
+\end_inset
+
+Greiner, Alfred, Willi Semmler, and Tobias Mette.
+ “An Economic Model of Oil Exploration and Extraction.” Computational Economics
+ 40, no.
+ 4 (December 2012): 387–99.
+ doi:10.1007/s10614-011-9272-0.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Höök 2008"
+key "Höök 2008"
+
+\end_inset
+
+Höök, Mikael, and Kjell Aleklett.
+ “A Decline Rate Study of Norwegian Oil Production.” Energy Policy 36, no.
+ 11 (November 2008): 4262–71.
+ doi:10.1016/j.enpol.2008.07.039.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Hubbert 1956"
+key "Hubbert 1956"
+
+\end_inset
+
+Hubbert, Marion King.
+ Nuclear Energy and the Fossil Fuels.
+ Vol.
+ 95.
+ Shell Development Company, Exploration and Production Research Division
+ Houston, TX, 1956.
+ http://energycrisis.biz/hubbert/1956/1956.pdf.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Laherrère 2002"
+key "Laherrère 2002"
+
+\end_inset
+
+Laherrere, Jean.
+ “Forecasting Future Production from Past Discovery.” International Journal
+ of Global Energy Issues 18, no.
+ 2 (2002): 218–38.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "key-9"
+
+\end_inset
+
+Laherrere, Jean, and Didier Sornette.
+ “Stretched Exponential Distributions in Nature and Economy:‘fat Tails’
+ with Characteristic Scales.” The European Physical Journal B-Condensed Matter
+ and Complex Systems 2, no.
+ 4 (1998): 525–39.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "key-10"
+
+\end_inset
+
+Lutz, Christian, Ulrike Lehr, and Kirsten S.
+ Wiebe.
+ “Economic Effects of Peak Oil.” Energy Policy 48 (September 2012): 829–34.
+ doi:10.1016/j.enpol.2012.05.017.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Lynch 2002"
+key "Lynch 2002"
+
+\end_inset
+
+Lynch, Michael C.
+ “Forecasting Oil Supply: Theory and Practice.” The Quarterly Review of Economics
+ and Finance 42, no.
+ 2 (2002): 373–89.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Murray 2012"
+key "Murray 2012"
+
+\end_inset
+
+Murray, James W., and Jim Hansen.
+ “Peak Oil and Energy Independence: Myth and Reality.” Eos, Transactions
+ American Geophysical Union 94, no.
+ 28 (2013): 245–46.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Norwegian Data"
+key "Norwegian Data"
+
+\end_inset
+
+Norwegian Petroleum Directorate (2014, Mai 25).
+ Factpages.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://factpages.npd.no/factpages/"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Smith 1980"
+key "Smith 1980"
+
+\end_inset
+
+Smith, J.
+ L.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+A Probablilistic Model of Oil Discovery.
+\begin_inset Quotes erd
+\end_inset
+
+ The Review of Economics and Statistics, Vol.
+ 62, No.
+ 4 (Nov.
+ 1980): 587-94.
 \end_layout
 
 \end_body

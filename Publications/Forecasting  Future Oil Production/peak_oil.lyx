@@ -2374,7 +2374,17 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename no_and_uk_bt.pdf
+	filename NO-back-test.pdf
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-back-test.pdf
 	width 50text%
 
 \end_inset

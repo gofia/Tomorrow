@@ -37,7 +37,7 @@ from .utils import add_months, diff_months, diff_months_abs
 
 
 class ProductionProcessor():
-    date_max = date.today()
+    date_max = date(2008, 1, 1)
     production_type = None
     processed_type = None
     processed = None
@@ -63,12 +63,17 @@ class ProductionProcessor():
         return len(field_list)
 
     def compute_item(self, options):
+        print "Load data"
         self.load_data(options)
-        self.set_information()
-        processed = self.processed
-        processed.save()
-        processed.fits.all().delete()
-        self.compute_fits(processed, self.productions, options)
+        if not len(self.productions) == 0:
+            print "Set information"
+            self.set_information()
+            print "Compute fit"
+            self.compute_fit()
+        print "Save processed"
+        self.processed.save()
+        # self.processed.fits.all().delete()
+        # self.compute_fits(self.processed, self.productions, options)
 
     def load_data(self, options):
         name = options.get('name', '')
@@ -76,6 +81,8 @@ class ProductionProcessor():
             name=name,
             date__lte=self.date_max,
         ).all().order_by('date')
+        if len(self.productions) == 0:
+            return
         self.processed, created = self.processed_type.objects.get_or_create(name=name)
         self.dates, self.x_s, self.y_s = self.get_plot_data()
 
@@ -150,6 +157,22 @@ class ProductionProcessor():
 
         processed.save()
 
+    def compute_fit(self):
+        fit_list = list(self.processed.fits.filter(date_end__lt=self.date_max).order_by("date_end").all())
+
+        if len(fit_list) == 0:
+            return
+
+        if len(fit_list) > 24:
+            errors = [fit.sum_error for fit in fit_list]
+            self.processed.error_avg = average(errors[12:-12])
+            errors = errors - self.processed.error_avg
+            self.processed.error_std = std(errors)
+
+        self.set_fit(fit_list[-1])
+
+        self.processed.save()
+
     def get_maximum(self):
         try:
             max_xs = argrelextrema(array(self.y_s), np.greater, order=24)[0]
@@ -216,14 +239,20 @@ class ProductionProcessor():
         # Only concerns fields, not countries
         if hasattr(processed, 'country'):
             processed.country = productions[0].country
-
-        processed.production_oil = self.serialize_productions(productions)
+            print "Serialize production"
+            processed.production_oil = self.serialize_productions(productions)
+        else:
+            processed.production_oil = self.serialize_productions(
+                self.production_type.objects.filter(name=processed.name).order_by("date").all()
+            )
+        print "Set discovery date"
         processed.discovery = productions[0].date
+        print "Compute total production"
         processed.total_production_oil = sum(y) / 1.0E6
         if processed.total_production_oil > 1.0:
             processed.total_production_oil = round(processed.total_production_oil)
-        processed.stable = processed.stable
-        processed.active = diff_months_abs(dates[-1], date.today()) < 12
+        print "Set active"
+        processed.active = diff_months_abs(dates[-1], self.date_max) < 12
         if processed.active is True:
             processed.shut_down = None
             processed.current_production_oil = self.last_not_zero(y)
@@ -265,11 +294,15 @@ class CountryProcessor(ProductionProcessor):
     fields = []
 
     def compute_item(self, options):
+        print "Compute country item"
         ProductionProcessor.compute_item(self, options)
 
         forecasts = self.init_forecasts(self.processed.date_begin, 12 * 30)
 
-        self.fields = Field.objects.filter(country=self.processed.name).all()
+        self.fields = Field.objects.filter(
+            country=self.processed.name,
+            discovery__lt=self.date_max,
+        ).all()
         for field in self.fields:
             if field.error_avg != 0 and field.error_std != 0:
                 self.forecast(field, forecasts)

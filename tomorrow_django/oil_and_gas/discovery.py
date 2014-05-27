@@ -35,19 +35,23 @@ from .utils import traverse, list_get, add_months, diff_months_abs, make_plot, s
 
 
 class DiscoveryGenerator:
+    date_max = datetime.date(2008, 1, 1)
     fields = []
     sizes = []
     size_bins = None
     scenarios = []
     pdf = []
     _oldest_unstable_field = None
-    n_scenarios = 5
+    n_scenarios = 100
 
     def __init__(self, country):
         self.country = Country.objects.get(name=country)
         print "Generating discoveries for " + country
 
-        self.fields = Field.objects.filter(country=country).order_by('discovery').all()
+        self.fields = Field.objects.filter(
+            country=country,
+            discovery__lt=self.date_max,
+        ).order_by('discovery').all()
         print "Found {0} fields.".format(len(self.fields))
 
         self.sizes = [field.extrapolated_total_production_oil for field in self.fields]
@@ -55,7 +59,7 @@ class DiscoveryGenerator:
         self.min_size = min(self.sizes)
         self.max_size = max(self.sizes)
         # self.median_size = np.median(self.sizes)
-        self.median_size = 50E6 # 40 for UK
+        self.median_size = 40E6  # 40 for UK, 50 for NO
         print "Number sizes: {0}".format(len(self.sizes))
         print "Sizes: {0}".format(self.sizes)
         print "Min size: {0}".format(self.min_size)
@@ -113,7 +117,7 @@ class DiscoveryGenerator:
 
     def init_scenarios(self):
         db_scenarios = DiscoveryScenario.objects.filter(country=self.country)
-        db_scenarios.delete()
+        # db_scenarios.delete()
 
         if db_scenarios.count() > 0:
             self.scenarios = db_scenarios.order_by('pdf').all()
@@ -174,7 +178,7 @@ class DiscoveryGenerator:
         print "Found {0} fields between {1} and {2}.".format(len(fields), min_size, max_size)
 
         youngest = min(map(lambda x: x.discovery, fields))
-        n_months = diff_months_abs(youngest, datetime.datetime(2014, 4, 1))
+        n_months = diff_months_abs(youngest, add_months(self.date_max, 4))
         times = [add_months(copy.copy(youngest), n) for n in range(0, n_months)]
         discoveries = np.zeros(n_months)
 
@@ -342,7 +346,7 @@ class DiscoveryGenerator:
 
         # start_date = copy.copy(self.oldest_unstable_field())
         # start_date = add_months(start_date, 36)
-        start_date = add_months(datetime.date(2012, 8, 1), 0)
+        start_date = add_months(self.date_max, -40)
         print "Dwarf discovery start date {0}.".format(start_date)
         future = []
         for idx, production in enumerate(avg):
@@ -390,7 +394,7 @@ class DiscoveryGenerator:
 
         # start_date = copy.copy(self.oldest_unstable_field())
         # start_date = add_months(start_date, 36)
-        start_date = add_months(datetime.date(2012, 8, 1), 0)
+        start_date = add_months(self.date_max, -40)
         print "Giant discovery start date {0}.".format(start_date)
         future = []
         for idx, production in enumerate(avg):
@@ -514,11 +518,11 @@ class SizeBins(object):
         ranges = ()
         probability_ranges = ()
         for size_bin in self.bins:
-            if size_bin.count > 45:  # < 150 for UK
+            if size_bin.count < 100:  # < 150 for UK
                 ranges += (slice(size_bin.count + 1, size_bin.count + 10, 1.0),)
                 probability_ranges += (slice(0.05, 1.0, 0.05),)
             else:
-                ranges += (slice(size_bin.count * 2, size_bin.count * 3, 1.0),)  # +1 and * 1.25 for U.K.
+                ranges += (slice(size_bin.count * 1.0, size_bin.count * 2, 1.0),)  # +1 and * 1.25 for U.K.
                 probability_ranges += (slice(0.05, 1.0, 0.05),)
         ranges += probability_ranges[:-1]
         return ranges

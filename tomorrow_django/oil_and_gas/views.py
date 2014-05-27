@@ -14,6 +14,8 @@
 # agreement you entered into with Lucas Fievet.
 #
 
+from datetime import date
+
 from celery.result import AsyncResult
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -27,8 +29,6 @@ from rest_framework.response import Response
 from .models import (Field, Country)
 from . import tasks
 from .serializers import (FieldFullSerializer, FieldMinSerializer, CountrySerializer)
-
-from numpy import isnan
 
 import logging
 logger = logging.getLogger("rh")
@@ -101,6 +101,7 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
             return Field.objects.filter(
                 country=self.kwargs['country'],
                 current_production_oil__gt=0,
+                discovery__lt=date(2008, 1, 1)
             ).order_by("name").all()
         else:
             return Field.objects.all().order_by("name")

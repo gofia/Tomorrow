@@ -51,17 +51,18 @@ $(function () {
                     forecast_avg = {},
                     forecast_range = [],
                     dates,
+                    last_date = new Date(2008, 1, 1).getTime(), //productions.last()[0],
                     idx;
                 for (i = 0; i < forecasts.length; i++) {
                     date = $.to_date(forecasts[i].date);
-                    if (date < productions.last()[0]) { continue; }
+                    if (date < last_date) { continue; }
                     forecast_avg[date] = forecasts[i].average;
                     forecast_range.push([
                         date,
                         forecasts[i].average * (1 - forecasts[i].sigma) / 30,
                         forecasts[i].average * (1 + forecasts[i].sigma) / 30
                     ]);
-                    if (date >= last_date) {
+                    if (date >= new Date().getTime()) {
                         x = $.month_diff(first_date, date);
                         fit.push([
                             date,
@@ -92,13 +93,11 @@ $(function () {
                     forecast_range[idx][2] += (giants[i].average + giants[i].sigma) / 30;
                 }
                 $.staked_plot(details_box, data);
-                console.log(JSON.stringify(forecast_avg));
                 var array = [];
                 for (var key in forecast_avg) {
                     array.push([parseInt(key, 10), forecast_avg[key] / 30]);
                 }
                 forecast_avg = array;
-                console.log(JSON.stringify(forecast_avg));
             }
 
             for (i = 0; i < data.fits.length; i++) {
@@ -241,21 +240,42 @@ $(function () {
                     fillOpacity: 0.5,
                     zIndex: 0
                 });
+
                 var forecast_total = $.map(
                     forecast_avg,
                     function (e) { return e[1]; }
                 ).reduce(function (a, b) {
                     return a + b;
                 }, 0);
-
+                console.log("Forecast total: " + forecast_total);
                 var fit_total = $.map(
-                    $.grep(fit, function (e) { return e[0] > productions.last()[0]; }),
+                    $.grep(fit, function (e) { return e[0] > last_date; }),
                     function (e) { return e[1]; }
                 ).reduce(function (a, b) {
                     return a + b;
                 }, 0);
+                console.log("Fit total: " + fit_total);
 
+                var production_total = $.map(
+                    $.grep(productions, function (e) { return e[0] >= last_date && e[0] <= new Date().getTime(); }),
+                    function (e) { return e[1]; }
+                ).reduce(function (a, b) {
+                    return a + b;
+                }, 0);
+                console.log("Production total: " + production_total);
+                var forecast_total = $.map(
+                    $.grep(forecast_avg, function (e) { return e[0] >= last_date && e[0] <= new Date().getTime(); }),
+                    function (e) { return e[1]; }
+                ).reduce(function (a, b) {
+                    return a + b;
+                }, 0);
                 console.log("Forecast total: " + forecast_total);
+                var fit_total = $.map(
+                    $.grep(fit, function (e) { return e[0] >= last_date && e[0] <= new Date().getTime(); }),
+                    function (e) { return e[1]; }
+                ).reduce(function (a, b) {
+                    return a + b;
+                }, 0);
                 console.log("Fit total: " + fit_total);
             }
 

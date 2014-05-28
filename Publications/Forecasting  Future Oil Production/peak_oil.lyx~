@@ -99,7 +99,7 @@
 \use_esint 1
 \use_mhchem 0
 \use_mathdots 0
-\cite_engine basic
+\cite_engine natbib_numerical
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -173,7 +173,7 @@ This paper presents a new Monte-Carlo methodology to forecast the crude
  The results indicate that standard methodologies tend to underestimate
  remaining oil reserves.
  A comparison of the model to those methodologies is made by making predictions
- from various points in time the past.
+ with the full data and a back-test starting in 2008.
  It shows that the model gives a better description of the evolution of
  the oil production.
  
@@ -1493,8 +1493,8 @@ reference "no_uk_2013"
 \end_inset
 
  shows the average of 1000 simulations.
- For each country, we can immediately notice the non-symmetric shape of
- the production's dynamics contrary to what Hubbert would have predicted.
+ For each country, the non-symmetric shape of the production's dynamics
+ contrary to what Hubbert would have predicted is immediately noticable.
 \end_layout
 
 \begin_layout Standard
@@ -1739,6 +1739,13 @@ bottomrule
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "forecast-14"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1747,30 +1754,27 @@ bottomrule
 \end_layout
 
 \begin_layout Standard
-The difference between the model and the extrapolation-based forecast is
- striking.
- In the case, of Norway, the standard extrapolation was used to fit the
- production data.
- According to it, Norway's future oil production would decay much faster
- than in the Monte-Carlo case.
- As such, the estimated remaining reserves are less than one third of the
- forecasted value of the Monte-Carlo methodology.
- In the U.K., oil production faced a change of regime during the early nineties
- due to technological innovation, giving rise to the inverted "w shape"
- of the oil production profile.
- The standard procedure to model oil production in those cases is to use
- a multi-cyclic Hubbert curve.
- The multi-cyclic Hubbert model is a generalization of the standard one.
- Conceptually, it is just a superposition of several standard (single-cyclic)
- Hubbert curves.
- Two cycles are commonly used to fit the UK's oil production.
- The difference between the Hubbert-based methodology and the Monte-Carlo
- one is very similar to the Norwegian case.
- The former underestimates the remaining oil reserves by about 
-\begin_inset Formula $40\%$
+The difference between the Monte-Carlo simulation and the extrapolation-based
+ forecast is striking.
+ According to the standard extrapolation, Norway's future oil production
+ would decay much faster than in the Monte-Carlo case.
+ As such, the estimated remaining reserves are smaller than the forecasted
+ value of the Monte-Carlo methodology by over 
+\begin_inset Formula $30\%$
 \end_inset
 
- compared to the latter.
+.
+ This difference originates from two different effects:
+\end_layout
+
+\begin_layout Itemize
+The sum of the extrapolation of the individual existing fields is higher
+ than the extrapolation of the aggregate production.
+\end_layout
+
+\begin_layout Itemize
+The extrapolation of the aggregate production does not capture well the
+ discovery process of dwarf fields.
 \end_layout
 
 \begin_layout Standard
@@ -1801,11 +1805,11 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Monte-Carlo and Hubbert forecast based on past production data for Norway
- (top) and the U.K.
+Monte-Carlo and extrapolation forecast based on past production data for
+ Norway (top) and the U.K.
  (bottom).
- In both cases, our model forecasts a significantly slower decay than the
- Hubbert model.
+ In both cases, our model forecasts a significantly slower decay than a
+ simple extrapolation.
 \end_layout
 
 \end_inset
@@ -1829,11 +1833,26 @@ name "no_uk_2013"
 \end_layout
 
 \begin_layout Standard
+In the U.K., oil production faced a change of regime during the early nineties
+ due to technological innovation, giving rise to the inverted "w shape"
+ of the oil production profile.
+ However, this has not been an issue to extrapolate the decay of production
+ starting at the second peak.
+ The difference between the Hubbert-based methodology and the Monte-Carlo
+ one is very similar to the Norwegian case.
+ The former underestimates the remaining oil reserves by about 
+\begin_inset Formula $40\%$
+\end_inset
+
+ compared to the latter.
+\end_layout
+
+\begin_layout Standard
 Which of the two models is more thrust worthy? Clearly, the implications
  in adopting one methodology over the other are significant.
  The only way to answer this question is to backtest them.
  In other words we ask: "What would have each of the models predicted had
- we used them 10, 15, 20 years in the past?"
+ we used them in the past?"
 \end_layout
 
 \begin_layout Section
@@ -1841,13 +1860,10 @@ Validation
 \end_layout
 
 \begin_layout Standard
-For both countries, namely Norway and the U.K., we went back in time 10, 15
- and 20 years respectively.
- The reason for chosing an earlier starting point for our backtest in the
- case of the UK compared to Norway has to do with the number of oil fields
- available at the time of the backtest.
- The UK having the biggest number of oil fields, we could chose an earlier
- starting point without compromising the quality of our results.
+For both countries, namely Norway and the U.K., we went back in time 6 years
+ (starting in 2008) and applied the model to the truncated data.
+ Before that date, too many of the giant fields have not entered their decay
+ phase for a sufficiently long time to apply the extrapolation algorithm.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1856,270 +1872,18 @@ reference "model-back-testing"
 \end_inset
 
  shows the outcome of those tests.
- In the case of Norway, the production data was taken into account until
- 2003.
  Comparing the forecast of both models with the oil production of the subsequent
- 10 years, we find the predictive power of the Hubbert model is impressive.
- It perfectlty captures the Norwegian oil production's dynamic between 2003
- and 2013.
- The Monte-Carlo method does not perform as well.
- After underestimating the Norwegian oil production between 2003 and 2009,
- it overestimates it between 2009 and 2013.
- For the U.K.
- the backtesting was performed on data until 1998.
- The conclusion is not as obvious as for the previous case.
- None of the two methods captures perfectly the oil production between 1998
- and 2013.
- The following table summarizes the difference between the two models.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Remaining oil reserves until 2030
-\end_layout
+ 6 years, we find the predictive power of the Monte-Carlo model to be better
+ than a simple extrapolation of aggregate production.
+ The following table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "backtest-08"
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="4">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Fit 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Model 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $\Delta$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-midrule
-\end_layout
-
-\end_inset
-
- NO 08
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $133\cdot10^{6}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $301\cdot10^{6}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $-56\%$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-UK 08
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $91\cdot10^{6}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $166\cdot10^{9}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $-45\%$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-bottomrule
-\end_layout
-
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+ summarizes the difference between the two approaches for the backtesting
+ period.
 \end_layout
 
 \begin_layout Standard
@@ -2361,11 +2125,340 @@ bottomrule
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "backtest-08"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The difference is not huge for the period from 2008 to 2014, but the Monte-Carlo
+ model nevertheless is noticeably closer to the actual value.
+ However, when considering the period after 2014, the difference is huge
+ as shown in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-08"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Remaining oil reserves 2014-2030
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fit 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Delta$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ NO 08
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $25\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $171\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-85\%$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UK 08
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $25\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $91\cdot10^{9}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-73\%$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "forecast-08"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The simple extrapolation decays too fast and entirely misses the fat tails
+ in the decay process of individual fields and the new discoveries.
+ As well, it must be noted that the simple extrapolation changed massively
+ between the backtest in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-08"
+
+\end_inset
+
+ and the current fit in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-14"
+
+\end_inset
+
+ (520% for Norway and 236% for the U.K.).
+ In other words, the simple extrapolation was very unstable in its forecast,
+ while the Monte-Carlo forecasts remained very consistent (less than 10%
+ change).
+\end_layout
+
+\begin_layout Standard
+As can be seen in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "model-back-testing"
+
+\end_inset
+
+, the actual production of Norway during the back-testing period remained
+ entirely within the quite narrow 
+\begin_inset Formula $1\sigma$
+\end_inset
+
+ interval of the Monte-Carlo methodology, while totally breaking out of
+ the 
+\begin_inset Formula $1\sigma$
+\end_inset
+
+ interval of the simple extrapolation.
+ For the U.K.
+ the Monte-Carlo methodology only performs slightly better when considering
+ the confidence interval, and the confidence interval is much larger due
+ to the uncertainty on future discoveries and their production profile.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -2374,7 +2467,17 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename no_and_uk_bt.pdf
+	filename NO-back-test.pdf
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-back-test.pdf
 	width 50text%
 
 \end_inset
@@ -2383,11 +2486,11 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Monte-Carlo and Hubbert forecast based on past production data up to 2003
- for Norway (top) and up to 1998 for the U.K.
+Monte-Carlo and Hubbert forecast based on past production data up to 2008
+ for Norway (top) and the U.K.
  (bottom).
- The results can be compared with the subsequent oil production (crosses).
- In both cases, the Hubbert forecast is more accurate.
+ The results can be compared with the subsequent oil production (blue area).
+ In both cases, the Monte-Carlo methodology is more precise.
 \end_layout
 
 \end_inset
@@ -2415,19 +2518,51 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-We have presented a Monte-Carlo based methodology to forecast future oil
- production.
+This paper presented a Monte-Carlo based methodology to forecast future
+ oil production.
  By extending the oil production of current fields into the future and modeling
- the discovery rate of new fields, we were able to give forecasts on the
- future oil production of Norway, the U.K.
- and the U.S.
- These forecasts offer significantly scenarios from the ones obtained with
- standard Hubbert-based methodologies.
- Indeed, our model gives a 3 times superior estimation of the remaining
- oil reserves than the standard one.
- However, our backtesting results seriously questions the credibility of
- that forecast, since the Hubbert-model clearly outperforms the Monte-Carlo
- simulation.
+ the discovery rate of new fields, the future oil production of Norway and
+ the U.K.
+ could be forecasted.
+ These forecasts are significantly different from the ones obtained with
+ a standard extrapolation.
+ Indeed, our model forecasts 30% to 40% more remaining oil reserves than
+ the standard extrpolation.
+ The backtest performed on the time period between 2008 and 2014 confirmed
+ that the Monte-Carlo based model better captured the production dynamics.
+\end_layout
+
+\begin_layout Standard
+The results are hopeful, as they make it highly likely that the decay of
+ Norwegian and U.K.
+ oil production will be much slower then one would expect from a standard
+ extrapolation.
+ Nonetheless, to maintain current levels of oil consumption in the European
+ Union, more of it will have to be imported from outside Europe, as the
+ imports from Norway will vanish (currently accounting for 11% of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "European oil imports"
+
+\end_inset
+
+) and the U.K.
+ will need to import more oil.
+ Therefore, the risk emanating of oil imports from less reliable producers
+ and the exposure to competitors for this oil will increase.
+\end_layout
+
+\begin_layout Standard
+Considering the risk of strong oil price fluctuations due to small supply
+ shortcomings and the economic impact this has 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Lutz 2012"
+
+\end_inset
+
+, it is primordial for Europe to reduce its oil dependency by energy savings
+ and using substitutes.
 \end_layout
 
 \begin_layout Standard
@@ -2479,6 +2614,32 @@ Brecha, Robert J.
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+label "European oil imports"
+key "European oil imports"
+
+\end_inset
+
+European Commission - Energy (2014, Mai 25).
+ EU Crude oil imports.
+ Retrieved from 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "Forro 2012"
 key "Forro 2012"
 
@@ -2501,9 +2662,15 @@ key "U.K. Data"
 GOV.UK (2014, Mai 25).
  Exploration and production - Oil and gas: field data.
  Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "https://www.og.decc.gov.uk/pprs/full_production.htm"
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+url{https://www.og.decc.gov.uk/pprs/full_production.htm}
+\end_layout
 
 \end_inset
 
@@ -2593,8 +2760,8 @@ Laherrere, Jean, and Didier Sornette.
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "10"
-key "key-10"
+label "Lutz 2012"
+key "Lutz 2012"
 
 \end_inset
 

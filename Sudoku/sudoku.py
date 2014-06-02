@@ -243,8 +243,8 @@ class Sudoku(object):
             return "a"
         if two < one < three:
             return "b"
-        if one < two < three:
-            return "a"
+        if three < two < one:
+            return "c"
         pass
 
     def get_block_row_permutation(self, n, row):

@@ -99,7 +99,7 @@
 \use_esint 1
 \use_mhchem 0
 \use_mathdots 0
-\cite_engine natbib_authoryear
+\cite_engine natbib_numerical
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -173,7 +173,7 @@ This paper presents a new Monte-Carlo methodology to forecast the crude
  The results indicate that standard methodologies tend to underestimate
  remaining oil reserves.
  A comparison of the model to those methodologies is made by making predictions
- from various points in time the past.
+ with the full data and a back-test starting in 2008.
  It shows that the model gives a better description of the evolution of
  the oil production.
  
@@ -253,13 +253,13 @@ key "Murray 2012"
 .
  As any industrialized country, Europe is strongly dependent on oil supply
  to maintain its economic power.
- In the nowadays difficult geo-political environment, it is important to
+ In the nowadays difficult geopolitical environment, it is important to
  know how much of the oil needed in Europe will come from reliable sources.
  In the past, a big share has been coming from Norway and the U.K.
  which have been reliable exporters.
  However, the U.K.
- already became a net importer in 2005 and Norways production has been declining
- rapidly as well 
+ already became a net importer in 2005 and Norway’s production has been
+ declining rapidly as well 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Höök 2008"
@@ -328,7 +328,7 @@ to model oil production.
  King Hubbert predicted with surprising accuracy to peak.
  From a methodological point of view, the Hubbert model has enjoyed a longstandi
 ng popularity in modeling future oil production given its simplicity.
- Various extensions have been studied to account for multi-cycled or asymetric
+ Various extensions have been studied to account for multi-cycled or asymmetric
  production curves 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -362,13 +362,13 @@ key "Greiner 2012"
  In this paper, a new methodology is introduces to forecast future oil productio
 n.
  Instead of taking the aggregate oil production profile and fitting it with
- the Hubbert curve or its variants (such as the multi cyclic Hubbert curve),
+ the Hubbert curve or its variants (such as the multi-cyclic Hubbert curve),
  the production profile of each individual oil field is used.
  By extending their production into the future and extrapolating the future
  rate of discovery of new fields, the future oil production is forecasted
  by the means of a Monte Carlo simulation.
  To demonstrate the universality of the methodology presented here, it is
- applied to 2 major oil producing countries with publically available data:
+ applied to 2 major oil producing countries with publicly available data:
  
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -396,7 +396,7 @@ The idea behind the methodology is to model the future aggregate oil production
 , the oil fields.
  The main benefit of this approach, compared to working directly with aggregate
  production data, is the possibility to forecast non-trivial oil production
- profiles arising from the combination of all the individual fields' dynamics.
+ profiles arising from the combination of all the individual field’s dynamics.
  In order to achieve that, one must be able 1) to 
 \series bold
 extend the oil production of each individual field
@@ -636,8 +636,8 @@ name "new"
 
 \begin_layout Standard
 \noindent
-All the fields have been fitted using an automated algorithm, but afterwards
- the results have been checked visually to sort out the irregular fields
+All the fields have been fitted using an automated algorithm, but the results
+ have been subsequently checked visually to sort out the irregular fields
  which could not be fitted.
  As of January 2014, regular fields make up 85% and 87% of the number of
  fields and 94% and 71% of the total produced oil volume in Norway and the
@@ -698,7 +698,7 @@ For the minority of irregular fields, we simply modeled their decay as follows.
 \begin_inset Formula $\beta$
 \end_inset
 
- so that the sum of the fields' production over its lifetime be equal to
+ so that the sum of the field’s production over its lifetime be equal to
  the official ultimate recovery estimates, when such an estimate is available.
 \end_layout
 
@@ -877,7 +877,7 @@ ion for the country has to be computed.
  To account for this observation, the necessary assumption is that the error
  between the individual fields is largely uncorrelated.
  Therefore, the fields can be considered as a portfolio of stocks with an
- underlying trend but an overlayed random walk.
+ underlying trend but an overlying random walk.
  This means that the error at the country level from the extrapolated production
  is to be computed as 
 \begin_inset Formula 
@@ -946,7 +946,7 @@ name "sub:Discoveries-modeled-as"
 \end_layout
 
 \begin_layout Standard
-A natural choice for such a model is a non-homogenous poisson process.
+A natural choice for such a model is a non-homogenous Poisson process.
  The Poisson process is a process that generates independent events at a
  rate 
 \begin_inset Formula $\lambda$
@@ -1004,7 +1004,7 @@ reference "logistic"
  This implies that after an initial increase, the rate of new discoveries
  reaches a peak followed by a decrease until no more oil fields are to be
  found, consistent with our fundamental observations.
- This is the same strategy then has already been succesfully applied to
+ This is the same strategy then has already been successfully applied to
  estimate the number of daily active users on Zynga 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1034,9 +1034,9 @@ key "Lynch 2002"
 \end_inset
 
 .
- Therefore, it is expectable that the large oil fields have mostly been
- found and produced, and that future discoveries will mostly be made up
- of dwarf fields.
+ Therefore, it is expected that the large oil fields have mostly been found
+ and produced, and that future discoveries will mostly be made up of dwarf
+ fields.
  Consequently, the splitting size has been picked as small as possible in
  order to maximize the number of giant fields but large enough to avoid
  recent discoveries:
@@ -1201,7 +1201,7 @@ The discovery of a particular reservoir from among the existing population
 \end_layout
 
 \begin_layout Standard
-The fields are splitted into 
+The fields are split into 
 \begin_inset Formula $J$
 \end_inset
 
@@ -1209,7 +1209,7 @@ The fields are splitted into
 \begin_inset Formula $S_{1},\,\ldots,\, S_{J}$
 \end_inset
 
- occuring with frequency 
+ occurring with frequency 
 \begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
 \end_inset
 
@@ -1339,7 +1339,7 @@ reference "sub:Discoveries-modeled-as"
 .
  The results are coherent with the intuitive expectation that discovering
  a new giant field is unlikely and that the future discoveries of dwarf
- fields can only be constrainted to a range as presented on figure 
+ fields can only be constrained to a range as presented on figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "rate_of_discovery"
@@ -1385,11 +1385,11 @@ reference "sub:Likelihood-function-for"
  However, this likelihood method does not give the time distribution of
  future discoveries.
  The aim is to use the likelihood function to generate scenarios with their
- respective occurence probability.
+ respective occurrence probability.
 \end_layout
 
 \begin_layout Standard
-For a given scenario, the carrying capactiy 
+For a given scenario, the carrying capacity 
 \begin_inset Formula $K$
 \end_inset
 
@@ -1494,7 +1494,7 @@ reference "no_uk_2013"
 
  shows the average of 1000 simulations.
  For each country, the non-symmetric shape of the production's dynamics
- contrary to what Hubbert would have predicted is immediately noticable.
+ contrary to what Hubbert would have predicted is immediately noticeable.
 \end_layout
 
 \begin_layout Standard
@@ -1850,7 +1850,7 @@ In the U.K., oil production faced a change of regime during the early nineties
 \begin_layout Standard
 Which of the two models is more thrust worthy? Clearly, the implications
  in adopting one methodology over the other are significant.
- The only way to answer this question is to backtest them.
+ The only way to answer this question is to back-test them.
  In other words we ask: "What would have each of the models predicted had
  we used them in the past?"
 \end_layout
@@ -1882,7 +1882,7 @@ reference "backtest-08"
 
 \end_inset
 
- summarizes the difference between the two approaches for the backtesting
+ summarizes the difference between the two approaches for the back-testing
  period.
 \end_layout
 
@@ -2413,7 +2413,7 @@ name "forecast-08"
 The simple extrapolation decays too fast and entirely misses the fat tails
  in the decay process of individual fields and the new discoveries.
  As well, it must be noted that the simple extrapolation changed massively
- between the backtest in table 
+ between the back-test in table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "forecast-08"
@@ -2527,8 +2527,8 @@ This paper presented a Monte-Carlo based methodology to forecast future
  These forecasts are significantly different from the ones obtained with
  a standard extrapolation.
  Indeed, our model forecasts 30% to 40% more remaining oil reserves than
- the standard extrpolation.
- The backtest performed on the time period between 2008 and 2014 confirmed
+ the standard extrapolation.
+ The back-test performed on the time period between 2008 and 2014 confirmed
  that the Monte-Carlo based model better captured the production dynamics.
 \end_layout
 
@@ -2565,9 +2565,23 @@ key "Lutz 2012"
  and using substitutes.
 \end_layout
 
-\begin_layout Bibliography
+\begin_layout Standard
+\begin_inset ERT
+status open
 
-\size footnotesize
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Brandt 2006"
@@ -2583,8 +2597,6 @@ Brandt, Adam R.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Brecha 2012"
@@ -2600,8 +2612,6 @@ Brecha, Robert J.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "European oil imports"
@@ -2628,8 +2638,6 @@ url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Forro 2012"
@@ -2644,8 +2652,6 @@ s 1 (3), 119-145 (2012).
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "U.K. Data"
@@ -2672,8 +2678,6 @@ url{https://www.og.decc.gov.uk/pprs/full_production.htm}
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Greiner 2012"
@@ -2690,8 +2694,6 @@ Greiner, Alfred, Willi Semmler, and Tobias Mette.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Höök 2008"
@@ -2707,8 +2709,6 @@ Höök, Mikael, and Kjell Aleklett.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Hubbert 1956"
@@ -2727,8 +2727,6 @@ Hubbert, Marion King.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Laherrère 2002"
@@ -2744,8 +2742,6 @@ Laherrere, Jean.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Laherrère 1998"
@@ -2762,8 +2758,6 @@ Laherrere, Jean, and Didier Sornette.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Lutz 2012"
@@ -2779,8 +2773,6 @@ Lutz, Christian, Ulrike Lehr, and Kirsten S.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Lynch 2002"
@@ -2796,8 +2788,6 @@ Lynch, Michael C.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Murray 2012"
@@ -2813,8 +2803,6 @@ Murray, James W., and Jim Hansen.
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Norwegian Data"
@@ -2835,8 +2823,6 @@ target "http://factpages.npd.no/factpages/"
 \end_layout
 
 \begin_layout Bibliography
-
-\size footnotesize
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "Smith 1980"
@@ -2858,22 +2844,6 @@ A Probablilistic Model of Oil Discovery.
  62, No.
  4 (Nov.
  1980): 587-94.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{multicols}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

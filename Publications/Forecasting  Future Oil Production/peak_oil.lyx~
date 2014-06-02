@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #LyX 2.0 created this file. For more info see http://www.lyx.org/
 \lyxformat 413
 \begin_document
@@ -2938,3 +2939,2855 @@ end{multicols}
 
 \end_body
 \end_document
+=======
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.2 (15/5/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+
+
+\usepackage{lipsum}% Package to generate dummy text throughout this template
+
+% Use the Palatino font
+% Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype}% Slightly tweak font spacing for aesthetics
+
+% Document margins
+\usepackage{multicol}% Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption}% Custom captions under/above floats in tables or figures
+\usepackage{booktabs}% Horizontal rules in tables
+\usepackage{float}% Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+% For hyperlinks in the PDF
+
+
+\usepackage{lettrine}% The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist}% Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract}% Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec}% Allows customization of titles
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr}% Headers and footers
+ % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+%\fancyhead[C]{Running title $\bullet$ November 2012 $\bullet$ Vol. XXI, No. 1} % Custom header text
+\fancyhead[C]{Forecasting future oil production $\bullet$ July 2014} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding T1
+\font_roman palatino
+\font_sans default
+\font_typewriter mathpazo
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine natbib_numerical
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{fancy}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Title
+Forecasting future oil production
+\end_layout
+
+\begin_layout Author
+L.
+ Fiévet, Z.
+ Forró, M.
+ del Degan, P.
+ Cauwels and D.
+ Sornette
+\begin_inset Newline newline
+\end_inset
+
+D-MTEC, ETH Zürich
+\end_layout
+
+\begin_layout Date
+05/25/14
+\end_layout
+
+\begin_layout Abstract
+\noindent
+This paper presents a new Monte-Carlo methodology to forecast the crude
+ oil production of Norway and the U.K.
+ based on the current/past performances of individual oil fields.
+ By extrapolating the future production of these fields and the frequency
+ of new discoveries, the oil production of these countries can be forecasted.
+ The results indicate that standard methodologies tend to underestimate
+ remaining oil reserves.
+ A comparison of the model to those methodologies is made by making predictions
+ with the full data and a back-test starting in 2008.
+ It shows that the model gives a better description of the evolution of
+ the oil production.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+2
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lettrine[nindent=0em,lines=3]
+\end_layout
+
+\end_inset
+
+ Forecasting future oil production has been a topic of active interest since
+ the beginning of the past century because of oil's central role in our
+ economy.
+ Its importance ranges from energy production, through manufacturing to
+ pharmaceuticals industry.
+ As petroleum is a non-renewable and finite resource, it is primordial to
+ be able to forecast future oil production.
+ The fear of a global oil peak, beyond which production will inevitably
+ decline, has been growing due to stagnating supplies and high oil prices
+ since the crisis in 2008/2009 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Murray 2012"
+
+\end_inset
+
+.
+ As any industrialized country, Europe is strongly dependent on oil supply
+ to maintain its economic power.
+ In the nowadays difficult geo-political environment, it is important to
+ know how much of the oil needed in Europe will come from reliable sources.
+ In the past, a big share has been coming from Norway and the U.K.
+ which have been reliable exporters.
+ However, the U.K.
+ already became a net importer in 2005 and Norways production has been declining
+ rapidly as well 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Höök 2008"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+ The methodology behind forecasting future oil production has not evolved
+ much since M.
+ King Hubbert, who in 1956 famously predicted that the U.S.
+ oil production would peak around 1965-1970 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hubbert 1956"
+
+\end_inset
+
+.
+ That prediction has proven itself to be correct.
+ His main argument was based on the finiteness of oil reserves and use of
+ the logistic differential equation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{dP}{dt}=rP\left(1-\frac{P}{K}\right)\label{logistic}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+to model oil production.
+ The logistic differential equation is characterized by an initial exponential
+ growth, which then decreases to zero as the total oil extracted reaches
+ saturation (no more oil is to be found).
+ The parameter 
+\begin_inset Formula $r$
+\end_inset
+
+ is commonly referred to as the growth rate, and 
+\begin_inset Formula $K$
+\end_inset
+
+ as the carrying capacity (total quantity of oil extracted).
+ If 
+\begin_inset Formula $P(t)$
+\end_inset
+
+ is the the amount of oil extracted up to time 
+\begin_inset Formula $t$
+\end_inset
+
+, then 
+\begin_inset Formula $\frac{dP}{dt}$
+\end_inset
+
+ is the oil production rate, the quantity that M.
+ King Hubbert predicted with surprising accuracy to peak.
+ From a methodological point of view, the Hubbert model has enjoyed a longstandi
+ng popularity in modeling future oil production given its simplicity.
+ Various extensions have been studied to account for multi-cycled or asymetric
+ production curves 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brandt 2006"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+The existing forecasts of future oil production use some form of the Hubbert
+ model 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brecha 2012,Laherrère 2002,Lynch 2002"
+
+\end_inset
+
+ or economical model 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Greiner 2012"
+
+\end_inset
+
+ applied to aggregate production, but none goes into the details of study
+ the underlying dynamics.
+ The main reason for the lack of details is certainly the lack of available
+ data.
+ In this paper, a new methodology is introduces to forecast future oil productio
+n.
+ Instead of taking the aggregate oil production profile and fitting it with
+ the Hubbert curve or its variants (such as the multi cyclic Hubbert curve),
+ the production profile of each individual oil field is used.
+ By extending their production into the future and extrapolating the future
+ rate of discovery of new fields, the future oil production is forecasted
+ by the means of a Monte Carlo simulation.
+ To demonstrate the universality of the methodology presented here, it is
+ applied to 2 major oil producing countries with publically available data:
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Norwegian Data"
+
+\end_inset
+
+ and the 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "U.K. Data"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Methodology
+\end_layout
+
+\begin_layout Standard
+The idea behind the methodology is to model the future aggregate oil production
+ of a country by studying the production dynamics of its individual constituents
+, the oil fields.
+ The main benefit of this approach, compared to working directly with aggregate
+ production data, is the possibility to forecast non-trivial oil production
+ profiles arising from the combination of all the individual fields' dynamics.
+ In order to achieve that, one must be able 1) to 
+\series bold
+extend the oil production of each individual field
+\series default
+ into the future and 2) to 
+\series bold
+extrapolate the rate of discoveries
+\series default
+ of new oil fields.
+\end_layout
+
+\begin_layout Subsection
+Extending the oil production of individual fields
+\end_layout
+
+\begin_layout Standard
+The first step to predicting the future oil production of a country is to
+ extrapolate the future production of existing fields and to estimate the
+ error on this extrapolation.
+ The data of the fields developed in the past shows a repeating asymmetric
+ pattern.
+ A good example is the Oseberg field shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "regular"
+
+\end_inset
+
+, with a quick ramp up once the field is being developed, and then a peak
+ or plateau before the field starts decaying.
+ The decay can take many different shapes and is governed by a variety of
+ geological and economical factors which will be captured implicitly by
+ the fitting procedure.
+\end_layout
+
+\begin_layout Subsubsection
+Regular, irregular and new fields
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Regular,-irregular-and"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To be able to forecast the oil production of each individual field, regularity
+ had to be found in the production's dynamics.
+ Modeling the whole production profile from the beginning of extraction
+ seems elusive due to the variety of the forms it can take.
+ Fortunately, modeling the decay process is sufficient in order to extrapolate
+ future oil production.
+ A preliminary classification is necessary to achieve that goal.
+ Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "regular"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "irregular"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "new"
+
+\end_inset
+
+ show that independently of the country, oil fields can be classified into
+ 3 main categories:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Regular fields
+\series default
+ - Their decay show some regularity.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Irregular fields
+\series default
+ - The ones that don't decay in a regular fashion.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+New fields
+\series default
+ - The ones that don't decay yet.
+ As such, there is no easy way to forecast their future oil production based
+ on past data.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename oseberg.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Example of a regular field.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "regular"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename vale.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Example of a irregular field.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "irregular"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename skarv.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Example of a new field.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "new"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+All the fields have been fitted using an automated algorithm, but afterwards
+ the results have been checked visually to sort out the irregular fields
+ which could not be fitted.
+ As of January 2014, regular fields make up 85% and 87% of the number of
+ fields and 94% and 71% of the total produced oil volume in Norway and the
+ U.K.
+ respectively.
+ As such, being able to model them is crucial.
+ To capture as many different decay dynamics as possible, the stretched
+ exponential
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P(t)=P_{0}e^{\left(\frac{t}{\tau}\right)^{\beta}}\label{stretched_exponential}
+\end{equation}
+
+\end_inset
+
+has been fitted to the decay of regular fields.
+ The stretched exponential has many advantages as it generalized the power
+ law and can therefore capture a broad variety of distributions 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Laherrère 1998"
+
+\end_inset
+
+.
+ As can be seen on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "regular"
+
+\end_inset
+
+, the stretched exponential (equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "stretched_exponential"
+
+\end_inset
+
+) is a good functional form to fit the decay process of regular fields.
+\end_layout
+
+\begin_layout Standard
+For the minority of irregular fields, we simply modeled their decay as follows.
+ We picked 
+\begin_inset Formula $\tau$
+\end_inset
+
+ to be the average 
+\begin_inset Formula $\tau$
+\end_inset
+
+ over the regular fields.
+ We then fixed 
+\begin_inset Formula $\beta$
+\end_inset
+
+ so that the sum of the fields' production over its lifetime be equal to
+ the official ultimate recovery estimates, when such an estimate is available.
+\end_layout
+
+\begin_layout Standard
+The minority of new fields will be treated as a new discovery, as their
+ final size can simply not be predicted based on the existing production
+ data.
+\end_layout
+
+\begin_layout Subsubsection
+Back-testing & Error
+\end_layout
+
+\begin_layout Standard
+To determine how well the extrapolation based on the stretched exponential
+ predicts the future production, a complete back-testing has been performed
+ on each field.
+ A single back-test is made as follows:
+\end_layout
+
+\begin_layout Itemize
+The production data 
+\begin_inset Formula $\{p_{0},\,\ldots,\, p_{N}\}$
+\end_inset
+
+ of the field is truncated at a certain date in the past 
+\begin_inset Formula $t\in\{0,\,\ldots,\, N\}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The extrapolation is made based on the truncated data 
+\begin_inset Formula $\{p_{0},\,\ldots,\, p_{t}\}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The future production predicted by the extrapolation 
+\begin_inset Formula $f(t)$
+\end_inset
+
+ can be compared to the actual production from the date 
+\begin_inset Formula $t$
+\end_inset
+
+ in the past up to now 
+\begin_inset Formula $t_{f}=N$
+\end_inset
+
+.
+ The extrapolated total production can be be computed as 
+\begin_inset Formula 
+\begin{equation}
+P_{e}(t)=\int_{t}^{t_{f}}f(\tau)d\tau
+\end{equation}
+
+\end_inset
+
+and the error is given by
+\begin_inset Formula 
+\begin{equation}
+e(t)=\frac{P_{e}(t)-\sum_{i=t}^{t_{f}}p_{i}}{P_{e}(t)},
+\end{equation}
+
+\end_inset
+
+where both are a function of the truncation time 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Computing this back test for every possible date in the past, yields a plot
+ showing the evolution of the error over time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename oesberg-error.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Oesberg field - Error on predicted total production until 2014
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the complete back-test, on can compute the average error 
+\begin_inset Formula $\bar{e}$
+\end_inset
+
+ the extrapolation made on the future production and the standard deviation
+ 
+\begin_inset Formula $\sigma_{e}$
+\end_inset
+
+ on the average error.
+ As the average error is often fairly constant, the extrapolation was corrected
+ by the average error.
+ Meaning that if the extrapolation consistently over-estimated the production
+ by 10% during the back-test, the extrapolation was reduced by 10%.
+ This results in an extrapolated production 
+\begin_inset Formula $p(t)$
+\end_inset
+
+, including a 1
+\begin_inset Formula $\sigma$
+\end_inset
+
+ confidence interval, as
+\begin_inset Formula 
+\begin{equation}
+p(t)=(1-\bar{e})\, f(t)\pm\sigma_{e}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An example of such an extrapolation including a one standard deviation range
+ is shown on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "irregular"
+
+\end_inset
+
+ for the Oesberg field.
+\end_layout
+
+\begin_layout Subsubsection
+Aggregate error
+\end_layout
+
+\begin_layout Standard
+Once all the individual fields have been extrapolated, the aggregated extrapolat
+ion for the country has to be computed.
+ While this is straightforward for the expected production, some care has
+ to be taken with respect to the error on the production at the country
+ level.
+ As shown later, the same extrapolation including a complete back-test has
+ been performed at the country level and the resulting error is much smaller
+ than the average error observed on an individual field.
+ To account for this observation, the necessary assumption is that the error
+ between the individual fields is largely uncorrelated.
+ Therefore, the fields can be considered as a portfolio of stocks with an
+ underlying trend but an overlayed random walk.
+ This means that the error at the country level from the extrapolated production
+ is to be computed as 
+\begin_inset Formula 
+\begin{equation}
+\sigma_{country}^{2}=\frac{1}{\#fields}\sum_{field\in fields}\sigma_{field}^{2}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As example, a country with 100 fields having each an error of 
+\begin_inset Formula $\pm50\%$
+\end_inset
+
+, will have an expected error of only 
+\begin_inset Formula $\pm5\%$
+\end_inset
+
+.
+ Intuitively, this results from the fact that the uncorrelated errors among
+ fields cancel out on average.
+\end_layout
+
+\begin_layout Subsection
+Discovery rate of new fields
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Discovery-rate-of"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Knowing the future production rate of existing fields is not enough as new
+ fields will be discovered in the future.
+ The model describing the discovery rate of new fields should satisfy two
+ fundamental observations.
+\end_layout
+
+\begin_layout Enumerate
+The rate of new discoveries should tend to zero as time goes to infinity.
+ This is a consequence of the finiteness of the number of oil fields.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The rate of new discoveries should depend on the size of the oil fields.
+ As of today, giant oil fields are discovered much less frequently than
+ dwarfs.
+\end_layout
+
+\begin_layout Subsubsection
+Discoveries modeled as logistic growth
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Discoveries-modeled-as"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A natural choice for such a model is a non-homogenous poisson process.
+ The Poisson process is a process that generates independent events at a
+ rate 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ It is inhomogeneous if the rate is time-dependent, 
+\begin_inset Formula $\lambda\rightarrow\lambda(t)$
+\end_inset
+
+.
+ The standard way to measure 
+\begin_inset Formula $\lambda(t)$
+\end_inset
+
+ is to find a functional form for 
+\begin_inset Formula $N(t)$
+\end_inset
+
+, the number of events (discoveries) up to time 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ Then, 
+\begin_inset Formula $\lambda(t)$
+\end_inset
+
+ is simply 
+\begin_inset Formula $\frac{dN(t)}{dt}$
+\end_inset
+
+.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+ shows 
+\begin_inset Formula $N(t)$
+\end_inset
+
+ for Norwegian fields classified according to their size.
+ The logistic curve is a good fit to the data (integral form of equation
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "logistic"
+
+\end_inset
+
+).
+ This implies that after an initial increase, the rate of new discoveries
+ reaches a peak followed by a decrease until no more oil fields are to be
+ found, consistent with our fundamental observations.
+ This is the same strategy then has already been succesfully applied to
+ estimate the number of daily active users on Zynga 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Forro 2012"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As the discovery and production dynamics are not independent of the field
+ size, the fields have been split into two groups: dwarfs and giants.
+ Unfortunately, the two logistic curves thus obtained are highly sensitive
+ to the splitting size.
+ This results from the major issue, when fitting a logistic curve to data,
+ that the carrying capacity can not be determined if the data does not already
+ exhibit the slow down in growth from reaching the carrying capacity.
+ However, it is mentioned in the literature that often dwarf fields have
+ already been discovered a long time ago, but their production has been
+ postponed for economical reasons 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "p. 378"
+key "Lynch 2002"
+
+\end_inset
+
+.
+ Therefore, it is expectable that the large oil fields have mostly been
+ found and produced, and that future discoveries will mostly be made up
+ of dwarf fields.
+ Consequently, the splitting size has been picked as small as possible in
+ order to maximize the number of giant fields but large enough to avoid
+ recent discoveries:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Dwarfs
+\series default
+: Fields which produced less than 
+\begin_inset Formula $50\cdot10^{6}$
+\end_inset
+
+ barrels.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Giants
+\series default
+: Fields which produced more than 
+\begin_inset Formula $50\cdot10^{6}$
+\end_inset
+
+ barrels.
+\end_layout
+
+\begin_layout Standard
+The resulting plot shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+ pictures the dynamics: giant oil fields are mostly found while the discovery
+ process for dwarf fields is still ongoing.
+ The logistic growth curve fit to the giant discoveries is stable, however
+ the fit for the dwarfs is unstable.
+ As can be seen on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+, the carrying capacity 
+\begin_inset Formula $K$
+\end_inset
+
+ of the logistic growth model is not well constrained by the available data.
+ A large spectrum of values for 
+\begin_inset Formula $K$
+\end_inset
+
+ can lead to a good fit of the data.
+ Therefore, a method described in the section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Likelihood-function-for"
+
+\end_inset
+
+ has been used to compute the probability of different carrying capacities.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename extrapolating-no-discoveries.pdf
+	width 50text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Logistic fit to the number of discoveries for Norway.
+ The discovery rate of new oil fields is dependent on their size.
+ The logistic model suggests that a large number of dwarf oil fields has
+ not yet been discovered, while the rate of discovery of giant oil fields
+ is almost zero.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "rate_of_discovery"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Likelihood function for the number of discoveries
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Likelihood-function-for"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To overcome the logistic fitting issue for the dwarf fields, a method already
+ used by 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Smith 1980"
+
+\end_inset
+
+ has been implemented.
+ This method makes the following two postulates:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Quotes eld
+\end_inset
+
+The discovery of reservoirs in a petroleum play can be modeled statistically
+ as sampling without replacement from the underlying population of reservoirs.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Quotes eld
+\end_inset
+
+The discovery of a particular reservoir from among the existing population
+ is random, with a probability of discovery being dependent on reservoir
+ size.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fields are splitted into 
+\begin_inset Formula $J$
+\end_inset
+
+ size bins denoted 
+\begin_inset Formula $S_{1},\,\ldots,\, S_{J}$
+\end_inset
+
+ occuring with frequency 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+.
+ Each discovery is considered as a step 
+\begin_inset Formula $i$
+\end_inset
+
+ at which a field of size 
+\begin_inset Formula $I(i)\in\{S_{1},\,\ldots,\, S_{J}\}$
+\end_inset
+
+ is found and we will denote by 
+\begin_inset Formula $m_{ij}$
+\end_inset
+
+ the number of fields of size 
+\begin_inset Formula $j\in\{1,\,\ldots,\, J\}$
+\end_inset
+
+ discovered before the 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ step.
+ Than the probability that the discovery at step 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ is of size 
+\begin_inset Formula $j$
+\end_inset
+
+ can be expressed as
+\begin_inset Formula 
+\begin{equation}
+P\left(I(i)=S_{j}\right)=\frac{\left(n_{j}-m_{ij}\right)\cdot S_{j}}{\sum_{k=1}^{J}\left(n_{k}-m_{ik}\right)\cdot S_{k}}.
+\end{equation}
+
+\end_inset
+
+The likelihood 
+\begin_inset Formula $L$
+\end_inset
+
+ for a complete sequence of 
+\begin_inset Formula $N$
+\end_inset
+
+ discoveries 
+\begin_inset Formula $\{I(1),\,\ldots,\, I(N)\}$
+\end_inset
+
+ can than be expressed as
+\begin_inset Formula 
+\begin{equation}
+L=\prod_{i=1}^{N}\frac{\left(n_{I(i)}-m_{iI(i)}\right)\cdot S_{I(i)}}{\sum_{j=1}^{J}\left(n_{j}-m_{ij}\right)\cdot S_{j}}.
+\end{equation}
+
+\end_inset
+
+The unknown parameters are the number of fields 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+, whose likelihood can now be estimated based on the existing discoveries.
+ Using a brute force approach, the entire space of plausible values for
+ the variables 
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+ has been sampled.
+ The values 
+\begin_inset Formula $n_{j}$
+\end_inset
+
+ have been sampled between the number of existing fields 
+\begin_inset Formula $m_{Nj}$
+\end_inset
+
+ in the bin 
+\begin_inset Formula $j$
+\end_inset
+
+ and up to a value 
+\begin_inset Formula $n_{j}^{upper}$
+\end_inset
+
+ such that the most likely scenario 
+\begin_inset Formula $n_{j}^{max}=n_{j}^{upper}/2$
+\end_inset
+
+.
+ Subsequently, the likelihood of each scenario (value of the tuple 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $n_{1},\,\ldots,\, n_{J}$
+\end_inset
+
+) has been normalized such that the total likelihood of all generated scenarios
+ equals one.
+\end_layout
+
+\begin_layout Standard
+For the analysis of the north sea oil field discoveries, the number of size
+ bins has been fixed to 
+\begin_inset Formula $J=2$
+\end_inset
+
+ splitting between dwarfs and giants as described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discoveries-modeled-as"
+
+\end_inset
+
+.
+ The results are coherent with the intuitive expectation that discovering
+ a new giant field is unlikely and that the future discoveries of dwarf
+ fields can only be constrainted to a range as presented on figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rate_of_discovery"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Future production from discoveries
+\end_layout
+
+\begin_layout Standard
+The goal is to compute an expected oil production coming from future discoveries
+, which requires to combine the steps described in sections 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discoveries-modeled-as"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Likelihood-function-for"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The method described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Likelihood-function-for"
+
+\end_inset
+
+ yields probabilities for the total number of fields (including the not
+ yet discovered fields) in each size bins (called a scenario).
+ However, this likelihood method does not give the time distribution of
+ future discoveries.
+ The aim is to use the likelihood function to generate scenarios with their
+ respective occurence probability.
+\end_layout
+
+\begin_layout Standard
+For a given scenario, the carrying capactiy 
+\begin_inset Formula $K$
+\end_inset
+
+ (= total number of fields) is given for each size class.
+ This is useful, because it resolves the instability in fitting the logistic
+ curve to the number of discovered fields.
+ The time distribution of the discoveries is then given for each size class
+ by the fitted logistic curve.
+\end_layout
+
+\begin_layout Standard
+The actual size of a newly discovered field is generated according to the
+ size distribution of the existing fields in its size class.
+ The probability distribution function of field sizes in a given size bin
+ has been fitted by a stretched exponential function.
+\end_layout
+
+\begin_layout Standard
+The production curve is computed based on the average production curve of
+ all existing fields in the same size category.
+ The production curves of the existing fields have all been normalized to
+ a total production of one and then been averaged.
+ This yields an average production curve including a one standard deviation
+ error.
+ For a new field, this average production curve is than multiplied by the
+ size of the field.
+\end_layout
+
+\begin_layout Standard
+Superposing the production curves results in the expected production curve
+ from future oil field for a given scenario.
+\end_layout
+
+\begin_layout Standard
+As the total parameter space is too large to be sampled entirely, a Monte
+ Carlo technique is applied to compute the expected production from future
+ discoveries and its standard deviation.
+ In a nutshell, the algorithm works as follows:
+\end_layout
+
+\begin_layout Enumerate
+Draw a scenario based on its probability.
+\end_layout
+
+\begin_layout Enumerate
+Compute the time distribution of new discoveries by fitting a logistic curve
+ for each size class.
+\end_layout
+
+\begin_layout Enumerate
+For each discovery generate a size and the resulting production curve based
+ on the size distribution and production curves of existing fields.
+\end_layout
+
+\begin_layout Enumerate
+Superpose all the production curves.
+\end_layout
+
+\begin_layout Enumerate
+Repeat and average over all drawn scenarios.
+\end_layout
+
+\begin_layout Standard
+The result is the expected production curve of future oil field discoveries.
+ The distribution of generated scenarios yields the confidence interval.
+\end_layout
+
+\begin_layout Standard
+In order to account for the new fields discussed in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Regular,-irregular-and"
+
+\end_inset
+
+, which are already discovered but did not yet enter the decay phase, the
+ production resulting from new discoveries has been shifted into the past
+ so to match the current production from new fields.
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+Based on the methodology described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discovery-rate-of"
+
+\end_inset
+
+, simulating future oil production was straightforward.
+ For each country, the existing fields were extrapolated and the future
+ discoveries were simulated.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "no_uk_2013"
+
+\end_inset
+
+ shows the average of 1000 simulations.
+ For each country, the non-symmetric shape of the production's dynamics
+ contrary to what Hubbert would have predicted is immediately noticable.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Remaining oil reserves until 2030
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="right" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Delta$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ NO 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $130\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $188\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-31\%$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $59\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $98\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-40\%$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "forecast-14"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The difference between the Monte-Carlo simulation and the extrapolation-based
+ forecast is striking.
+ According to the standard extrapolation, Norway's future oil production
+ would decay much faster than in the Monte-Carlo case.
+ As such, the estimated remaining reserves are smaller than the forecasted
+ value of the Monte-Carlo methodology by over 
+\begin_inset Formula $30\%$
+\end_inset
+
+.
+ This difference originates from two different effects:
+\end_layout
+
+\begin_layout Itemize
+The sum of the extrapolation of the individual existing fields is higher
+ than the extrapolation of the aggregate production.
+\end_layout
+
+\begin_layout Itemize
+The extrapolation of the aggregate production does not capture well the
+ discovery process of dwarf fields.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename NO-future.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-future.pdf
+	width 50text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Monte-Carlo and extrapolation forecast based on past production data for
+ Norway (top) and the U.K.
+ (bottom).
+ In both cases, our model forecasts a significantly slower decay than a
+ simple extrapolation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "no_uk_2013"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the U.K., oil production faced a change of regime during the early nineties
+ due to technological innovation, giving rise to the inverted "w shape"
+ of the oil production profile.
+ However, this has not been an issue to extrapolate the decay of production
+ starting at the second peak.
+ The difference between the Hubbert-based methodology and the Monte-Carlo
+ one is very similar to the Norwegian case.
+ The former underestimates the remaining oil reserves by about 
+\begin_inset Formula $40\%$
+\end_inset
+
+ compared to the latter.
+\end_layout
+
+\begin_layout Standard
+Which of the two models is more thrust worthy? Clearly, the implications
+ in adopting one methodology over the other are significant.
+ The only way to answer this question is to backtest them.
+ In other words we ask: "What would have each of the models predicted had
+ we used them in the past?"
+\end_layout
+
+\begin_layout Section
+Validation
+\end_layout
+
+\begin_layout Standard
+For both countries, namely Norway and the U.K., we went back in time 6 years
+ (starting in 2008) and applied the model to the truncated data.
+ Before that date, too many of the giant fields have not entered their decay
+ phase for a sufficiently long time to apply the extrapolation algorithm.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "model-back-testing"
+
+\end_inset
+
+ shows the outcome of those tests.
+ Comparing the forecast of both models with the oil production of the subsequent
+ 6 years, we find the predictive power of the Monte-Carlo model to be better
+ than a simple extrapolation of aggregate production.
+ The following table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "backtest-08"
+
+\end_inset
+
+ summarizes the difference between the two approaches for the backtesting
+ period.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Back-test 2008-2014
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Actual
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fit 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ NO
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $133\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $108\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $130\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $79\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $66\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $75\cdot10^{9}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "backtest-08"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The difference is not huge for the period from 2008 to 2014, but the Monte-Carlo
+ model nevertheless is noticeably closer to the actual value.
+ However, when considering the period after 2014, the difference is huge
+ as shown in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-08"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Remaining oil reserves 2014-2030
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fit 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Delta$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ NO 08
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $25\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $171\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-85\%$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UK 08
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $25\cdot10^{6}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $91\cdot10^{9}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-73\%$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "forecast-08"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The simple extrapolation decays too fast and entirely misses the fat tails
+ in the decay process of individual fields and the new discoveries.
+ As well, it must be noted that the simple extrapolation changed massively
+ between the backtest in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-08"
+
+\end_inset
+
+ and the current fit in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "forecast-14"
+
+\end_inset
+
+ (520% for Norway and 236% for the U.K.).
+ In other words, the simple extrapolation was very unstable in its forecast,
+ while the Monte-Carlo forecasts remained very consistent (less than 10%
+ change).
+\end_layout
+
+\begin_layout Standard
+As can be seen in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "model-back-testing"
+
+\end_inset
+
+, the actual production of Norway during the back-testing period remained
+ entirely within the quite narrow 
+\begin_inset Formula $1\sigma$
+\end_inset
+
+ interval of the Monte-Carlo methodology, while totally breaking out of
+ the 
+\begin_inset Formula $1\sigma$
+\end_inset
+
+ interval of the simple extrapolation.
+ For the U.K.
+ the Monte-Carlo methodology only performs slightly better when considering
+ the confidence interval, and the confidence interval is much larger due
+ to the uncertainty on future discoveries and their production profile.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename NO-back-test.pdf
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename UK-back-test.pdf
+	width 50text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Monte-Carlo and Hubbert forecast based on past production data up to 2008
+ for Norway (top) and the U.K.
+ (bottom).
+ The results can be compared with the subsequent oil production (blue area).
+ In both cases, the Monte-Carlo methodology is more precise.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "model-back-testing"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+This paper presented a Monte-Carlo based methodology to forecast future
+ oil production.
+ By extending the oil production of current fields into the future and modeling
+ the discovery rate of new fields, the future oil production of Norway and
+ the U.K.
+ could be forecasted.
+ These forecasts are significantly different from the ones obtained with
+ a standard extrapolation.
+ Indeed, our model forecasts 30% to 40% more remaining oil reserves than
+ the standard extrpolation.
+ The backtest performed on the time period between 2008 and 2014 confirmed
+ that the Monte-Carlo based model better captured the production dynamics.
+\end_layout
+
+\begin_layout Standard
+The results are hopeful, as they make it highly likely that the decay of
+ Norwegian and U.K.
+ oil production will be much slower then one would expect from a standard
+ extrapolation.
+ Nonetheless, to maintain current levels of oil consumption in the European
+ Union, more of it will have to be imported from outside Europe, as the
+ imports from Norway will vanish (currently accounting for 11% of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "European oil imports"
+
+\end_inset
+
+) and the U.K.
+ will need to import more oil.
+ Therefore, the risk emanating of oil imports from less reliable producers
+ and the exposure to competitors for this oil will increase.
+\end_layout
+
+\begin_layout Standard
+Considering the risk of strong oil price fluctuations due to small supply
+ shortcomings and the economic impact this has 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Lutz 2012"
+
+\end_inset
+
+, it is primordial for Europe to reduce its oil dependency by energy savings
+ and using substitutes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Brandt 2006"
+key "Brandt 2006"
+
+\end_inset
+
+Brandt, Adam R.
+ “Testing Hubbert.” Energy Policy 35, no.
+ 5 (May 2007): 3074–88.
+ doi:10.1016/j.enpol.2006.11.004.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Brecha 2012"
+key "Brecha 2012"
+
+\end_inset
+
+Brecha, Robert J.
+ “Logistic Curves, Extraction Costs and Effective Peak Oil.” Energy Policy
+ 51 (December 2012): 586–97.
+ doi:10.1016/j.enpol.2012.09.016.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "European oil imports"
+key "European oil imports"
+
+\end_inset
+
+European Commission - Energy (2014, Mai 25).
+ EU Crude oil imports.
+ Retrieved from 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Forro 2012"
+key "Forro 2012"
+
+\end_inset
+
+Forró, Zalán, Peter Cauwels, and Didier Sornette.
+ “When Games Meet Reality: Is Zynga Overvalued?” Journal of Investment Strategie
+s 1 (3), 119-145 (2012).
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "U.K. Data"
+key "U.K. Data"
+
+\end_inset
+
+GOV.UK (2014, Mai 25).
+ Exploration and production - Oil and gas: field data.
+ Retrieved from 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+url{https://www.og.decc.gov.uk/pprs/full_production.htm}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Greiner 2012"
+key "Greiner 2012"
+
+\end_inset
+
+Greiner, Alfred, Willi Semmler, and Tobias Mette.
+ “An Economic Model of Oil Exploration and Extraction.” Computational Economics
+ 40, no.
+ 4 (December 2012): 387–99.
+ doi:10.1007/s10614-011-9272-0.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Höök 2008"
+key "Höök 2008"
+
+\end_inset
+
+Höök, Mikael, and Kjell Aleklett.
+ “A Decline Rate Study of Norwegian Oil Production.” Energy Policy 36, no.
+ 11 (November 2008): 4262–71.
+ doi:10.1016/j.enpol.2008.07.039.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Hubbert 1956"
+key "Hubbert 1956"
+
+\end_inset
+
+Hubbert, Marion King.
+ Nuclear Energy and the Fossil Fuels.
+ Vol.
+ 95.
+ Shell Development Company, Exploration and Production Research Division
+ Houston, TX, 1956.
+ http://energycrisis.biz/hubbert/1956/1956.pdf.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Laherrère 2002"
+key "Laherrère 2002"
+
+\end_inset
+
+Laherrere, Jean.
+ “Forecasting Future Production from Past Discovery.” International Journal
+ of Global Energy Issues 18, no.
+ 2 (2002): 218–38.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Laherrère 1998"
+key "Laherrère 1998"
+
+\end_inset
+
+Laherrere, Jean, and Didier Sornette.
+ “Stretched Exponential Distributions in Nature and Economy:‘fat Tails’
+ with Characteristic Scales.” The European Physical Journal B-Condensed Matter
+ and Complex Systems 2, no.
+ 4 (1998): 525–39.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Lutz 2012"
+key "Lutz 2012"
+
+\end_inset
+
+Lutz, Christian, Ulrike Lehr, and Kirsten S.
+ Wiebe.
+ “Economic Effects of Peak Oil.” Energy Policy 48 (September 2012): 829–34.
+ doi:10.1016/j.enpol.2012.05.017.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Lynch 2002"
+key "Lynch 2002"
+
+\end_inset
+
+Lynch, Michael C.
+ “Forecasting Oil Supply: Theory and Practice.” The Quarterly Review of Economics
+ and Finance 42, no.
+ 2 (2002): 373–89.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Murray 2012"
+key "Murray 2012"
+
+\end_inset
+
+Murray, James W., and Jim Hansen.
+ “Peak Oil and Energy Independence: Myth and Reality.” Eos, Transactions
+ American Geophysical Union 94, no.
+ 28 (2013): 245–46.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Norwegian Data"
+key "Norwegian Data"
+
+\end_inset
+
+Norwegian Petroleum Directorate (2014, Mai 25).
+ Factpages.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://factpages.npd.no/factpages/"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "Smith 1980"
+key "Smith 1980"
+
+\end_inset
+
+Smith, J.
+ L.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+A Probablilistic Model of Oil Discovery.
+\begin_inset Quotes erd
+\end_inset
+
+ The Review of Economics and Statistics, Vol.
+ 62, No.
+ 4 (Nov.
+ 1980): 587-94.
+\end_layout
+
+\end_body
+\end_document
+>>>>>>> 95f1cbfd546a1612e0c6c489d593e878858bbcea

@@ -30,6 +30,14 @@ class Sudoku(object):
         INSANE: 0.17,
         GOOD_LUCK: 0.12,
     }
+    BLOCK_PERMUTATIONS = {
+        "012": "a",
+        "021": "b",
+        "102": "c",
+        "120": "d",
+        "201": "e",
+        "210": "f",
+    }
     grid_size = 0
     difficulty = 0
 
@@ -235,20 +243,63 @@ class Sudoku(object):
         self.iterations = 0
         self.fill_square(0)
 
-    def get_block_col_permutation(self, n, col):
-        one = self.get_col(col * self.grid_size).index(n)
-        two = self.get_col(col * self.grid_size + 1).index(n)
-        three = self.get_col(col * self.grid_size + 2).index(n)
-        if one < two < three:
-            return "a"
-        if two < one < three:
-            return "b"
-        if three < two < one:
-            return "c"
-        pass
+    def get_block_permutation(self, n, index, get):
+        positions = [[i, get(index * self.grid_size + i).index(n)] for i in range(0, 3)]
+        positions = sorted(positions, key=lambda e: e[1])
+        positions = "".join(map(lambda e: str(e[0]), positions))
+        return self.BLOCK_PERMUTATIONS[positions]
 
-    def get_block_row_permutation(self, n, row):
-        pass
+    def get_block_col_permutation_n(self, n, col):
+        return self.get_block_permutation(n, col, self.get_col)
+
+    def get_block_row_permutation_n(self, n, row):
+        return self.get_block_permutation(n, row, self.get_row)
+
+    def get_block_col_permutation(self, col):
+        permutations = ""
+        for i in range(1, 10):
+            permutations += self.get_block_col_permutation_n(i, col)
+        return permutations
+
+    def get_block_row_permutation(self, row):
+        permutations = ""
+        for i in range(1, 10):
+            permutations += self.get_block_row_permutation_n(i, row)
+        return permutations
+
+    def swap(self, n1, n2):
+        self.solution = [e if e != n1 else 0 for e in self.solution]
+        self.solution = [e if e != n2 else n1 for e in self.solution]
+        self.solution = [e if e != 0 else n2 for e in self.solution]
+
+    def normalize_type(self):
+        row_permutation = self.get_block_row_permutation_n
+        change = True
+        while change:
+            change = False
+            for i in range(1, 9):
+                if row_permutation(i + 1, 0) < row_permutation(i, 0):
+                    self.swap(i, i+1)
+                    change = True
+
+    def get_type(self):
+        permutations = ""
+        for i in range(0, 3):
+            permutations += self.get_block_row_permutation(i) + " - "
+            permutations += self.get_block_col_permutation(i) + "\n"
+        return permutations
+
+    def block_col_permute(self, col1, col2):
+        for i in range(0, 3):
+            col11 = self.get_col(col1 * 3 + i)
+            self.set_col(col1 * 3 + i, self.get_col(col2 * 3 + i))
+            self.set_col(col2 * 3 + i, col11)
+
+    def block_row_permute(self, row1, row2):
+        for i in range(0, 3):
+            row11 = self.get_row(row1 * 3 + i)
+            self.set_row(row1 * 3 + i, self.get_col(row2 * 3 + i))
+            self.set_row(row2 * 3 + i, row11)
 
     @requires_solution
     def print_grid(self, grid):
@@ -286,11 +337,12 @@ def main():
     except IndexError:
         size = 3
     s = Sudoku(size, difficulty=EASY)
-    print s.masked_grid
-    # s.print_solution()
-    # print '=' * (size ** 3 + size - 1)
-    s.print_masked()
+    s.print_solution()
+    print s.get_type()
+    print ""
+    s.normalize_type()
+    s.print_solution()
+    print s.get_type()
 
 if __name__ == '__main__':
     main()
-

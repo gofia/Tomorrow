@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 
 from dateutil import relativedelta
 
+
 def add_months(date, months):
     month = date.month - 1 + months
     year = date.year + month / 12

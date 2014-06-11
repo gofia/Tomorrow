@@ -176,7 +176,6 @@ This paper presents a new Monte-Carlo methodology to forecast the crude
  with the full data and a back-test starting in 2008.
  It shows that the model gives a better description of the evolution of
  the oil production.
- 
 \end_layout
 
 \begin_layout Standard
@@ -651,7 +650,7 @@ All the fields have been fitted using an automated algorithm, but the results
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P(t)=P_{0}e^{\left(\frac{t}{\tau}\right)^{\beta}}\label{stretched_exponential}
+P(t)=P_{0}e^{sign(\tau)\left(\frac{t}{\left|\tau\right|}\right)^{\beta}}\label{stretched_exponential}
 \end{equation}
 
 \end_inset
@@ -684,28 +683,37 @@ reference "stretched_exponential"
 \end_layout
 
 \begin_layout Standard
-For the minority of irregular fields, we simply modeled their decay as follows.
- We picked 
+For the minority of irregular fields, their decay has been modeled as follows:
+ 
 \begin_inset Formula $\tau$
 \end_inset
 
- to be the average 
+ has been picked to be the average 
 \begin_inset Formula $\tau$
 \end_inset
 
  over the regular fields.
- We then fixed 
+ Then 
 \begin_inset Formula $\beta$
 \end_inset
 
- so that the sum of the field’s production over its lifetime be equal to
- the official ultimate recovery estimates, when such an estimate is available.
+ has been fixed so that the sum of the field’s production over its lifetime
+ be equal to the official ultimate recovery estimates, when such an estimate
+ is available.
 \end_layout
 
 \begin_layout Standard
-The minority of new fields will be treated as a new discovery, as their
- final size can simply not be predicted based on the existing production
- data.
+The minority of new fields, which did not yet enter their decay phase, cannot
+ be extrapolated and will therefore be treated as a new discovery.
+ The technical details of how to treat them as a new discovery are discussed
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Future-production-from"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -725,15 +733,24 @@ The production data
 \end_inset
 
  of the field is truncated at a certain date in the past 
-\begin_inset Formula $t\in\{0,\,\ldots,\, N\}$
+\begin_inset Formula $\tau\in\{0,\,\ldots,\, N\}$
 \end_inset
 
 .
+ Where 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is in months since production start of the field.
 \end_layout
 
 \begin_layout Itemize
-The extrapolation is made based on the truncated data 
-\begin_inset Formula $\{p_{0},\,\ldots,\, p_{t}\}$
+The extrapolation
+\begin_inset Formula $f(t)$
+\end_inset
+
+ is made based on the truncated data 
+\begin_inset Formula $\{p_{0},\,\ldots,\, p_{\tau}\}$
 \end_inset
 
 .
@@ -745,40 +762,56 @@ The future production predicted by the extrapolation
 \end_inset
 
  can be compared to the actual production from the date 
-\begin_inset Formula $t$
+\begin_inset Formula $\tau$
 \end_inset
 
  in the past up to now 
-\begin_inset Formula $t_{f}=N$
+\begin_inset Formula $\tau_{f}=N$
 \end_inset
 
 .
- The extrapolated total production can be be computed as 
+ The extrapolated total production can be computed as 
 \begin_inset Formula 
 \begin{equation}
-P_{e}(t)=\int_{t}^{t_{f}}f(\tau)d\tau
+P_{e}(\tau)=\int_{\tau}^{\tau_{f}}f(t)dt
 \end{equation}
 
 \end_inset
 
-and the error is given by
+and the relative error is given by
 \begin_inset Formula 
 \begin{equation}
-e(t)=\frac{P_{e}(t)-\sum_{i=t}^{t_{f}}p_{i}}{P_{e}(t)},
+e(\tau)=\frac{P_{e}(\tau)-\sum_{i=\tau}^{\tau_{f}}p_{i}}{P_{e}(\tau)},
 \end{equation}
 
 \end_inset
 
 where both are a function of the truncation time 
-\begin_inset Formula $t$
+\begin_inset Formula $\tau$
 \end_inset
 
 .
 \end_layout
 
 \begin_layout Standard
-Computing this back test for every possible date in the past, yields a plot
- showing the evolution of the error over time.
+Computing this back test for every month in the past since the field starting
+ decaying, yields a plot showing the evolution of the error over time 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "oesberg-error"
+
+\end_inset
+
+.
+ By construction this relative error will tend to zero as the truncation
+ time 
+\begin_inset Formula $\tau$
+\end_inset
+
+ goes to the present.
+ Nonetheless, it is a uself indicator for the stability of the extrapolation.
+ As can been seen for the Oseberg field, the relative error on future production
+ remained fairly stable during the past decade.
 \end_layout
 
 \begin_layout Standard
@@ -802,8 +835,19 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Oesberg field - Error on predicted total production until 2014
+Oesberg field - Relative error on predicted total production from time 
+\begin_inset Formula $t$
+\end_inset
+
+ until 2014
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "oesberg-error"
 
 \end_inset
 
@@ -817,15 +861,23 @@ Oesberg field - Error on predicted total production until 2014
 
 \begin_layout Standard
 From the complete back-test, on can compute the average error 
-\begin_inset Formula $\bar{e}$
+\begin_inset Formula 
+\[
+\bar{e}=\frac{1}{N}\sum_{i=0}^{N}e(i)
+\]
+
 \end_inset
 
  the extrapolation made on the future production and the standard deviation
  
-\begin_inset Formula $\sigma_{e}$
+\begin_inset Formula 
+\[
+\sigma_{e}=\sqrt{\frac{1}{N}\sum_{i=0}^{N}\left(e(i)-\bar{e}\right)^{2}}
+\]
+
 \end_inset
 
- on the average error.
+on the average error.
  As the average error is often fairly constant, the extrapolation was corrected
  by the average error.
  Meaning that if the extrapolation consistently over-estimated the production
@@ -1074,10 +1126,10 @@ reference "rate_of_discovery"
 
 \end_inset
 
- pictures the dynamics: giant oil fields are mostly found while the discovery
- process for dwarf fields is still ongoing.
- The logistic growth curve fit to the giant discoveries is stable, however
- the fit for the dwarfs is unstable.
+ pictures the dynamics: giant oil fields have mostly been found while the
+ discovery process for dwarf fields is still ongoing.
+ The logistic growth curve fit to the giant discoveries is well constrained,
+ however the fit for the dwarfs is poorly constrained.
  As can be seen on figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1095,7 +1147,7 @@ reference "rate_of_discovery"
 \end_inset
 
  can lead to a good fit of the data.
- Therefore, a method described in the section 
+ Therefore, a method described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Likelihood-function-for"
@@ -1125,10 +1177,6 @@ status open
 \begin_layout Plain Layout
 Logistic fit to the number of discoveries for Norway.
  The discovery rate of new oil fields is dependent on their size.
- The logistic model suggests that a large number of dwarf oil fields has
- not yet been discovered, while the rate of discovery of giant oil fields
- is almost zero.
- 
 \end_layout
 
 \end_inset
@@ -1222,11 +1270,11 @@ The fields are split into
 \begin_inset Formula $I(i)\in\{S_{1},\,\ldots,\, S_{J}\}$
 \end_inset
 
- is found and we will denote by 
+ is found and 
 \begin_inset Formula $m_{ij}$
 \end_inset
 
- the number of fields of size 
+ denotes the number of fields of size 
 \begin_inset Formula $j\in\{1,\,\ldots,\, J\}$
 \end_inset
 
@@ -1351,6 +1399,13 @@ reference "rate_of_discovery"
 
 \begin_layout Subsubsection
 Future production from discoveries
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Future-production-from"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1851,8 +1906,8 @@ In the U.K., oil production faced a change of regime during the early nineties
 Which of the two models is more thrust worthy? Clearly, the implications
  in adopting one methodology over the other are significant.
  The only way to answer this question is to back-test them.
- In other words we ask: "What would have each of the models predicted had
- we used them in the past?"
+ In other words: "What would have each of the models predicted had they
+ been used in the past?"
 \end_layout
 
 \begin_layout Section
@@ -1860,8 +1915,8 @@ Validation
 \end_layout
 
 \begin_layout Standard
-For both countries, namely Norway and the U.K., we went back in time 6 years
- (starting in 2008) and applied the model to the truncated data.
+For both countries, namely Norway and the U.K., a back-test using the data
+ truncated in 2008 has been made.
  Before that date, too many of the giant fields have not entered their decay
  phase for a sufficiently long time to apply the extrapolation algorithm.
  Figure 
@@ -1873,7 +1928,7 @@ reference "model-back-testing"
 
  shows the outcome of those tests.
  Comparing the forecast of both models with the oil production of the subsequent
- 6 years, we find the predictive power of the Monte-Carlo model to be better
+ 6 years, shows that the predictive power of the Monte-Carlo model is better
  than a simple extrapolation of aggregate production.
  The following table 
 \begin_inset CommandInset ref

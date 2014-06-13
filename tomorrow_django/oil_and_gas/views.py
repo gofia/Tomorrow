@@ -101,7 +101,7 @@ class FieldList(AuthenticatedView, LoggedViewMixin, ListAPIView):
             return Field.objects.filter(
                 country=self.kwargs['country'],
                 current_production_oil__gt=0,
-                discovery__lt=date(2008, 1, 1)
+                discovery__lt=date(2015, 1, 1)
             ).order_by("name").all()
         else:
             return Field.objects.all().order_by("name")

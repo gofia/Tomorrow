@@ -524,7 +524,15 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Example of a regular field.
+Example of a regular field with 
+\begin_inset Formula $\beta=0.66\pm0.01$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau=-55\pm1$
+\end_inset
+
+.
 \end_layout
 
 \end_inset
@@ -795,7 +803,8 @@ where both are a function of the truncation time
 
 \begin_layout Standard
 Computing this back test for every month in the past since the field starting
- decaying, yields a plot showing the evolution of the error over time 
+ decaying, yields a plot showing the evolution of the relative error over
+ time 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "oesberg-error"
@@ -803,7 +812,7 @@ reference "oesberg-error"
 \end_inset
 
 .
- By construction this relative error will tend to zero as the truncation
+ By construction, the relative error will tend to zero as the truncation
  time 
 \begin_inset Formula $\tau$
 \end_inset
@@ -860,26 +869,27 @@ name "oesberg-error"
 \end_layout
 
 \begin_layout Standard
-From the complete back-test, on can compute the average error 
+From the complete back-test, on can compute the average relative error 
 \begin_inset Formula 
-\[
+\begin{equation}
 \bar{e}=\frac{1}{N}\sum_{i=0}^{N}e(i)
-\]
+\end{equation}
 
 \end_inset
 
- the extrapolation made on the future production and the standard deviation
- 
+ the extrapolation made on the future production.
+ Assuming that the relative errors are normally distributed around the average
+ relative error, the standard deviation on the average relative error is
+ given by 
 \begin_inset Formula 
-\[
-\sigma_{e}=\sqrt{\frac{1}{N}\sum_{i=0}^{N}\left(e(i)-\bar{e}\right)^{2}}
-\]
+\begin{equation}
+\sigma_{e}=\sqrt{\frac{1}{N}\sum_{i=0}^{N}\left(e(i)-\bar{e}\right)^{2}}.\label{eq:field-risk}
+\end{equation}
 
 \end_inset
 
-on the average error.
- As the average error is often fairly constant, the extrapolation was corrected
- by the average error.
+As the average relative error is often fairly constant, the extrapolation
+ was corrected by the average relative error.
  Meaning that if the extrapolation consistently over-estimated the production
  by 10% during the back-test, the extrapolation was reduced by 10%.
  This results in an extrapolated production 
@@ -893,7 +903,7 @@ on the average error.
  confidence interval, as
 \begin_inset Formula 
 \begin{equation}
-p(t)=(1-\bar{e})\, f(t)\pm\sigma_{e}.
+p(t)=(1-\bar{e})\, f(t)\pm\sigma_{e}.\label{eq:extrapolation}
 \end{equation}
 
 \end_inset
@@ -918,19 +928,61 @@ Aggregate error
 \end_layout
 
 \begin_layout Standard
-Once all the individual fields have been extrapolated, the aggregated extrapolat
-ion for the country has to be computed.
- While this is straightforward for the expected production, some care has
- to be taken with respect to the error on the production at the country
- level.
- As shown later, the same extrapolation including a complete back-test has
- been performed at the country level and the resulting error is much smaller
- than the average error observed on an individual field.
- To account for this observation, the necessary assumption is that the error
- between the individual fields is largely uncorrelated.
- Therefore, the fields can be considered as a portfolio of stocks with an
- underlying trend but an overlying random walk.
- This means that the error at the country level from the extrapolated production
+Once the individual fields have been extrapolated in the sense of formula
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:extrapolation"
+
+\end_inset
+
+, the aim is to compute the extrapolation for the country.
+ While it is straightforward to sum the extrapolations of the individual
+ fields to obtain the expected production, some care has to be taken with
+ respect to the confidence interval on the production at the country level.
+\end_layout
+
+\begin_layout Standard
+As shown later in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Results"
+
+\end_inset
+
+, the same extrapolation including a complete monthly back-test of total
+ future production has been performed at the country level and the resulting
+ relative error is much smaller than the average error observed on the individua
+l fields.
+ To account for this observation, the assumption made is that the relative
+ error between individual fields is uncorrelated.
+ Therefore, the fields can be considered as a portfolio of assets with a
+ return given by their extrapolation 
+\begin_inset Formula $p(t)$
+\end_inset
+
+ (eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:extrapolation"
+
+\end_inset
+
+) and a risk given by 
+\begin_inset Formula $\sigma_{field}$
+\end_inset
+
+ (eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:field-risk"
+
+\end_inset
+
+).
+ This means that the risk at the country level from the extrapolated production
  is to be computed as 
 \begin_inset Formula 
 \begin{equation}
@@ -943,17 +995,8 @@ ion for the country has to be computed.
 \end_layout
 
 \begin_layout Standard
-As example, a country with 100 fields having each an error of 
-\begin_inset Formula $\pm50\%$
-\end_inset
-
-, will have an expected error of only 
-\begin_inset Formula $\pm5\%$
-\end_inset
-
-.
- Intuitively, this results from the fact that the uncorrelated errors among
- fields cancel out on average.
+Intuitively, this models well the fact that the uncorrelated errors among
+ fields will mostly cancel out.
 \end_layout
 
 \begin_layout Subsection
@@ -1018,7 +1061,8 @@ A natural choice for such a model is a non-homogenous Poisson process.
 \begin_inset Formula $N(t)$
 \end_inset
 
-, the number of events (discoveries) up to time 
+, the statistical average of the cumulative number of events (discoveries)
+ up to time 
 \begin_inset Formula $t$
 \end_inset
 
@@ -1056,8 +1100,8 @@ reference "logistic"
  This implies that after an initial increase, the rate of new discoveries
  reaches a peak followed by a decrease until no more oil fields are to be
  found, consistent with our fundamental observations.
- This is the same strategy then has already been successfully applied to
- estimate the number of daily active users on Zynga 
+ This same approach has already been successfully applied to estimate the
+ number of daily active users on Zynga 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Forro 2012"
@@ -1146,7 +1190,7 @@ reference "rate_of_discovery"
 \begin_inset Formula $K$
 \end_inset
 
- can lead to a good fit of the data.
+ can lead to an equally good fit of the data.
  Therefore, a method described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1314,7 +1358,7 @@ The likelihood
  can than be expressed as
 \begin_inset Formula 
 \begin{equation}
-L=\prod_{i=1}^{N}\frac{\left(n_{I(i)}-m_{iI(i)}\right)\cdot S_{I(i)}}{\sum_{j=1}^{J}\left(n_{j}-m_{ij}\right)\cdot S_{j}}.
+L=\prod_{i=1}^{N}\frac{\left(n_{I(i)}-m_{iI(i)}\right)\cdot S_{I(i)}}{\sum_{j=1}^{J}\left(n_{j}-m_{ij}\right)\cdot S_{j}}.\label{eq:likelihood}
 \end{equation}
 
 \end_inset
@@ -1346,8 +1390,20 @@ The unknown parameters are the number of fields
 \begin_inset Formula $n_{j}^{upper}$
 \end_inset
 
- such that the most likely scenario 
+, such that the scenario with the largest likelihood according to equation
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:likelihood"
+
+\end_inset
+
+ has 
 \begin_inset Formula $n_{j}^{max}=n_{j}^{upper}/2$
+\end_inset
+
+ fields in the bin 
+\begin_inset Formula $j$
 \end_inset
 
 .
@@ -1377,7 +1433,7 @@ For the analysis of the north sea oil field discoveries, the number of size
 \begin_inset Formula $J=2$
 \end_inset
 
- splitting between dwarfs and giants as described in section 
+ splitting between dwarfs (1) and giants (2) as described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Discoveries-modeled-as"
@@ -1385,12 +1441,341 @@ reference "sub:Discoveries-modeled-as"
 \end_inset
 
 .
- The results are coherent with the intuitive expectation that discovering
- a new giant field is unlikely and that the future discoveries of dwarf
- fields can only be constrained to a range as presented on figure 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Likelihood estimation for the number of dwarf (1) and giant (2) fields.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="5">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m_{N1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n_{1}\pm\sigma_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m_{N2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n_{2}\pm\sigma_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ NO 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $24$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $88.4\pm10.0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $52$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $56.4\pm1.6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $162$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $208\pm11$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $99$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $100\pm0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "likelihood-results"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The results shown in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "likelihood-results"
+
+\end_inset
+
+ are coherent with the intuitive expectation that discovering a new giant
+ field is unlikely and that future discoveries wil mostly be made up of
+ dwarf fields.
+ The likelihoods obtained for the carrying capacities of dwarfs and giants
+ have been used to constrain the logistic curve fitted to the discoveries.
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "rate_of_discovery"
+
+\end_inset
+
+ shows a sample of fitted logistic curves, each curve being weighted by
+ the likelihood of its carrying capacity given by equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:likelihood"
 
 \end_inset
 
@@ -1466,7 +1851,7 @@ The actual size of a newly discovered field is generated according to the
 The production curve is computed based on the average production curve of
  all existing fields in the same size category.
  The production curves of the existing fields have all been normalized to
- a total production of one and then been averaged.
+ a total production of one and then have been averaged.
  This yields an average production curve including a one standard deviation
  error.
  For a new field, this average production curve is than multiplied by the
@@ -1521,12 +1906,19 @@ reference "sub:Regular,-irregular-and"
 \end_inset
 
 , which are already discovered but did not yet enter the decay phase, the
- production resulting from new discoveries has been shifted into the past
- so to match the current production from new fields.
+ simulated production resulting from new discoveries has been shifted to
+ the date in the past where it matches the current production from new fields.
 \end_layout
 
 \begin_layout Section
 Results
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Results"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1563,7 +1955,19 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Remaining oil reserves until 2030
+Remaining oil reserves until 2030 in barrels for the 
+\series bold
+Fit
+\series default
+ of the country's production, the Monte-Carlo 
+\series bold
+Model
+\series default
+ and the relative difference 
+\begin_inset Formula $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Model}}$
+\end_inset
+
+ between the two.
 \end_layout
 
 \end_inset
@@ -1683,7 +2087,7 @@ midrule
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-31\%$
+\begin_inset Formula $31\%$
 \end_inset
 
 
@@ -1730,7 +2134,7 @@ UK
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-40\%$
+\begin_inset Formula $40\%$
 \end_inset
 
  

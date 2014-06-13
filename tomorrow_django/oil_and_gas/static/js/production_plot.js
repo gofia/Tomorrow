@@ -34,12 +34,12 @@ $(function () {
                 if (x >= data.x_min) {
                     fit.push([
                         date,
-                        fit_function(x) / 30
+                        fit_function(x-data.x_min) / 30
                     ]);
                     fit_range.push([
                         date,
-                        fit_function(x) * (1 - data.error_std) / 30,// * (1 - data.error_avg),
-                        fit_function(x) * (1 + data.error_std) / 30// * (1 - data.error_avg)
+                        fit_function(x-data.x_min) * (1 - data.error_std) / 30,// * (1 - data.error_avg),
+                        fit_function(x-data.x_min) * (1 + data.error_std) / 30// * (1 - data.error_avg)
                     ]);
                 }
             }
@@ -51,7 +51,7 @@ $(function () {
                     forecast_avg = {},
                     forecast_range = [],
                     dates,
-                    last_date = new Date(2008, 1, 1).getTime(), //productions.last()[0],
+                    last_date = productions.last()[0], //new Date(2008, 1, 1).getTime()
                     idx;
                 for (i = 0; i < forecasts.length; i++) {
                     date = $.to_date(forecasts[i].date);

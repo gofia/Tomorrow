@@ -35,14 +35,14 @@ from .utils import traverse, list_get, add_months, diff_months_abs, make_plot, s
 
 
 class DiscoveryGenerator:
-    date_max = datetime.date(2008, 1, 1)
+    date_max = datetime.date(2015, 1, 1)
     fields = []
     sizes = []
     size_bins = None
     scenarios = []
     pdf = []
     _oldest_unstable_field = None
-    n_scenarios = 100
+    n_scenarios = 10
 
     def __init__(self, country):
         self.country = Country.objects.get(name=country)
@@ -112,7 +112,7 @@ class DiscoveryGenerator:
             "Extrapolating Norwegian Field Discoveries"
         )
         p1 = self.logistic_plot.plot(self.time_dwarf, self.logistic_dwarf, 'bo', label="Dwarf")
-        p2 = self.logistic_plot.plot(self.time_giant, self.logistic_giant, 'go', label="Giants")
+        p2 = self.logistic_plot.plot(self.time_giant, self.logistic_giant, 'g+', label="Giants")
         self.logistic_plot.legend(("Dwarfs", "Giants"), loc='upper left')
 
     def init_scenarios(self):
@@ -122,6 +122,14 @@ class DiscoveryGenerator:
         if db_scenarios.count() > 0:
             self.scenarios = db_scenarios.order_by('pdf').all()
             self.pdf = map(lambda x: x.pdf, list(self.scenarios))
+            total_probability = sum(map(lambda x: x.probability, list(self.scenarios)))
+            n_dwarfs = sum(map(lambda x: x.number_dwarfs * x.probability, list(self.scenarios)))
+            n_dwarfs /= total_probability
+            print np.std(map(lambda x: x.number_dwarfs, list(self.scenarios)))
+            n_giants = sum(map(lambda x: x.number_giants * x.probability, list(self.scenarios)))
+            n_giants /= total_probability
+            print np.std(map(lambda x: x.number_giants, list(self.scenarios)))
+            print "n1/n2: {0}/{1}".format(n_dwarfs, n_giants)
             return
 
         result = optimize_sizes_brute(self.size_bins)
@@ -518,11 +526,11 @@ class SizeBins(object):
         ranges = ()
         probability_ranges = ()
         for size_bin in self.bins:
-            if size_bin.count < 100:  # < 150 for UK
-                ranges += (slice(size_bin.count + 1, size_bin.count + 10, 1.0),)
+            if size_bin.count > 50:  # < 150 for UK
+                ranges += (slice(size_bin.count + 3, size_bin.count + 10, 1.0),)
                 probability_ranges += (slice(0.05, 1.0, 0.05),)
             else:
-                ranges += (slice(size_bin.count * 1.0, size_bin.count * 2, 1.0),)  # +1 and * 1.25 for U.K.
+                ranges += (slice(size_bin.count * 3, size_bin.count * 4.5, 1.0),)  # +1 and * 1.25 for U.K.
                 probability_ranges += (slice(0.05, 1.0, 0.05),)
         ranges += probability_ranges[:-1]
         return ranges

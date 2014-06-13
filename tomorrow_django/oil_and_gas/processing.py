@@ -37,7 +37,7 @@ from .utils import add_months, diff_months, diff_months_abs
 
 
 class ProductionProcessor():
-    date_max = date(2008, 1, 1)
+    date_max = date(2015, 1, 1)
     production_type = None
     processed_type = None
     processed = None
@@ -72,8 +72,8 @@ class ProductionProcessor():
             self.compute_fit()
         print "Save processed"
         self.processed.save()
-        # self.processed.fits.all().delete()
-        # self.compute_fits(self.processed, self.productions, options)
+        self.processed.fits.all().delete()
+        self.compute_fits(self.processed, self.productions, options)
 
     def load_data(self, options):
         name = options.get('name', '')

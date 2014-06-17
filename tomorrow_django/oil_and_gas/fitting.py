@@ -158,7 +158,7 @@ def fit_stretched_exponential(_x, _y=None, x_min=None, x_max=None,
     x_, y_ = prepare_xy(_x, _y)
     x_min = x_min_2_x_min(x_min, x_, y_, _x, _y)
     x, y = chop_xy(x_, y_, x_min, x_max)
-    x -= x_min
+    # x -= x_min
 
     if x_min != x_min_guess or y0 is None or tau is None or beta is None:
         x_no_zeros, y_no_zeros = remove_zeros(x, y)

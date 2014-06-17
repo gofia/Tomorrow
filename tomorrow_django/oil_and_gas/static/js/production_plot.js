@@ -34,12 +34,12 @@ $(function () {
                 if (x >= data.x_min) {
                     fit.push([
                         date,
-                        fit_function(x-data.x_min) / 30
+                        fit_function(x) / 30
                     ]);
                     fit_range.push([
                         date,
-                        fit_function(x-data.x_min) * (1 - data.error_std) / 30,// * (1 - data.error_avg),
-                        fit_function(x-data.x_min) * (1 + data.error_std) / 30// * (1 - data.error_avg)
+                        fit_function(x) * (1 - data.error_std) / 30,// * (1 - data.error_avg),
+                        fit_function(x) * (1 + data.error_std) / 30// * (1 - data.error_avg)
                     ]);
                 }
             }
@@ -135,9 +135,7 @@ $(function () {
                     }
                 },
                 subtitle: {
-                    text: document.ontouchstart === undefined ?
-                        'Click and drag in the plot area to zoom in' :
-                        'Pinch the chart to zoom in'
+                    text: ''
                 },
                 xAxis: {
                     type: 'datetime',

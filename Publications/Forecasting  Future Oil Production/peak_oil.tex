@@ -1,3 +1,30 @@
+%% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[twoside]{article}
+\usepackage{mathpazo}
+\renewcommand{\ttdefault}{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{float}
+\usepackage{amstext}
+\usepackage{graphicx}
+\usepackage{esint}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=section,colorlinks=false]
+ {hyperref}
+\usepackage{breakurl}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Journal Article
 % LaTeX Template
@@ -18,246 +45,785 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[twoside]{article}
 
-\usepackage{lipsum} % Package to generate dummy text throughout this template
 
-\usepackage[sc]{mathpazo} % Use the Palatino font
-\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{lipsum}% Package to generate dummy text throughout this template
+
+% Use the Palatino font
+% Use 8-bit encoding that has 256 glyphs
 \linespread{1.05} % Line spacing - Palatino needs more space between lines
-\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+\usepackage{microtype}% Slightly tweak font spacing for aesthetics
 
-\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
-\usepackage{multicol} % Used for the two-column layout of the document
-\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
-\usepackage{booktabs} % Horizontal rules in tables
-\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
-\usepackage{hyperref} % For hyperlinks in the PDF
-\usepackage{graphicx}
+% Document margins
+\usepackage{multicol}% Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption}% Custom captions under/above floats in tables or figures
+\usepackage{booktabs}% Horizontal rules in tables
+\usepackage{float}% Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+% For hyperlinks in the PDF
 
-\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
-\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
 
-\usepackage{abstract} % Allows abstract customization
+\usepackage{lettrine}% The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist}% Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract}% Allows abstract customization
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
 \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
 
-\usepackage{titlesec} % Allows customization of titles
-\renewcommand\thesection{\Roman{section}}
+\usepackage{titlesec}% Allows customization of titles
+\renewcommand{\thesection}{\Roman{section}}
 \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
 
-\usepackage{fancyhdr} % Headers and footers
-\pagestyle{fancy} % All pages have headers and footers
+\usepackage{fancyhdr}% Headers and footers
+ % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
 %\fancyhead[C]{Running title $\bullet$ November 2012 $\bullet$ Vol. XXI, No. 1} % Custom header text
-\fancyhead[C]{Forecasting future oil production $\bullet$ July 2013} % Custom header text
+\fancyhead[C]{Forecasting future oil production $\bullet$ July 2014} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
-%----------------------------------------------------------------------------------------
-%	TITLE SECTION
-%----------------------------------------------------------------------------------------
-
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Forecasting future oil production}} % Article title
-
-\author{
-\large
-%\textsc{John Smith}\thanks{A thank you or further information}, % Your name
-\textsc{Z. Forr\'o}, % Your name
-\textsc{P. Cauwels},
-\textsc{L. Fi\'evet}, 
-\textsc{M. del Degan} and 
-\textsc{D. Sornette}\\[2mm] 
-\normalsize D-MTEC, ETHZ, Z\"urich \\ % Your institution
-%\normalsize \href{mailto:zforro@ethz.ch}{zforro@ethz.ch} % Your email address
-\vspace{-5mm}
-}
-\date{}
-
-%----------------------------------------------------------------------------------------
+\makeatother
 
 \begin{document}
+\thispagestyle{fancy} 
 
-\maketitle % Insert title
 
-\thispagestyle{fancy} % All pages have headers and footers
+\title{Forecasting future oil production}
 
-%----------------------------------------------------------------------------------------
-%	ABSTRACT
-%----------------------------------------------------------------------------------------
 
+\author{L. Fiévet, Z. Forró, M. del Degan, P. Cauwels and D. Sornette\\
+D-MTEC, ETH Zürich}
+
+
+\date{05/25/14}
+\maketitle
 \begin{abstract}
-
-\noindent We  have developed a Monte-Carlo methodology to forecast the crude oil production of Norway, the U.K. and the U. S. based on the current/past performances of individual oil fields. By extrapolating the future production of these fields and the frequency of new discoveries, we are able to forecast the oil production of these countries. Our results indicate that standard methodologies tend to underestimate remaining oil reserves. We compare our model to those methodologies by making predictions from various times points in the past (up to 20 years back for the US). It shows that our model gives a better description (hopefully soon) of the evolution of the oil production.
+\noindent This paper presents a new Monte-Carlo methodology to forecast
+the crude oil production of Norway and the U.K. based on the current/past
+performances of individual oil fields. By extrapolating the future
+production of these fields and the frequency of new discoveries, the
+oil production of these countries can be forecasted. The results indicate
+that standard methodology tends to underestimate remaining oil reserves.
+A comparison of the model to this methodology is made by making predictions
+with the full data and a back-test starting in 2008. It shows that
+the model gives a better description of future oil production.
 \end{abstract}
-
-%----------------------------------------------------------------------------------------
-%	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
-
-\begin{multicols}{2} % Two-column layout throughout the main article text
 
 \section{Introduction}
 
-\lettrine[nindent=0em,lines=3]
-Forecasting future oil production has been a topic of active interest since the beginning of the past century given oil's central role in our economy. Its importance ranges from energy production, through manufacturing to pharmaceuticals industry. Petroleum is a non-renewable, finite resource.  It is primordial to be able to forecast future oil production since a misestimation of its reserves can have huge consequences on our society. \\
-The methodology behind forecasting future oil production has not evolved much since Hubbert who, in 1956, famously predicted that the U.S. oil production would peak around 1965-1970. That prediction proved to be correct. His main argument was based on the finiteness of oil reserves and used the logistic differential equation  (equation \ref{logistic}) to model oil production. The logistic differential equation is characterized by an initial exponential growth, the growth decreasing to zero as the total oil extracted reaches saturation (no more oil is to be found).
+\lettrine[nindent=0em,lines=3] Forecasting future oil production
+has been a topic of active interest since the beginning of the past
+century because of oil's central role in our economy. Its importance
+ranges from energy production, through manufacturing to pharmaceuticals
+industry. As petroleum is a non-renewable and finite resource, it
+is primordial to be able to forecast future oil production. The fear
+of a global oil peak, beyond which production will inevitably decline,
+has been growing due to stagnating supplies and high oil prices since
+the crisis in 2008/2009 \cite{Murray 2012}. As any industrialized
+country, Europe is strongly dependent on oil supply to maintain its
+economic power. In the nowadays difficult geopolitical environment,
+it is important to know how much of the oil needed in Europe will
+come from reliable sources. In the past, a big share has been coming
+from Norway and the U.K. which have been reliable exporters. However,
+the U.K. already became a net importer in 2005 and Norway\textquoteright{}s
+production has been declining rapidly as well \cite{H=0000F6=0000F6k 2008}.\\
+ The methodology behind forecasting future oil production has not
+evolved much since M. King Hubbert, who in 1956 famously predicted
+that the U.S. oil production would peak around 1965-1970 \cite{Hubbert 1956}.
+That prediction has proven itself to be correct. His main argument
+was based on the finiteness of oil reserves and use of the logistic
+differential equation
 
-\begin{equation} \label{logistic}
-\frac{dP}{dt} = r P \left( 1 - \frac{P}{K} \right)
+\begin{equation}
+\frac{dP}{dt}=rP\left(1-\frac{P}{K}\right)\label{logistic}
 \end{equation}
 
-\noindent $r$ is commonly referred to as the growth rate, and $K$ as the carrying capacity (total quantity of oil extracted). If $P(t)$ is the the amount of oil extracted up to time $t$, then $\frac{dP}{dt}$ is the oil production rate, the quantity that M. King Hubbert predicted would peak with surprising accuracy. From a methodological point of view, the Hubbert model has enjoyed a longstanding popularity in modeling future oil production given its simplicity. \\
-\noindent In this paper, we introduce a new methodology to forecast future oil production. Instead of taking the aggregate oil production profile and fitting it with the Hubbert curve or its variants (such as the multi cyclic Hubbert curve), we use the production profile of each individual oil field. By extending their production into the future and extrapolating the future rate of discovery of new fields, we are able to forecast future oil production by the means of a Monte Carlo simulation. To demonstrate the universality of the methodology presented here, we  apply it to 3 major oil producing countries: Norway, the U.K. and the U.S.
 
-%------------------------------------------------
+\noindent to model oil production. The logistic differential equation
+is characterized by an initial exponential growth, which then decreases
+to zero as the total oil extracted reaches saturation (no more oil
+is to be found). The parameter $r$ is commonly referred to as the
+growth rate, and $K$ as the carrying capacity (total quantity of
+oil extracted). If $P(t)$ is the the amount of oil extracted up to
+time $t$, then $\frac{dP}{dt}$ is the oil production rate, the quantity
+that M. King Hubbert predicted with surprising accuracy to peak. From
+a methodological point of view, the Hubbert model has enjoyed a longstanding
+popularity in modeling future oil production given its simplicity.
+Various extensions have been studied by Brandt \cite{Brandt 2006}
+to account for multi-cycled or asymmetric production curves.\\
+The existing forecasts of future oil production use some form of the
+Hubbert model (Brecha, Laherrère or Lynch \cite{Brecha 2012,Laherr=0000E8re 2002,Lynch 2002})
+or economical model applied to aggregate production (Greiner \cite{Greiner 2012}),
+but none goes into the details of studying the underlying dynamics.
+The main reason for the lack of details is certainly the lack of available
+data. In this paper, a new methodology is introduces to forecast future
+oil production. Instead of taking the aggregate oil production profile
+and fitting it with the Hubbert curve or its variants (such as the
+multi-cyclic Hubbert curve), the production profile of each individual
+oil field is used. By extending their production into the future and
+extrapolating the future rate of discovery of new fields, the future
+oil production is forecasted by the means of a Monte Carlo simulation.
+To demonstrate the universality of the methodology presented here,
+it is applied to 2 major oil producing countries with publicly available
+data: Norway\cite{Norwegian Data} and the U.K. \cite{U.K. Data}.
+
 
 \section{Methodology}
 
-The idea behind the methodology is to model the future aggregate oil production of a country by studying the production dynamics of its individual constituents, the oil fields. The main benefit of this approach, compared to working directly with aggregate production data, is the possibility to forecast non-trivial oil production profiles arising from the combination of all the individual fields' dynamics. In order to achieve that, one must be able 1) to extend the oil production of each individual field into the future and 2) to extrapolate the rate of discoveries of new oil fields.
+The idea behind the methodology is to model the future aggregate oil
+production of a country by studying the production dynamics of its
+individual constituents, the oil fields. The main benefit of this
+approach, compared to working directly with aggregate production data,
+is the possibility to forecast non-trivial oil production profiles
+arising from the combination of all the individual field\textquoteright{}s
+dynamics. In order to achieve that, one must be able 1) to \textbf{extend
+the oil production of each individual field} into the future and 2)
+to \textbf{extrapolate the rate of discoveries} of new oil fields.
+
 
 \subsection{Extending the oil production of individual fields}
-To be able to forecast the oil production of each individual field, regularity needs to be found in the production's dynamics. Modeling the whole production profile from the beginning of extraction seems elusive due to the variety of the forms it can take . Fortunately, modeling the decay process is sufficient in order to extrapolate future oil production. A preliminary classification is necessary to achieve that goal. Figure \ref{regular_and_irregular} shows that independent of the country, oil fields can be classified into 2 main categories. %4 categories.  
 
+The first step to predicting the future oil production of a country
+is to extrapolate the future production of existing fields and to
+estimate the error on this extrapolation. The data of the fields developed
+in the past shows a repeating asymmetric pattern. A good example is
+the Oseberg field shown in figure \ref{regular}, with a quick ramp
+up once the field is being developed, and then a peak or plateau before
+the field starts decaying. The decay can take many different shapes
+and is governed by a variety of geological and economical factors
+which will be captured implicitly by the fitting procedure.
+
+
+\subsubsection{Regular, irregular and new fields\label{sub:Regular,-irregular-and}}
+
+To be able to forecast the oil production of each individual field,
+regularity had to be found in the production's dynamics. Modeling
+the whole production profile from the beginning of extraction seems
+elusive due to the variety of the forms it can take. Fortunately,
+modeling the decay process is sufficient in order to extrapolate future
+oil production. A preliminary classification is necessary to achieve
+that goal. Figures \ref{regular}, \ref{irregular} and \ref{new}
+show that independently of the country, oil fields can be classified
+into 3 main categories:
 \begin{itemize}
-\item Regular fields. The fields whose decay show some regularity. 
-\item Irregular fields. Irregular fields are the ones that don't decay in a regular fashion or that don't decay yet. As such, there is no easy way to forecast their future oil production based on past data.
-%\item Empty fields. Empty fields have no more oil production.
-%tem Incomplete fields. Incomplete fields are the ones which don't have enough data (because they are too new usually).
+\item \textbf{Regular fields} - Their decay show some regularity. 
+\item \textbf{Irregular fields} - The ones that don't decay in a regular
+fashion.
+\item \textbf{New fields} - The ones that don't decay yet. As such, there
+is no easy way to forecast their future oil production based on past
+data.
 \end{itemize}
+\noindent All the fields have been fitted using an automated algorithm,
+but the results have been subsequently checked visually to sort out
+the irregular fields which could not be fitted. As of January 2014,
+regular fields make up 85\% and 87\% of the number of fields and 94\%
+and 71\% of the total produced oil volume in Norway and the U.K. respectively.
+As such, being able to model them is crucial. To capture as many different
+decay dynamics as possible, the stretched exponential
 
-\begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{regular_and_irregular.pdf}
-    \caption{Example of a regular and an irregular field.}
-    \label{regular_and_irregular}
-\end{figure}
+\begin{equation}
+P(t)=P_{0}e^{sign(\tau)\left(\frac{t}{\left|\tau\right|}\right)^{\beta}}\label{stretched_exponential}
+\end{equation}
+has been fitted to the decay of regular fields. The stretched exponential
+has many advantages as it generalized the power law and can therefore
+capture a broad variety of distributions as shown by Laherrère and
+Sornette \cite{Laherr=0000E8re and Sornette 1998}. As can be seen
+on figure \ref{regular}, the stretched exponential (equation \ref{stretched_exponential})
+is a good functional form to fit the decay process of regular fields.
 
-\noindent As of January 2013, regular fields make up 85\%, 87\% and z\% of the number of fields and 94\%, 71\% and z'\% of the total oil volume in the Norway, the U.K. and the U.S. respectively. As such, being able to model them is crucial. As can be seen on figure \ref{stretched_exponential}, the stretched exponential (equation \ref{stretched_exponential}) is a good functional form to fit the decay process of regular fields.
+For the minority of irregular fields, their decay has been modeled
+as follows: $\tau$ has been picked to be the average $\tau$ over
+the regular fields. Then $\beta$ has been fixed so that the sum of
+the field\textquoteright{}s production over its lifetime be equal
+to the official ultimate recovery estimates, when such an estimate
+is available.
 
-\begin{equation} \label{stretched_exponential}
-P(t) = P_0 e^{\left (\frac{t}{\tau} \right)^\beta}
+The minority of new fields, which did not yet enter their decay phase,
+cannot be extrapolated and will therefore be treated as a new discovery.
+The technical details of how to treat them as a new discovery are
+discussed in section \ref{sub:Future-production-from}.
+
+
+\subsubsection{Back-testing \& Error}
+
+To determine how well the extrapolation based on the stretched exponential
+predicts the future production, a complete back-testing has been performed
+on each field. A single back-test is made as follows:
+\begin{itemize}
+\item The production data $\{p_{0},\,\ldots,\, p_{N}\}$ of the field is
+truncated at a certain date in the past $\tau\in\{0,\,\ldots,\, N\}$.
+Where $\tau$ is in months since production start of the field.
+\item The extrapolation$f(t)$ is made based on the truncated data $\{p_{0},\,\ldots,\, p_{\tau}\}$.
+\item The future production predicted by the extrapolation $f(t)$ can be
+compared to the actual production from the date $\tau$ in the past
+up to now $\tau_{f}=N$. The extrapolated total production can be
+computed as 
+\begin{equation}
+P_{e}(\tau)=\int_{\tau}^{\tau_{f}}f(t)dt
+\end{equation}
+and the relative error is given by
+\begin{equation}
+e(\tau)=\frac{P_{e}(\tau)-\sum_{i=\tau}^{\tau_{f}}p_{i}}{P_{e}(\tau)},
+\end{equation}
+where both are a function of the truncation time $\tau$.
+\end{itemize}
+Computing this back test for every month in the past since the field
+starting decaying, yields a plot showing the evolution of the relative
+error over time \ref{oesberg-error}. By construction, the relative
+error will tend to zero as the truncation time $\tau$ goes to the
+present. Nonetheless, it is a uself indicator for the stability of
+the extrapolation. As can been seen for the Oseberg field, the relative
+error on future production remained fairly stable during the past
+decade.
+
+From the complete back-test, on can compute the average relative error
+\begin{equation}
+\bar{e}=\frac{1}{N}\sum_{i=0}^{N}e(i)
+\end{equation}
+ the extrapolation made on the future production. Assuming that the
+relative errors are normally distributed around the average relative
+error, the standard deviation on the average relative error is given
+by 
+\begin{equation}
+\sigma_{e}=\sqrt{\frac{1}{N}\sum_{i=0}^{N}\left(e(i)-\bar{e}\right)^{2}}.\label{eq:field-risk}
+\end{equation}
+As the average relative error is often fairly constant, the extrapolation
+was corrected by the average relative error. Meaning that if the extrapolation
+consistently over-estimated the production by 10\% during the back-test,
+the extrapolation was reduced by 10\%. This results in an extrapolated
+production $p(t)$, including a 1$\sigma$ confidence interval, as
+\begin{equation}
+p(t)=(1-\bar{e})\, f(t)\pm\sigma_{e}.\label{eq:extrapolation}
 \end{equation}
 
-For the minority of irregular fields, we simply modeled their decay as follows. We picked $\tau$ to be the average $\tau$ over the regular fields. We then fixed $\beta$ so that the sum of the fields' production over its lifetime be equal to the official ultimate recovery estimates, when such an estimate is available. %More details can be found in the supplementary materials.
 
-\begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{stretched_exponential.pdf}
-    \caption{Stretched exponential fit to the production of Welton. This functional form fits the data well.}
-    \label{stretched_exponential}
-\end{figure}
+An example of such an extrapolation including a one standard deviation
+range is shown on figure \ref{irregular} for the Oesberg field.
 
-\subsection{Discovery rate of new fields}
-Knowing the future production rate of existing fields is not enough; new fields will be discovered in the future. The model describing the discovery rate of new fields should satisfy two fundamental observations. 
 
+\subsubsection{Aggregate error}
+
+Once the individual fields have been extrapolated in the sense of
+formula \ref{eq:extrapolation}, the aim is to compute the extrapolation
+for the country. While it is straightforward to sum the extrapolations
+of the individual fields to obtain the expected production, some care
+has to be taken with respect to the confidence interval on the production
+at the country level.
+
+As shown later in section \ref{sec:Results}, the same extrapolation
+including a complete monthly back-test of total future production
+has been performed at the country level and the resulting relative
+error is much smaller than the average error observed on the individual
+fields. To account for this observation, the assumption made is that
+the relative error between individual fields is uncorrelated. Therefore,
+the fields can be considered as a portfolio of assets with a return
+given by their extrapolation $p(t)$ (eq. \ref{eq:extrapolation})
+and a risk given by $\sigma_{field}$ (eq. \ref{eq:field-risk}).
+This means that the risk at the country level from the extrapolated
+production is to be computed as 
+\begin{equation}
+\sigma_{country}^{2}=\frac{1}{\#fields}\sum_{field\in fields}\sigma_{field}^{2}.
+\end{equation}
+
+
+Intuitively, this models well the fact that the uncorrelated errors
+among fields will mostly cancel out.
+
+
+\subsection{Discovery rate of new fields\label{sub:Discovery-rate-of}}
+
+Knowing the future production rate of existing fields is not enough
+as new fields will be discovered in the future. The model describing
+the discovery rate of new fields should satisfy two fundamental observations.
 \begin{enumerate}
-\item The rate of new discoveries should tend to zero as time goes to infinity. This is a consequence of the finiteness of the number of oil fields. 
-\item The rate of new discoveries should depend on the size of the oil fields. As of today, giant oil fields are discovered much less frequently than dwarfs.
+\item The rate of new discoveries should tend to zero as time goes to infinity.
+This is a consequence of the finiteness of the number of oil fields. 
+\item The rate of new discoveries should depend on the size of the oil fields.
+As of today, giant oil fields are discovered much less frequently
+than dwarfs.
 \end{enumerate}
 
-A natural choice for such a model is a non-homogenous poisson process. The Poisson process is a process that generates independent events at  a rate $\lambda$. It is inhomogeneous if the rate is time-dependent, $\lambda \rightarrow \lambda(t)$. The standard way to measure $\lambda(t)$ is to find a functional form for $N(t)$, the number of events (discoveries) up to time $t$. Then, $\lambda(t)$ is simply $\frac{dN(t)}{dt}$. Figure \ref{rate_of_discovery} shows $N(t)$ for Norwegian fields classified according to their size.The logistic curve is a good fit to the data (integral form of equation \ref{logistic}). This implies that after an initial increase, the rate of new discoveries reaches a peak followed by a decrease until no more oil fields are to be found, consistent with our fundamental observations. The results are qualitatively similar for the U.K. and the U.S.
+\subsubsection{Discoveries modeled as logistic growth\label{sub:Discoveries-modeled-as}}
 
-\begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{rate_of_discoveries.pdf}
-    \caption{Logistic fit to the number of discoveries for Norway. The discovery rate of new oil fields is dependent on their size. The logistic model suggests that the majority of small oil  fields have not yet been discovered, while the rate of discovery of medium oil fields is in its decreasing phase. Big oil fields are not expected to be discovered anymore. }
-    \label{rate_of_discovery}
-\end{figure}
+A natural choice for such a model is a non-homogenous Poisson process.
+The Poisson process is a process that generates independent events
+at a rate $\lambda$. It is inhomogeneous if the rate is time-dependent,
+$\lambda\rightarrow\lambda(t)$. The standard way to measure $\lambda(t)$
+is to find a functional form for $N(t)$, the statistical average
+of the cumulative number of events (discoveries) up to time $t$.
+Then, $\lambda(t)$ is simply $\frac{dN(t)}{dt}$. Figure \ref{rate_of_discovery}
+shows $N(t)$ for Norwegian fields classified according to their size.
+The logistic curve is a good fit to the data (integral form of equation
+\ref{logistic}). This implies that after an initial increase, the
+rate of new discoveries reaches a peak followed by a decrease until
+no more oil fields are to be found, consistent with our fundamental
+observations. This same approach has already been successfully applied
+by Forro \cite{Forro 2012} to estimate the number of daily active
+users on Zynga.
+
+As the discovery and production dynamics are not independent of the
+field size, the fields have been split into two groups: dwarfs and
+giants. Unfortunately, the two logistic curves thus obtained are highly
+sensitive to the splitting size. This results from the major issue,
+when fitting a logistic curve to data, that the carrying capacity
+can not be determined if the data does not already exhibit the slow
+down in growth from reaching the carrying capacity. However, it is
+mentioned in the literature that often dwarf fields have already been
+discovered a long time ago, but their production has been postponed
+for economical reasons \cite[p. 378]{Lynch 2002}. Therefore, it is
+expected that the large oil fields have mostly been found and produced,
+and that future discoveries will mostly be made up of dwarf fields.
+Consequently, the splitting size has been picked as small as possible
+in order to maximize the number of giant fields but large enough to
+avoid recent discoveries:
+\begin{itemize}
+\item \textbf{Dwarfs}: Fields which produced less than $50\cdot10^{6}$
+barrels.
+\item \textbf{Giants}: Fields which produced more than $50\cdot10^{6}$
+barrels.
+\end{itemize}
+The resulting plot shown in figure \ref{rate_of_discovery} pictures
+the dynamics: giant oil fields have mostly been found while the discovery
+process for dwarf fields is still ongoing. The logistic growth curve
+fit to the giant discoveries is well constrained, however the fit
+for the dwarfs is poorly constrained. As can be seen on figure \ref{rate_of_discovery},
+the carrying capacity $K$ of the logistic growth model is not well
+constrained by the available data. A large spectrum of values for
+$K$ can lead to an equally good fit of the data. Therefore, a method
+described in section \ref{sub:Likelihood-function-for} has been used
+to compute the probability of different carrying capacities.
 
 
-%------------------------------------------------
+\subsubsection{Likelihood function for the number of discoveries\label{sub:Likelihood-function-for}}
 
-\section{Results}
+To overcome the logistic fitting issue for the dwarf fields, a method
+already used by Smith \cite{Smith 1980} has been implemented. This
+method makes the following two postulates:
+\begin{enumerate}
+\item ``The discovery of reservoirs in a petroleum play can be modeled
+statistically as sampling without replacement from the underlying
+population of reservoirs.''
+\item ``The discovery of a particular reservoir from among the existing
+population is random, with a probability of discovery being dependent
+on reservoir size.''
+\end{enumerate}
+The fields are split into $J$ size bins denoted $S_{1},\,\ldots,\, S_{J}$
+occurring with frequency $n_{1},\,\ldots,\, n_{J}$. Each discovery
+is considered as a step $i$ at which a field of size $I(i)\in\{S_{1},\,\ldots,\, S_{J}\}$
+is found and $m_{ij}$ denotes the number of fields of size $j\in\{1,\,\ldots,\, J\}$
+discovered before the $i^{th}$ step. Than the probability that the
+discovery at step $i^{th}$ is of size $j$ can be expressed as
+\begin{equation}
+P\left(I(i)=S_{j}\right)=\frac{\left(n_{j}-m_{ij}\right)\cdot S_{j}}{\sum_{k=1}^{J}\left(n_{k}-m_{ik}\right)\cdot S_{k}}.
+\end{equation}
+The likelihood $L$ for a complete sequence of $N$ discoveries $\{I(1),\,\ldots,\, I(N)\}$
+can than be expressed as
+\begin{equation}
+L=\prod_{i=1}^{N}\frac{\left(n_{I(i)}-m_{iI(i)}\right)\cdot S_{I(i)}}{\sum_{j=1}^{J}\left(n_{j}-m_{ij}\right)\cdot S_{j}}.\label{eq:likelihood}
+\end{equation}
+The unknown parameters are the number of fields $n_{1},\,\ldots,\, n_{J}$,
+whose likelihood can now be estimated based on the existing discoveries.
+Using a brute force approach, the entire space of plausible values
+for the variables $n_{1},\,\ldots,\, n_{J}$ has been sampled. The
+values $n_{j}$ have been sampled between the number of existing fields
+$m_{Nj}$ in the bin $j$ and up to a value $n_{j}^{upper}$, such
+that the scenario with the largest likelihood according to equation
+\ref{eq:likelihood} has $n_{j}^{max}=n_{j}^{upper}/2$ fields in
+the bin $j$. Subsequently, the likelihood of each scenario (value
+of the tuple $n_{1},\,\ldots,\, n_{J}$) has been normalized such
+that the total likelihood of all generated scenarios equals one.
 
-Simulating future oil production was straightforward. For each country, new oil fields were generated according to the poisson process, with $\lambda(t)$ chosen according to their size. For each of the generated oil fields, its production profile was chosen randomly from one of existing fields within the same size category. Figure \ref{no_uk_2013} shows the average of 1000 (50 on these plots) simulations. For each country, we can immediately notice the non-symmetric shape of the production's dynamics contrary to what Hubbert would have predicted.
+For the analysis of the north sea oil field discoveries, the number
+of size bins has been fixed to $J=2$ splitting between dwarfs (1)
+and giants (2) as described in section \ref{sub:Discoveries-modeled-as}.
 
-\begin{table}[H]
-\caption{Remaining oil reserves}
-\centering
-\begin{tabular}{lllr}
-%\toprule
-%\multicolumn{2}{c}{Name} \\
-%\cmidrule(r){1-2}
-Country & Hubbert & our model & $\Delta$ \\
-\midrule
-Norway & $81 \cdot 10^6$ & $270 \cdot 10^6$ & $-70\%$\\
-U.K. & $275 \cdot 10^6$ & $959 \cdot 10^6$ & $-71\%$ \\
-U.S.A. & $x$ & $y$ & $z\%$ \\
-\bottomrule
-\end{tabular}
+\begin{table}[h]
+\caption{Likelihood estimation for the number of dwarf (1) and giant (2) fields.}
+
+
+\centering %
+\begin{tabular}{lllll}
+ & $m_{N1}$ & $n_{1}\pm\sigma_{1}$ & $m_{N2}$ & $n_{2}\pm\sigma_{2}$\tabularnewline
+\midrule Norway  & $24$ & $88.4\pm10.0$ & $52$ & $56.4\pm1.6$\tabularnewline
+U.K. & $162$ & $208\pm11$ & $99$ & $100\pm0.4$\tabularnewline
+\bottomrule  &  &  &  & \tabularnewline
+\end{tabular}\label{likelihood-results}
 \end{table}
 
-\begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{no_and_uk_2013.pdf}
-    \caption{Monte-Carlo and Hubbert forecast based on past production data for Norway (top) and the U.K. (bottom).  In both cases, our model forecasts a significantly slower decay than the Hubbert model.}
-    \label{no_uk_2013}
-\end{figure}
 
-The difference between our and the Hubbert-based forecast is striking. In the case, of Norway, the standard Hubbert model was used to fit the production data. According to it, Norway's future oil production would decay much faster than in the Monte-Carlo case. As such, the estimated remaining reserves are less than one third of the forecasted value of the Monte-Carlo methodology. In the U.K., oil production faced a change of regime during the early nineties due to technological innovation, giving rise to the inverted "w shape" of the oil production profile. The standard procedure to model oil production in those cases is to use a multi-cyclic Hubbert curve. The multi-cyclic Hubbert model is a generalization of the standard one. Conceptually, it is just a superposition of several standard (single-cyclic) Hubbert curves. Two cycles are commonly used to fit the UK's oil production. The difference between the Hubbert-based methodology and the Monte-Carlo one is very similar to the Norwegian case. The former underestimates the remaining oil reserves by about $70\%$ compared to the latter.\\
-Which of the two models is more thrust worthy? Clearly, the implications in adopting one methodology over the other are significant. The only way to answer this question is to backtest them. In other words we ask: "What would have each of the models predicted had we used them 10, 15, 20 years in the past?"
+The results shown in table \ref{likelihood-results} are coherent
+with the intuitive expectation that discovering a new giant field
+is unlikely and that future discoveries wil mostly be made up of dwarf
+fields. The likelihoods obtained for the carrying capacities of dwarfs
+and giants have been used to constrain the logistic curve fitted to
+the discoveries. Figure \ref{rate_of_discovery} shows a sample of
+fitted logistic curves, each curve being weighted by the likelihood
+of its carrying capacity given by equation \ref{eq:likelihood}.
 
 
-%\begin{table}[H]
-%\caption{Example table}
-%\centering
-%\begin{tabular}{llr}
-%\toprule
-%\multicolumn{2}{c}{Name} \\
-%\cmidrule(r){1-2}
-%First name & Last Name & Grade \\
-%\midrule
-%John & Doe & $7.5$ \\
-%Richard & Miles & $2$ \\
-%\bottomrule
-%\end{tabular}
-%\end{table}
+\subsubsection{Future production from discoveries\label{sub:Future-production-from}}
 
-%------------------------------------------------
+The goal is to compute an expected oil production coming from future
+discoveries, which requires to combine the steps described in sections
+\ref{sub:Discoveries-modeled-as} and \ref{sub:Likelihood-function-for}.
+
+The method described in section \ref{sub:Likelihood-function-for}
+yields probabilities for the total number of fields (including the
+not yet discovered fields) in each size bins (called a scenario).
+However, this likelihood method does not give the time distribution
+of future discoveries. The aim is to use the likelihood function to
+generate scenarios with their respective occurrence probability.
+
+For a given scenario, the carrying capacity $K$ (= total number of
+fields) is given for each size class. This is useful, because it resolves
+the instability in fitting the logistic curve to the number of discovered
+fields. The time distribution of the discoveries is then given for
+each size class by the fitted logistic curve.
+
+The actual size of a newly discovered field is generated according
+to the size distribution of the existing fields in its size class.
+The probability distribution function of field sizes in a given size
+bin has been fitted by a stretched exponential function.
+
+The production curve is computed based on the average production curve
+of all existing fields in the same size category. The production curves
+of the existing fields have all been normalized to a total production
+of one and then have been averaged. This yields the typical production
+profile including a one sigma confidence interval. For a new field,
+this typical production curve is than multiplied by the size of the
+field.
+
+Superposing the production curves results in the expected production
+curve from future oil field for a given scenario.
+
+As the total parameter space is too large to be sampled entirely,
+a Monte Carlo technique is applied to compute the expected production
+with confidence interval from future discoveries. In a nutshell, the
+algorithm works as follows:
+\begin{enumerate}
+\item Draw a scenario based on its probability.
+\item Compute the time distribution of new discoveries by fitting a logistic
+curve for each size class.
+\item For each discovery generate a size and the resulting production curve
+based on the size distribution and production curves of existing fields.
+\item Superpose all the production curves.
+\item Repeat and average over all drawn scenarios.
+\end{enumerate}
+The result is the expected production curve of future oil field discoveries.
+The distribution of generated scenarios yields the confidence interval.
+
+In order to account for the new fields discussed in section \ref{sub:Regular,-irregular-and},
+which are already discovered but did not yet enter the decay phase,
+the simulated production resulting from new discoveries has been shifted
+to the date in the past where it matches the current production from
+new fields.
+
+
+\section{Results\label{sec:Results}}
+
+Based on the methodology described in section \ref{sub:Discovery-rate-of},
+simulating future oil production was straightforward. For each country,
+the existing fields were extrapolated and the future discoveries were
+simulated. Figure \ref{no_uk_2013} shows the average of 1000 simulations.
+For each country, the non-symmetric shape of the production's dynamics
+contrary to what Hubbert would have predicted is immediately noticeable.
+
+\begin{table}[H]
+\caption{Remaining oil reserves until 2030 in barrels for the \textbf{Fit}
+of the country's production, the Monte-Carlo \textbf{Model} and the
+relative difference $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Model}}$
+between the two.}
+
+
+\centering %
+\begin{tabular}{lllr}
+ & Fit (barrels) & Model (barrels)  & $\Delta$ \tabularnewline
+\midrule Norway & $130\cdot10^{6}$  & $188\cdot10^{6}$  & $31\%$\tabularnewline
+U.K. & $59\cdot10^{6}$  & $98\cdot10^{6}$  & $40\%$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{forecast-14}
+\end{table}
+
+
+The results in table \ref{forecast-14} show a striking difference
+between the fit and the Monte-Carlo model forecast. According to the
+fit (extrapolation of aggregate production), Norway's future oil production
+would decay much faster than in the Monte-Carlo case. The remaining
+reserves estimated with the Monte-Carlo methodology are $30\%$ larger
+then the estimate from the fit. This difference originates from two
+different effects:
+\begin{itemize}
+\item The sum of the forecast of the individual existing fields is higher
+than the extrapolation of the aggregate production.
+\item The extrapolation of the aggregate production does not capture well
+the discovery process of dwarf fields.
+\end{itemize}
+In the U.K., oil production faced a change of regime during the early
+nineties due to technological innovation, giving rise to the inverted
+\textquotedbl{}w shape\textquotedbl{} of the oil production profile.
+However, this has not been an issue to extrapolate the decay of production
+starting at the second peak. The difference between the Hubbert-based
+methodology and the Monte-Carlo one is very similar to the Norwegian
+case. The former underestimates the remaining oil reserves by about
+$40\%$ compared to the latter.
+
+Which of the two models is more thrust worthy? Clearly, the implications
+in adopting one methodology over the other are significant. The only
+way to answer this question is to back-test them. In other words:
+\textquotedbl{}What would have each of the models predicted had they
+been used in the past?\textquotedbl{}
+
 
 \section{Validation}
 
-For each of the three countries, namely Norway, the U.K. and the U.S.A., we went back in time 10, 15 and 20 years respectively. The reason for chosing an earlier starting point for our backtest in the case of the U.S.A. compared to say, Norway has to do with the number of oil fields available at the time of the backtest. The U.S.A. having the biggest number of oil fields, we could chose an earlier starting point without compromising the quality of our results. Figure \ref{bt} shows the outcome of those tests. In the case of Norway, the production data was taken into account until 2003. Comparing the forecast of both models with the oil production of the subsequent 10 years, we find the predictive power of the Hubbert model is impressive. It perfectlty captures the Norwegian oil production's dynamic between 2003 and 2013. The Monte-Carlo method does not perform as well. After underestimating the Norwegian oil production between 2003 and 2009, it overestimates it between 2009 and 2013. For the U.K. the backtesting was performed on data until 1998. The conclusion is not as obvious as for the previous case. None of the two methods captures perfectly the oil production between 1998 and 2013. The following table summarizes the difference between the two models.
+For both countries, namely Norway and the U.K., a back-test using
+the data truncated in 2008 has been made. Before that date, too many
+of the giant fields have not entered their decay phase for a sufficiently
+long time to apply the extrapolation algorithm. Figure \ref{model-back-testing}
+shows the outcome of those tests. Comparing the forecast of both models
+with the oil production of the subsequent 6 years, shows that the
+predictive power of the Monte-Carlo model is better than a simple
+extrapolation of aggregate production. The following table \ref{backtest-08}
+summarizes the difference between the two approaches for the back-testing
+period.
 
 \begin{table}[H]
-\caption{Remaining oil reserves}
-\centering
-\begin{tabular}{llllr}
-%\toprule
-%\multicolumn{2}{c}{Name} \\
-%\cmidrule(r){1-2}
-Start & Country & Hubbert & our model & $\Delta$ \\
-\midrule
-2003 & Norway & $66 \cdot 10^6$ & $251 \cdot 10^6$ & $-74\%$\\
-1998 & U.K. & $91 \cdot 10^6$ & $2.1 \cdot 10^9$ & $-43\%$ \\
-1993 & U.S.A. & $x'$ & $y'$ & $z'\%$ \\
-\bottomrule
-\end{tabular}
+\caption{The fit and the Monte-Carlo model are used on the data set truncated
+in 2008 and their forecast for the period 2008-2014 is compared to
+the actual production.}
+
+
+\centering %
+\begin{tabular}{llll}
+ & Actual (barrels) & Fit (barrels) & Model (barrels)\tabularnewline
+\midrule Norway & $133\cdot10^{6}$  & $108\cdot10^{6}$  & $130\cdot10^{6}$ \tabularnewline
+U.K. & $79\cdot10^{6}$  & $66\cdot10^{6}$  & $75\cdot10^{9}$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{backtest-08}
 \end{table}
 
-\begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{no_and_uk_bt.pdf}
-    \caption{Monte-Carlo and Hubbert forecast based on past production data up to 2003 for Norway (top) and up to 1998 for the U.K. (bottom).  The results can be compared with the subsequent oil production (crosses). In both cases, the Hubbert forecast is more accurate.}
-    \label{bt}
-\end{figure}
 
-%------------------------------------------------
+The difference is not huge for the period from 2008 to 2014, but the
+Monte-Carlo model nevertheless is noticeably closer to the actual
+value. However, when considering the period after 2014, the difference
+is huge as shown in table \ref{forecast-08}.
+
+\begin{table}[H]
+\caption{Remaining oil reserves forecasted for the period 2014-2030 when using
+the data truncated in 2008.}
+
+
+\centering %
+\begin{tabular}{lllc}
+ & Fit (barrels) & Model (barrels) & $\Delta$ \tabularnewline
+\midrule Norway 08 & $25\cdot10^{6}$  & $171\cdot10^{6}$  & $-85\%$\tabularnewline
+U.K. 08 & $25\cdot10^{6}$  & $91\cdot10^{9}$  & $-73\%$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{forecast-08}
+\end{table}
+
+
+The simple extrapolation decays too fast and entirely misses the fat
+tails in the decay process of individual fields and the new discoveries.
+As well, it must be noted that the simple extrapolation changed massively
+between the back-test in table \ref{forecast-08} and the current
+fit in table \ref{forecast-14} (520\% for Norway and 236\% for the
+U.K.). In other words, the simple extrapolation was very unstable
+in its forecast, while the Monte-Carlo forecasts remained very consistent
+(less than 10\% change).
+
+As can be seen in figure \ref{model-back-testing}, the actual production
+of Norway during the back-testing period remained entirely within
+the quite narrow $1\sigma$ interval of the Monte-Carlo methodology,
+while totally breaking out of the $1\sigma$ interval of the simple
+extrapolation. For the U.K. the Monte-Carlo methodology only performs
+slightly better when considering the confidence interval, and the
+confidence interval is much larger due to the uncertainty on future
+discoveries and their production profile.
+
 
 \section{Conclusion}
-We have presented a Monte-Carlo based methodology to forecast future oil production. By extending the oil production of current fields into the future and modeling the discovery rate of new fields, we were able to give forecasts on the future oil production of Norway, the U.K. and the U.S. These forecasts offer significantly scenarios from the ones obtained with standard Hubbert-based methodologies. Indeed, our model gives a 3 times superior estimation of the remaining oil reserves than the standard one. However, our backtesting results seriously questions the credibility of that forecast, since the Hubbert-model clearly outperforms the Monte-Carlo simulation. 
-%----------------------------------------------------------------------------------------
-%	REFERENCE LIST
-%----------------------------------------------------------------------------------------
 
-%\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+This paper presented a Monte-Carlo based methodology to forecast future
+oil production. By extending the oil production of current fields
+into the future and modeling the discovery rate of new fields, the
+future oil production of Norway and the U.K. could be forecasted.
+These forecasts are significantly different from the ones obtained
+with a standard extrapolation. Indeed, our model forecasts 30\% to
+40\% more remaining oil reserves than the standard extrapolation.
+The back-test performed on the time period between 2008 and 2014 confirmed
+that the Monte-Carlo based model better captured the production dynamics.
 
-%\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-%Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-%\newblock Assortative pairing and life history strategy - a cross-cultural
- %study.
-%\newblock {\em Human Nature}, 20:317--330.
- 
-%\end{thebibliography}
+The results are hopeful, as they make it highly likely that the decay
+of Norwegian and U.K. oil production will be much slower then one
+would expect from a standard extrapolation. Nonetheless, to maintain
+current levels of oil consumption in the European Union, more of it
+will have to be imported from outside Europe, as the imports from
+Norway will vanish (currently accounting for 11\% of E.U. oil imports
+\cite{European oil imports}) and the U.K. will need to import more
+oil.
 
-%----------------------------------------------------------------------------------------
+\begin{table}[H]
+\caption{Oil import (bbl/day) at a constant consumption of 1.5M bbl/day for
+the U.K. and 0.22M bbl/day for Norway. The import for the E.U. and
+Norway is a lower bound based on the changes in the U.K and Norway.}
 
-\end{multicols}
+
+\centering %
+\begin{tabular}{lllcc}
+ & 2014 & 2020 & 2025 & 2030\tabularnewline
+\midrule Norway & $-1.23\cdot10^{6}$  & $-0.88\cdot10^{6}$  & $-0.58\cdot10^{6}$  & $-0.43\cdot10^{6}$ \tabularnewline
+U.K. & $0.7\cdot10^{6}$  & $0.9\cdot10^{6}$  & $1.0\cdot10^{6}$  & $1.1\cdot10^{6}$ \tabularnewline
+E.U.+Norway (lower bound) & $9.8\cdot10^{6}$  & $10.45\cdot10^{6}$  & $10.85\cdot10^{6}$  & $11.1\cdot10^{6}$ \tabularnewline
+\bottomrule  &  &  &  & \tabularnewline
+\end{tabular}\label{needs}
+\end{table}
+
+
+As shown in table \ref{needs}, at constant consumption, the Monte-Carlo
+model predicts that in 2030 the E.U. with Norway will need to increase
+its oil imports by $1.3$ million barrels. Imports which will most
+likely have to come from outside Europe.
+\begin{thebibliography}{10}
+\bibitem{Brandt 2006}Brandt, Adam R. \textquotedblleft{}Testing Hubbert.\textquotedblright{}
+Energy Policy 35, no. 5 (May 2007): 3074\textendash{}88. doi:10.1016/j.enpol.2006.11.004. 
+
+\bibitem{Brecha 2012}Brecha, Robert J. \textquotedblleft{}Logistic
+Curves, Extraction Costs and Effective Peak Oil.\textquotedblright{}
+Energy Policy 51 (December 2012): 586\textendash{}97. doi:10.1016/j.enpol.2012.09.016. 
+
+\bibitem{European oil imports}European Commission - Energy (2014,
+Mai 25). EU Crude oil imports. Retrieved from \url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}.
+
+\bibitem{Forro 2012}Forró, Zalán, Peter Cauwels, and Didier Sornette.
+\textquotedblleft{}When Games Meet Reality: Is Zynga Overvalued?\textquotedblright{}
+Journal of Investment Strategies 1 (3), 119-145 (2012). 
+
+\bibitem{U.K. Data}GOV.UK (2014, Mai 25). Exploration and production
+- Oil and gas: field data. Retrieved from \url{https://www.og.decc.gov.uk/pprs/full_production.htm}.
+
+\bibitem{Greiner 2012}Greiner, Alfred, Willi Semmler, and Tobias
+Mette. \textquotedblleft{}An Economic Model of Oil Exploration and
+Extraction.\textquotedblright{} Computational Economics 40, no. 4
+(December 2012): 387\textendash{}99. doi:10.1007/s10614-011-9272-0. 
+
+\bibitem{H=0000F6=0000F6k 2008}Höök, Mikael, and Kjell Aleklett.
+\textquotedblleft{}A Decline Rate Study of Norwegian Oil Production.\textquotedblright{}
+Energy Policy 36, no. 11 (November 2008): 4262\textendash{}71. doi:10.1016/j.enpol.2008.07.039. 
+
+\bibitem{Hubbert 1956}Hubbert, Marion King. Nuclear Energy and the
+Fossil Fuels. Vol. 95. Shell Development Company, Exploration and
+Production Research Division Houston, TX, 1956. http://energycrisis.biz/hubbert/1956/1956.pdf. 
+
+\bibitem{Laherr=0000E8re 2002}Laherrere, Jean. \textquotedblleft{}Forecasting
+Future Production from Past Discovery.\textquotedblright{} International
+Journal of Global Energy Issues 18, no. 2 (2002): 218\textendash{}38. 
+
+\bibitem{Laherr=0000E8re and Sornette 1998}Laherrere, Jean, and Didier
+Sornette. \textquotedblleft{}Stretched Exponential Distributions in
+Nature and Economy:\textquoteleft{}fat Tails\textquoteright{} with
+Characteristic Scales.\textquotedblright{} The European Physical Journal
+B-Condensed Matter and Complex Systems 2, no. 4 (1998): 525\textendash{}39. 
+
+\bibitem{Lutz 2012}Lutz, Christian, Ulrike Lehr, and Kirsten S. Wiebe.
+\textquotedblleft{}Economic Effects of Peak Oil.\textquotedblright{}
+Energy Policy 48 (September 2012): 829\textendash{}34. doi:10.1016/j.enpol.2012.05.017. 
+
+\bibitem{Lynch 2002}Lynch, Michael C. \textquotedblleft{}Forecasting
+Oil Supply: Theory and Practice.\textquotedblright{} The Quarterly
+Review of Economics and Finance 42, no. 2 (2002): 373\textendash{}89. 
+
+\bibitem{Murray 2012}Murray, James W., and Jim Hansen. \textquotedblleft{}Peak
+Oil and Energy Independence: Myth and Reality.\textquotedblright{}
+Eos, Transactions American Geophysical Union 94, no. 28 (2013): 245\textendash{}46. 
+
+\bibitem{Norwegian Data}Norwegian Petroleum Directorate (2014, Mai
+25). Factpages. Retrieved from \href{http://factpages.npd.no/factpages/}{http://factpages.npd.no/factpages/}.
+
+\bibitem{Smith 1980}Smith, J. L. ``A Probablilistic Model of Oil
+Discovery.'' The Review of Economics and Statistics, Vol. 62, No.
+4 (Nov. 1980): 587-94.
+
+\end{thebibliography}
+\newpage{}
+
+\noindent 
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{oseberg}
+
+\caption{Example of a regular field with $\beta=0.66\pm0.01$ and $\tau=-55\pm1$.}
+
+
+\label{regular} 
+\end{figure}
+
+
+\newpage{}
+
+\noindent 
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{vale}
+
+\caption{Example of a irregular field.}
+
+
+\label{irregular} 
+\end{figure}
+
+
+\newpage{}
+
+\noindent 
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{skarv}
+
+\caption{Example of a new field.}
+
+
+\label{new} 
+\end{figure}
+
+
+\newpage{}
+
+\noindent 
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{oesberg-error}
+
+\caption{Oesberg field - Relative error on predicted total production from
+time $t$ until 2014}
+\label{oesberg-error}
+\end{figure}
+\begin{figure}[p]
+\includegraphics[width=1\columnwidth]{extrapolating-no-discoveries}
+\caption{Logistic fit to the number of discoveries for Norway. The discovery
+rate of new oil fields is dependent on their size.}
+
+
+\label{rate_of_discovery} 
+\end{figure}
+\begin{figure}[p]
+\includegraphics[width=1\columnwidth]{NO-future}
+
+\includegraphics[width=1\columnwidth]{UK-future} \caption{Monte-Carlo and fit forecast based on past production data for Norway
+(top) and the U.K. (bottom). In both cases, the Mont-Carlo model forecasts
+a significantly slower decay than the fit.}
+
+
+\label{no_uk_2013} 
+\end{figure}
+
+
+\noindent 
+\begin{figure}[p]
+\includegraphics[width=1\columnwidth]{NO-back-test}
+
+\includegraphics[width=1\columnwidth]{UK-back-test} \caption{Monte-Carlo and Hubbert forecast based on past production data up
+to 2008 for Norway (top) and the U.K. (bottom). The results can be
+compared with the subsequent oil production (blue area). In both cases,
+the Monte-Carlo methodology is more precise.}
+
+
+\label{model-back-testing} 
+\end{figure}
 
 \end{document}

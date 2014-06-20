@@ -117,7 +117,7 @@ class DiscoveryGenerator:
 
     def init_scenarios(self):
         db_scenarios = DiscoveryScenario.objects.filter(country=self.country)
-        # db_scenarios.delete()
+        db_scenarios.delete()
 
         if db_scenarios.count() > 0:
             self.scenarios = db_scenarios.order_by('pdf').all()

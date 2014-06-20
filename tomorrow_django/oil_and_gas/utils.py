@@ -73,15 +73,17 @@ def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None):
 
 
 def start_plot(x_label, y_label, title):
-    fig = plt.figure(figsize=(16,10))
+    fig = plt.figure(figsize=(16, 10))
     ax = fig.add_subplot(111)
     plt.title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     font = {
         'family': 'Arial',
-        'weight': 'bold',
-        'size': 26
+        'weight': 'normal',
+        'size': 28,
     }
     matplotlib.rc('font', **font)
+    matplotlib.rcParams['lines.markersize'] = 20
+    matplotlib.rcParams['axes.labelsize'] = 26
     return plt

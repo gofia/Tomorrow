@@ -18,9 +18,10 @@
 #
 
 from datetime import datetime
-from mx.DateTime.DateTime import Timestamp
+# from mx.DateTime.DateTime import Timestamp
 
 from numpy import array, ndarray, exp, log, sign, mean
+from psycopg2._psycopg import Timestamp
 
 from scipy.optimize import fmin
 from scipy.stats import linregress

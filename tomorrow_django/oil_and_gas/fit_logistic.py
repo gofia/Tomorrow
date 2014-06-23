@@ -1,8 +1,9 @@
 import numpy as np
 
-from mx.DateTime.DateTime import Timestamp
+# from mx.DateTime.DateTime import Timestamp
 from numpy import array, exp, arange, where, ndarray
 from datetime import datetime
+from psycopg2._psycopg import Timestamp
 from scipy.stats import t
 from scipy.optimize import fmin
 import matplotlib.pyplot as plt

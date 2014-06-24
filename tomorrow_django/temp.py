@@ -1,6 +1,7 @@
 __author__ = 'lfi'
 
 import matplotlib.pyplot as plt
+from pylab import *
 
 
 model = [46000000,
@@ -421,6 +422,46 @@ uk_model = [
     4007404.343,
     ]
 
+no_sizes = [
+    10619762,
+    # 558634075,
+    2433123,
+    1217867,
+    # 128903018,
+    2000000,
+    2383443,
+    # 117600168,
+    12930045,
+    4296013,
+    57991,
+    9956933,
+    # 143926117,
+    # 67021196,
+    # 64604263,
+    2000553,
+]
+
+no_returns = [
+    1.703632265,
+    # 18.49487746,
+    1.083893075,
+    0.328372173,
+    # 2.763312843,
+    0.328170123,
+    0.493425581,
+    # 9.230202839,
+    1.822981752,
+    0.614277813,
+    0.03679632,
+    2.105237766,
+    # 5.298257944,
+    # 19.10960206,
+    # 11.82362055,
+    0.862307348,
+]
+
+fit = polyfit(no_sizes, no_returns, 1)
+
 d_no_model = []
 d_data = []
 d_uk_model = []
@@ -442,4 +483,12 @@ if __name__ == '__main__':
     ax.plot(d_data)
     ax.plot(d_uk_model)
     plt.legend(("NO - Model", "NO - Data", "UK - Model"), loc='upper left')
+    plt.show()
+
+    fig = plt.figure(figsize=(16, 10))
+    ax = fig.add_subplot(111)
+    ax.set_xlabel("Size (barrels)")
+    ax.set_ylabel("Return (Revenue/Investments)")
+    plt.plot(no_sizes, no_returns, 'bo')
+    plt.plot(no_sizes, poly1d(fit)(no_sizes), '--k')
     plt.show()

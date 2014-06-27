@@ -7,21 +7,21 @@ from sim_base import SimBase
 
 class SimABS(SimBase):
     parameters = {
-        'r': 0.05,
-        'y': 0.1,
-        'ps': 2,
-        'v': 0.1,
-        'g': 0.1,
+        'r': 0.001,
+        'y': 1.0,
+        'ps': 2.0,
+        'v': 1.0,
+        'g': 1.9,
         'a': 1.0,
         'o': 1.0,
-        'b': 0.5,
-        'n': 0.5,
-        'alpha': 0.5,
+        'b': 2.0,
+        'n': 0.99,
+        'alpha': 1800,
     }
-    variable = {
+    variables = {
         'n1': [0.5, 0.5],
         'n2': [0.5, 0.5],
-        'p': [1.0, 1.0],
+        'p': [1.99, 2.01],
         'U1': [0.0, 0.0],
         'U2': [0.0, 0.0],
     }
@@ -51,10 +51,12 @@ class SimABS(SimBase):
         nt2 = exp(self.b * self.U2_1) / Z
         return nt2 * exp(-(self.p_1 - self.ps) * (self.p_1 - self.ps) / self.alpha)
 
+
 if __name__ == '__main__':
     print "Simulation start"
     sim = SimABS()
     print sim
-    for i in range(0, 50):
+    for i in range(0, 5):
         sim.run(1)
+        print sim
     sim.plot("p")

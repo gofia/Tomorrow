@@ -45,14 +45,18 @@ class SimBase(object):
                 ax.plot(self.variables[name])
         plt.show()
 
+    def print_parameters(self):
+        s = ""
+        for key in self.parameters.keys():
+            s += "{0}: {1}\n".format(key, self.__getattr__(key))
+        print s
+
     def __str__(self):
         s = ""
         s += "\n"
         s += "----------\n"
         s += "Simulation\n"
         s += "----------\n"
-        # for key in self.parameters.keys():
-        #     s += "{0}: {1}\n".format(key, self.__getattr__(key))
         for key in self.variables.keys():
             s += "{0}: {1}\n".format(key, self.__getattr__(key))
         return s

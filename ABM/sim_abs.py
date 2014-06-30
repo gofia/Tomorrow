@@ -9,7 +9,7 @@ class SimABS(SimBase):
     parameters = {
         'r': 0.001,
         'y': 1.0,
-        'ps': 2.0,
+        'ps': 1000,
         'v': 1.0,
         'g': 1.9,
         'a': 1.0,
@@ -21,7 +21,7 @@ class SimABS(SimBase):
     variables = {
         'n1': [0.5, 0.5],
         'n2': [0.5, 0.5],
-        'p': [1.99, 2.01],
+        'p': [920, 922],
         'U1': [0.0, 0.0],
         'U2': [0.0, 0.0],
     }
@@ -42,21 +42,20 @@ class SimABS(SimBase):
             (self.a * self.o) + self.n * self.U2_2
 
     def update_n1(self):
-        Z = exp(self.b * self.U1_1) + exp(self.b * self.U2_1)
-        nt2 = exp(self.b * self.U2_1) / Z
+        nt2 = 1 / (exp(self.b * (self.U1_1 -self.U2_1)) + 1)
         return 1 - nt2 * exp(-(self.p_1 - self.ps) * (self.p_1 - self.ps) / self.alpha)
 
     def update_n2(self):
-        Z = exp(self.b * self.U1_1) + exp(self.b * self.U2_1)
-        nt2 = exp(self.b * self.U2_1) / Z
+        nt2 = 1 / (exp(self.b * (self.U1_1 -self.U2_1)) + 1)
         return nt2 * exp(-(self.p_1 - self.ps) * (self.p_1 - self.ps) / self.alpha)
 
 
 if __name__ == '__main__':
     print "Simulation start"
     sim = SimABS()
+    sim.print_parameters()
     print sim
-    for i in range(0, 5):
+    for i in range(0, 40):
         sim.run(1)
         print sim
     sim.plot("p")

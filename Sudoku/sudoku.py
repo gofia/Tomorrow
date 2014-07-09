@@ -267,10 +267,23 @@ class Sudoku(object):
             permutations += self.get_block_row_permutation_n(i, row)
         return permutations
 
+    def get_block_col_type(self, col):
+        p = self.get_block_col_permutation(col)
+        return "B" if 0 < p.count('a') < 3 else "A"
+
+    def get_block_row_type(self, row):
+        p = self.get_block_row_permutation(row)
+        return "B" if 0 < p.count('a') < 3 else "A"
+
     def swap(self, n1, n2):
         self.solution = [e if e != n1 else 0 for e in self.solution]
         self.solution = [e if e != n2 else n1 for e in self.solution]
         self.solution = [e if e != 0 else n2 for e in self.solution]
+
+    def invert(self):
+        rows = [self.get_row(i) for i in range(0, 9)]
+        for idx, row in enumerate(rows):
+            self.set_col(idx, row)
 
     def normalize_type(self):
         row_permutation = self.get_block_row_permutation_n
@@ -289,6 +302,25 @@ class Sudoku(object):
             permutations += self.get_block_col_permutation(i) + "\n"
         return permutations
 
+    def get_super_type(self):
+        permutations = ""
+        for i in range(0, 3):
+            permutations += self.get_block_row_type(i) + " - "
+            permutations += self.get_block_col_type(i) + "\n"
+        return permutations
+
+    def get_row_super_type(self):
+        permutations = ""
+        for i in range(0, 3):
+            permutations += self.get_block_row_type(i)
+        return permutations
+
+    def get_col_super_type(self):
+        permutations = ""
+        for i in range(0, 3):
+            permutations += self.get_block_col_type(i)
+        return permutations
+
     def block_col_permute(self, col1, col2):
         for i in range(0, 3):
             col11 = self.get_col(col1 * 3 + i)
@@ -298,8 +330,22 @@ class Sudoku(object):
     def block_row_permute(self, row1, row2):
         for i in range(0, 3):
             row11 = self.get_row(row1 * 3 + i)
-            self.set_row(row1 * 3 + i, self.get_col(row2 * 3 + i))
+            self.set_row(row1 * 3 + i, self.get_row(row2 * 3 + i))
             self.set_row(row2 * 3 + i, row11)
+
+    def normalize_block_rows(self):
+        row_super_type = self.get_row_super_type()
+        col_super_type = self.get_col_super_type()
+        if row_super_type.count('A') < col_super_type.count('A'):
+            self.invert()
+        change = True
+        while change:
+            row_super_type = self.get_row_super_type()
+            change = False
+            for i in range(0, 2):
+                if row_super_type[i + 1] < row_super_type[i]:
+                    self.block_row_permute(i, i + 1)
+                    change = True
 
     @requires_solution
     def print_grid(self, grid):
@@ -336,13 +382,33 @@ def main():
         size = int(sys.argv[1])
     except IndexError:
         size = 3
-    s = Sudoku(size, difficulty=EASY)
-    s.print_solution()
-    print s.get_type()
-    print ""
-    s.normalize_type()
-    s.print_solution()
-    print s.get_type()
+    # s = Sudoku(size, difficulty=EASY)
+    # s.print_solution()
+    # print s.get_super_type()
+    # print ""
+    # s.normalize_type()
+    # s.print_solution()
+    # print s.get_super_type()
+    # print ""
+    # s.normalize_block_rows()
+    # s.print_solution()
+    # print s.get_super_type()
+    # print ""
+    #
+    super_type_stats = {}
+    for i in range(0, 10000):
+        s = Sudoku(size, difficulty=EASY)
+        s.print_solution()
+        s.normalize_type()
+        s.normalize_block_rows()
+        super_type = s.get_super_type()
+        if super_type in super_type_stats:
+            super_type_stats[super_type] += 1
+        else:
+            super_type_stats[super_type] = 1
+
+    for key, value in super_type_stats.items():
+        print "{0}: {1}\n\n".format(key, value)
 
 if __name__ == '__main__':
     main()

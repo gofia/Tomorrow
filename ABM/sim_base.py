@@ -10,7 +10,7 @@ class SimBase(object):
 
     def __getattr__(self, name, t=-1):
         m = re.search('(\S*)_(\d*)$', name)
-        if not m is None:
+        if m is not None:
             name = m.group(1)
             t = -int(m.group(2))
         if name in self.variables and len(self.variables[name]) > 0:
@@ -28,11 +28,12 @@ class SimBase(object):
 
     def run(self, n):
         for i in range(0, n):
-            new_values = {}
-            for key in self.variables.keys():
-                new_values[key] = self.__getattribute__("update_{0}".format(key))()
-            for key in self.variables.keys():
-                self.__setattr__(key, new_values[key])
+            for keys in self.updates:
+                new_values = {}
+                for key in keys:
+                    new_values[key] = self.__getattribute__("update_{0}".format(key))()
+                for key in keys:
+                    self.__setattr__(key, new_values[key])
 
     def plot(self, *args):
         names = args[0:]

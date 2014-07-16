@@ -68,7 +68,16 @@ if __name__ == '__main__':
     sim = SimABS()
     sim.print_parameters()
     print sim
-    sim.scan_parameter("v", arange(0.5, 1.01, 0.01), "std")
+    sim.scan_parameters(
+        [
+            {"name": "v", "values": list(arange(0.5, 1.01, 0.025))},
+            {"name": "g", "values": list(arange(1.5, 2.51, 0.025))},
+        ],
+        ["std", "skewness", "kurtosis"]
+    )
+    sim.plot_scan("v", "g", "std")
+    sim.plot_scan("v", "g", "skewness")
+    sim.plot_scan("v", "g", "kurtosis")
     # sim.run_until("std", 1E-4)
     # for i in range(0, 100000):
     #     sim.run(1)

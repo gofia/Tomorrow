@@ -1,0 +1,132 @@
+\begin{thebibliography}{16}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Brandt(2007)}]{Brandt2007}
+\bibinfo{author}{Brandt, A.~R.} (\bibinfo{year}{2007}).
+\newblock \bibinfo{title}{{Testing Hubbert}}.
+\newblock {\it \bibinfo{journal}{Energy Policy}\/},  {\it
+  \bibinfo{volume}{35}\/}, \bibinfo{pages}{3074--3088}.
+  \DOIprefix\doi{10.1016/j.enpol.2006.11.004}.
+%Type = Article
+\bibitem[{Brecha(2012)}]{Brecha2012}
+\bibinfo{author}{Brecha, R.~J.} (\bibinfo{year}{2012}).
+\newblock \bibinfo{title}{{Logistic curves, extraction costs and effective peak
+  oil}}.
+\newblock {\it \bibinfo{journal}{Energy Policy}\/},  {\it
+  \bibinfo{volume}{51}\/}, \bibinfo{pages}{586--597}.
+  \DOIprefix\doi{10.1016/j.enpol.2012.09.016}.
+%Type = Misc
+\bibitem[{{European Commission}(2014)}]{Commission2014}
+\bibinfo{author}{{European Commission}} (\bibinfo{year}{2014}).
+\newblock \bibinfo{title}{{EU Crude Oil Imports}}.
+\newblock \URLprefix
+  \url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}.
+%Type = Article
+\bibitem[{Forr\'{o} et~al.(2012)Forr\'{o}, Cauwels \& Sornette}]{Forro2012}
+\bibinfo{author}{Forr\'{o}, Z.}, \bibinfo{author}{Cauwels, P.}, \&
+  \bibinfo{author}{Sornette, D.} (\bibinfo{year}{2012}).
+\newblock \bibinfo{title}{{When games meet reality: is Zynga overvalued?}}
+\newblock {\it \bibinfo{journal}{The Journal of Investment Strategies}\/},
+  {\it \bibinfo{volume}{1}\/}, \bibinfo{pages}{119--145}. \URLprefix
+  \url{http://ideas.repec.org/p/arx/papers/1204.0350.html}.
+%Type = Misc
+\bibitem[{GOV.UK(2014)}]{GOVUK2014}
+\bibinfo{author}{GOV.UK} (\bibinfo{year}{2014}).
+\newblock \bibinfo{title}{{Oil and gas: field data}}.
+\newblock \URLprefix \url{https://www.og.decc.gov.uk/pprs/full_production.htm}.
+%Type = Article
+\bibitem[{Greiner et~al.(2011)Greiner, Semmler \& Mette}]{Greiner2011}
+\bibinfo{author}{Greiner, A.}, \bibinfo{author}{Semmler, W.}, \&
+  \bibinfo{author}{Mette, T.} (\bibinfo{year}{2011}).
+\newblock \bibinfo{title}{{An Economic Model of Oil Exploration and
+  Extraction}}.
+\newblock {\it \bibinfo{journal}{Computational Economics}\/},  {\it
+  \bibinfo{volume}{40}\/}, \bibinfo{pages}{387--399}. \URLprefix
+  \url{http://link.springer.com/10.1007/s10614-011-9272-0}.
+  \DOIprefix\doi{10.1007/s10614-011-9272-0}.
+%Type = Article
+\bibitem[{H\"{o}\"{o}k \& Aleklett(2008)}]{Hook2008}
+\bibinfo{author}{H\"{o}\"{o}k, M.}, \& \bibinfo{author}{Aleklett, K.}
+  (\bibinfo{year}{2008}).
+\newblock \bibinfo{title}{{A decline rate study of Norwegian oil production}}.
+\newblock {\it \bibinfo{journal}{Energy Policy}\/},  {\it
+  \bibinfo{volume}{36}\/}, \bibinfo{pages}{4262--4271}.
+  \DOIprefix\doi{10.1016/j.enpol.2008.07.039}.
+%Type = Article
+\bibitem[{Hubbert(1956)}]{Hubbert1956}
+\bibinfo{author}{Hubbert, M.~K.} (\bibinfo{year}{1956}).
+\newblock \bibinfo{title}{{Nuclear energy and the fossil fuels}}.
+\newblock {\it \bibinfo{journal}{Drilling and Production Practice}\/},
+  (p.~\bibinfo{pages}{36}). \URLprefix
+  \url{http://www.hubbertpeak.com/hubbert/1956/1956.pdf}.
+%Type = Article
+\bibitem[{Laherr\`{e}re(2002)}]{Laherrere2002}
+\bibinfo{author}{Laherr\`{e}re, J.} (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{{Forecasting future production from past discovery}}.
+\newblock {\it \bibinfo{journal}{International Journal of Global Energy
+  Issues}\/},  {\it \bibinfo{volume}{18}\/}, \bibinfo{pages}{218--238}.
+%Type = Article
+\bibitem[{Laherr\`{e}re \& Sornette(1998)}]{Laherrere1998}
+\bibinfo{author}{Laherr\`{e}re, J.}, \& \bibinfo{author}{Sornette, D.}
+  (\bibinfo{year}{1998}).
+\newblock \bibinfo{title}{{Stretched Exponential Distributions in Nature and
+  Economy: ``Fat Tails'' with Characteristic Scales}}.
+\newblock {\it \bibinfo{journal}{Physical Journal B-Condensed Matter and
+  Complexe Systems}\/},  {\it \bibinfo{volume}{2}\/},
+  \bibinfo{pages}{525--539}.
+%Type = Article
+\bibitem[{Lynch(2002)}]{Lynch2002}
+\bibinfo{author}{Lynch, M.~C.} (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{{Forecasting oil supply : theory and practice}}.
+\newblock {\it \bibinfo{journal}{Quarterly Review of Economics and Finance}\/},
+   {\it \bibinfo{volume}{42}\/}, \bibinfo{pages}{373--389}.
+%Type = Article
+\bibitem[{Malevergne et~al.(2005)Malevergne, Pisarenko \&
+  Sornette}]{Malevergne2005}
+\bibinfo{author}{Malevergne, Y.}, \bibinfo{author}{Pisarenko, V.~F.}, \&
+  \bibinfo{author}{Sornette, D.} (\bibinfo{year}{2005}).
+\newblock \bibinfo{title}{{Empirical Distributions of Log-Returns : between the
+  Stretched Exponential and the Power Law?}}
+\newblock {\it \bibinfo{journal}{Quantitative Finance}\/},  {\it
+  \bibinfo{volume}{5}\/}, \bibinfo{pages}{379--401}.
+  \href{http://arxiv.org/abs/0305089v1}{\tt arXiv:0305089v1}.
+%Type = Article
+\bibitem[{Murray \& Hansen(2013)}]{Murray2013}
+\bibinfo{author}{Murray, J.~W.}, \& \bibinfo{author}{Hansen, J.}
+  (\bibinfo{year}{2013}).
+\newblock \bibinfo{title}{{Peak Oil and Energy Independence : Myth and
+  Reality}}.
+\newblock {\it \bibinfo{journal}{Eos, Transactions American Geophysical
+  Union}\/},  {\it \bibinfo{volume}{94}\/}, \bibinfo{pages}{245--246}.
+  \URLprefix \url{http://doi.wiley.com/10.1002/2013EO280001}.
+%Type = Misc
+\bibitem[{{Norwegian Petroleum Directorate}(2014)}]{Directorate2014}
+\bibinfo{author}{{Norwegian Petroleum Directorate}} (\bibinfo{year}{2014}).
+\newblock \bibinfo{title}{{Factpages}}.
+\newblock \URLprefix \url{http://factpages.npd.no/factpages/}.
+%Type = Article
+\bibitem[{Smith(1980)}]{Smith1980}
+\bibinfo{author}{Smith, J.~L.} (\bibinfo{year}{1980}).
+\newblock \bibinfo{title}{{A Probabilistic Model of Oil Discovery}}.
+\newblock {\it \bibinfo{journal}{The Review of Economics and Statistics}\/},
+  {\it \bibinfo{volume}{62}\/}, \bibinfo{pages}{587--594}.
+%Type = Book
+\bibitem[{Sornette(2004)}]{Sornette2004}
+\bibinfo{author}{Sornette, D.} (\bibinfo{year}{2004}).
+\newblock {\it \bibinfo{title}{{Critical Phenomena in Natural Sciences, Chaos,
+  Fractals, Self-organization and Disorder: Concepts and Tools}}\/}.
+\newblock (\bibinfo{edition}{2nd} ed.).
+\newblock \bibinfo{address}{Heidelberg}.
+
+\end{thebibliography}

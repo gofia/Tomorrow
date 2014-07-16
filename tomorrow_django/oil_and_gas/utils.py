@@ -61,7 +61,7 @@ def diff_months_abs(date1, date2):
     return abs(diff_months(date1, date2))
 
 
-def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None):
+def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None, title=""):
     fig = plt.figure(figsize=(16,10))
     ax = fig.add_subplot(111)
     ax.plot(x, y, 'ok')
@@ -69,6 +69,15 @@ def make_plot(x, y, x_label, y_label, x_fit=None, y_fit=None):
         ax.plot(x_fit, y_fit, '-k')
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    plt.title(title)
+    font = {
+        'family': 'Arial',
+        'weight': 'normal',
+        'size': 28,
+    }
+    matplotlib.rc('font', **font)
+    matplotlib.rcParams['lines.markersize'] = 20
+    matplotlib.rcParams['axes.labelsize'] = 26
     plt.show()
 
 
@@ -86,4 +95,4 @@ def start_plot(x_label, y_label, title):
     matplotlib.rc('font', **font)
     matplotlib.rcParams['lines.markersize'] = 20
     matplotlib.rcParams['axes.labelsize'] = 26
-    return plt
+    return plt, ax, ax.twinx()

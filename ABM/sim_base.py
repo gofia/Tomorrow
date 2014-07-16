@@ -1,16 +1,39 @@
 __author__ = 'lfi'
 
+import json
+import hashlib
 import copy
 import re
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+from mpl_toolkits.mplot3d import Axes3D
 from scipy.stats import skew, kurtosis
 
 
 class SimBase(object):
+    name = "simulation"
     parameters = {}
     variables = {}
+    scans = {}
+
+    def __init__(self):
+        self.initial_variables = copy.copy(self.variables)
+
+    def reset_variables(self):
+        self.variables = copy.copy(self.initial_variables)
+
+    def compute_hash(self, parameters, initial_variables=None):
+        if initial_variables is None:
+            initial_variables = self.initial_variables
+        h = self.name + json.dumps(parameters) + json.dumps(initial_variables)
+        m = hashlib.sha224(h)
+        return m.hexdigest()
+
+    @property
+    def hash(self):
+        return self.compute_hash(self.parameters, self.initial_variables)
 
     def __getattr__(self, name, t=-1):
         m = re.search('(\S*)_(\d*)$', name)
@@ -45,16 +68,82 @@ class SimBase(object):
             self.run(1000)
             old_value = new_value
             new_value = self.__getattribute__("diff_{0}".format(name))("p")
-            # print "Change {0}: {1}.".format(name, new_value - old_value)
         return new_value
 
-    def scan_parameter(self, parameter_name, values, property_name):
-        initial_variables = copy.copy(self.variables)
+    def scan_parameters(self, parameters, properties, scan=None):
+        if not isinstance(parameters, list) or len(parameters) == 0:
+            raise "Parameters need to be a list with at least one item"
+
+        if not "name" in parameters[0] or not "values" in parameters[0]:
+            raise "Parameter needs a name and values attribute."
+
+        cache_file_hash = self.compute_hash(parameters)
+        cache_file = "{0}.txt".format(cache_file_hash)
+        if os.path.isfile(cache_file):
+            f = open(cache_file, 'r')
+            self.scans = json.loads(f.read())
+            f.close()
+            return -1
+
+        # Pop first parameter
+        first = False
+        name = parameters[0]["name"]
+        values = parameters[0]["values"]
+        parameters = parameters[1:]
+        print parameters
+
+        # If no scan, use self
+        if scan is None:
+            first = True
+            scan = self.scans
+
+        if not name in scan:
+            scan[name] = {'values': []}
+
+        property_until = properties[0]
+        count = 0
+
         for value in values:
-            self.variables = initial_variables
-            self.__setattr__(parameter_name, value)
-            property_value = self.run_until(property_name)
-            print "{0}={1} => {2}={3}".format(parameter_name, value, property_name, property_value)
+            print "{0}: {1}".format(name, value)
+            self.reset_variables()
+            self.__setattr__(name, value)
+            self.run_until(property_until)
+            if len(parameters) == 0:
+                count += 1
+                scan[name]["values"].append(value)
+                for p in properties:
+                    if p not in scan[name]:
+                        scan[name][p] = {'values': []}
+                    p_value = self.__getattribute__("diff_{0}".format(p))("p")
+                    print "{0}: {1}".format(p, p_value)
+                    scan[name][p]['values'].append(p_value)
+            else:
+                last_count = self.scan_parameters(parameters, properties, scan[name])
+                for _ in range(0, last_count):
+                    scan[name]["values"].append(value)
+                count += last_count
+
+        if first:
+            f = open(cache_file, 'w')
+            f.write(json.dumps(self.scans))
+            f.close()
+
+        return count
+
+    def plot_scan(self, *args):
+        xs = []
+        scan = self.scans
+        for arg in args:
+            xs.append(scan[arg]["values"])
+            scan = scan[arg]
+
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        ax.scatter(xs[0], xs[1], xs[2], color="red")
+        ax.set_xlabel(args[0])
+        ax.set_ylabel(args[1])
+        ax.set_zlabel(args[2])
+        plt.show()
 
     def diff_method(self, name, method):
         array = np.array(self.variables[name])

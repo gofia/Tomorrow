@@ -17,7 +17,8 @@
 from django.test import TestCase
 from numpy import array
 
-from ..fit_logistic import fit_logistic_r_p, get_logistic, get_d_logistic, fit_d_logistic
+from ..fit_logistic import (fit_logistic_r_p, get_logistic, get_d_logistic,
+                            fit_d_logistic_r_k_p)
 
 
 class FittingTest(TestCase):
@@ -33,7 +34,7 @@ class FittingTest(TestCase):
         func = get_d_logistic(2.0, 3.0, 5.0)
         x = array([0, 1, 2, 3])
         y = [func(0.0), func(1.0), func(2.0), func(3.0)]
-        r, k, p = fit_d_logistic(3.0, x, y)
-        self.assertAlmostEqual(r, 2.0, delta=0.01, msg="r is incorrect")
-        self.assertAlmostEqual(k, 3.0, delta=0.01, msg="p is incorrect")
-        self.assertAlmostEqual(p, 5.0, delta=0.01, msg="p is incorrect")
+        r, k, p, residual = fit_d_logistic_r_k_p(x, y)
+        self.assertAlmostEqual(r, 2.0, delta=0.01, msg="r={0} is incorrect".format(r))
+        self.assertAlmostEqual(k, 3.0, delta=0.01, msg="k={0} is incorrect".format(k))
+        self.assertAlmostEqual(p, 5.0, delta=0.01, msg="p={0} is incorrect".format(p))

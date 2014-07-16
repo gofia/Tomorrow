@@ -1,6 +1,4 @@
-%% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[twoside]{article}
+\documentclass[review]{elsarticle}
 \usepackage{mathpazo}
 \renewcommand{\ttdefault}{mathpazo}
 \usepackage[T1]{fontenc}
@@ -11,40 +9,18 @@
 \usepackage{amstext}
 \usepackage{graphicx}
 \usepackage{esint}
-\usepackage[unicode=true,pdfusetitle,
+\usepackage{url}
+\usepackage[unicode=true,
  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
- breaklinks=false,pdfborder={0 0 1},backref=section,colorlinks=false]
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
  {hyperref}
 \usepackage{breakurl}
 
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
 
 \@ifundefined{date}{}{\date{}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Journal Article
-% LaTeX Template
-% Version 1.2 (15/5/13)
-%
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% Original author:
-% Frits Wenneker (http://www.howtotex.com)
-%
-% License:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%----------------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
-
 
 
 \usepackage{lipsum}% Package to generate dummy text throughout this template
@@ -73,7 +49,6 @@
 \renewcommand{\thesection}{\Roman{section}}
 \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
 
-\usepackage{fancyhdr}% Headers and footers
  % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
@@ -83,21 +58,32 @@
 
 \makeatother
 
+\defcitealias{Commission2014}{European Commission}
+\defcitealias{Directorate2014}{NPD}
+
 \begin{document}
 \thispagestyle{fancy} 
 
 
 \title{Forecasting future oil production in Norway and the UK: a general improved methodology}
 
+\author[eth-mtec]{L. Fi\'evet\corref{cor1}}
+\ead{lfievet@ethz.ch}
 
-\author{L. Fiévet, Z. Forró, %M. del Degan, 
-P. Cauwels and D. Sornette\\
-ETH Z\"urich\\
-Department of Management, Technology and Economics\\
-Chair of Entrepreneurial Risks}
+\author[eth-mtec]{Z. Forr\'o}
+\ead{zforro@ethz.ch}
+
+\author[eth-mtec]{P. Cauwels}
+\ead{pcauwels@ethz.ch}
+
+\author[eth-mtec]{D. Sornette}
+\ead{dsornette@ethz.ch}
+
+\cortext[cor1]{Corresponding author. Tel.: +41 44 632 83 79.}
+
+\address[eth-mtec]{Chair of Entrepreneurial Risks, ETH Z\"urich, Scheuchzerstrasse 7 (SEC F), CH-8092 Z\"urich, Switzerland}
 
 
-%\date{}
 \maketitle
 \begin{abstract}
 \noindent We present a new Monte-Carlo methodology to forecast
@@ -108,7 +94,7 @@ of the frequency of future oil field discoveries. Compared
 with the standard methodology that tends to underestimate remaining oil reserves,
 our method gives a better description of future oil production, as validated by
 our back-tests starting in 2008. Specifically, we predict remaining reserves
-extractable until 2030 to be $188 \pm 10$ million barrels for Norway and $90 \pm10$ million
+extractable until 2030 to be $5.7 \pm 0.3$ million barrels for Norway and $3.0 \pm0.3$ billion
 barrels for the UK, which are respectively $45\%$ and $66\%$ above the
 predictions using the standard methodology.
 \end{abstract}
@@ -123,17 +109,17 @@ industry. As petroleum is a non-renewable and finite resource, it
 is primordial to be able to forecast future oil production. The fear
 of a global oil peak, beyond which production will inevitably decline,
 has been growing due to stagnating supplies and high oil prices since
-the crisis in 2008/2009 \cite{Murray 2012}. As any industrialized
+the crisis in 2008/2009 \citep{Murray2013}. As any industrialized
 country, Europe is strongly dependent on oil supply to maintain its
 economic power. In the nowadays difficult geopolitical environment,
 it is important to know how much of the oil needed in Europe will
 come from reliable sources. In the past, a big share has been coming
-from Norway and the U.K., which have been reliable exporters. However,
+from Norway and the U.K., two of Europe's biggest exporters. However,
 the U.K. already became a net importer in 2005 and Norway\textquoteright{}s
-production has been declining rapidly as well \cite{H=0000F6=0000F6k 2008}.\\
+production has been declining rapidly as well \citep{Hook2008}.\\
  The methodology behind forecasting future oil production has not
 evolved much since M. King Hubbert, who in 1956 famously predicted
-that the U.S. oil production would peak around 1965-1970 \cite{Hubbert 1956}.
+that the U.S. oil production would peak around 1965-1970 \citep{Hubbert1956}.
 That prediction has proven itself to be correct. His main argument
 was based on the finiteness of oil reserves and to what amounts
 as the use of the logistic differential equation for the total
@@ -152,11 +138,11 @@ time $t$, then $f(t) := \frac{dP}{dt}$ is the oil production rate, the quantity
 that M. King Hubbert predicted with surprising accuracy to peak. From
 a methodological point of view, the Hubbert model has enjoyed a longstanding
 popularity in modeling future oil production given its simplicity.
-Various extensions have been studied by Brandt \cite{Brandt 2006}
+Various extensions have been studied by \citet{Brandt2007}
 to account for multi-cycled or asymmetric production curves.
 The existing forecasts of future oil production use some form of the
-Hubbert model (Brecha, Laherrère or Lynch \cite{Brecha 2012,Laherr=0000E8re 2002,Lynch 2002})
-or some economical model applied to aggregate production (Greiner \cite{Greiner 2012}),
+Hubbert model \citep{Brecha2012,Laherrere2002,Lynch2002}
+or some economical model applied to aggregate production \citep{Greiner2011},
 but none goes into the details of studying the underlying dynamics.
 The main reason for the lack of details is certainly the lack of available
 data. 
@@ -168,9 +154,9 @@ multi-cyclic Hubbert curve), the production profile of each individual
 oil field is used. By extending their production into the future and
 extrapolating the future rate of discovery of new fields, the future
 oil production is forecasted by means of a Monte Carlo simulation.
-To demonstrate the universality of the methodology presented here,
+To demonstrate the generality of the methodology presented here,
 it is applied to two major oil producing countries with publicly available
-data: Norway\cite{Norwegian Data} and the U.K. \cite{U.K. Data}.
+data: Norway \citepalias{Directorate2014} and the U.K. \citep{GOVUK2014}.
 
 
 \section{Methodology}
@@ -181,9 +167,9 @@ individual constituents, the oil fields. The main benefit of this
 approach, compared to working directly with aggregate production data,
 is the possibility to forecast non-trivial oil production profiles
 arising from the combination of all the individual field
-dynamics. This ability reflects directly that the total
-production is indeed the sum of the contributions of the individual
-oil fields in production. Thus modelling at the level of each field
+dynamics. This ability reflects directly the fact that the total
+production is the sum of the contributions of each individual
+oil field in production. Thus modelling at the level of each field
 reflects more closely the reality and is likely to be over-performing
 and more reliable, as we show below.
 In order to implement our approach, one must be able 1) to \textbf{extend
@@ -201,8 +187,8 @@ the Oseberg field shown in figure \ref{regular}, with a quick ramp
 up once the field is being developed, and then a peak or plateau before
 the oil field production starts decaying. The decay can take many different shapes
 and is governed by a variety of geological and economical factors.
-The goal of the fitting procedure is to capture as much as possible the impact of
-these different factors.  
+The goal of the fitting procedure is to capture as much the impact of
+these different factors as possible.
 
 
 \subsubsection{Regular, irregular and new fields\label{sub:Regular,-irregular-and}}
@@ -233,14 +219,13 @@ As such, being able to model them is crucial. To capture as many different
 decay dynamics as possible, the decay part of the oil production rate
 $f(t) := \frac{dP}{dt}$ has been fitted by the stretched exponential  
 \begin{equation}
-f(t)=f_{0}e^{-\left(\frac{t}{\tau}\right)^{\beta}}~.
+f(t)=f_{0}~e^{-\left(\frac{t}{\tau}\right)^{\beta}}~.
 \label{stretched_exponential}
 \end{equation}
 The stretched exponential function
 has many advantages as it generalises the power law and can therefore
-capture a broad variety of distributions as shown by Laherrère and
-Sornette \cite{Laherr=0000E8re and Sornette 1998}. Moreover,
-Malevergne et al. \cite{malpissor05} showed that the power law
+capture a broad variety of distributions as shown by \citet{Laherrere1998}. Moreover,
+\citet{Malevergne2005} showed that the power law
 function can be obtained as an asymptotic case of the stretched
 exponential family, allowing for asymptotically nested statistical tests.  As can be seen
 in figure \ref{regular}, the stretched exponential (equation \ref{stretched_exponential})
@@ -378,7 +363,7 @@ The logistic curve is a good fit to the data (integral form of equation
 rate of new discoveries reaches a peak followed by a decrease until
 no more oil fields are to be found, consistent with our fundamental
 observations. This same approach has already been successfully applied
-by Forr\'o et al. \cite{Forro 2012} to estimate the number of daily active
+by \cite{Forro2012} to estimate the number of daily active
 users on Zynga.
 
 As the discovery and production dynamics are not independent of the
@@ -390,7 +375,7 @@ can not be determined if the data does not already exhibit the slowdown
 in growth towards the carrying capacity. However, it is
 mentioned in the literature that often dwarf fields have already been
 discovered a long time ago, but their production has been postponed
-for economical reasons \cite[p. 378]{Lynch 2002}. Therefore, it is
+for economical reasons \cite[p. 378]{Lynch2002}. Therefore, it is
 expected that the large oil fields have mostly been found and produced,
 and that future discoveries will mostly be made up of dwarf fields.
 Consequently, the splitting size has been picked as small as possible
@@ -405,7 +390,7 @@ barrels.
 We note that this definition differs by a factor 10 from the more standard one, for which
 oil fields with an ultimate recoverable resource of 0.5 billion barrels (Gb) 
 or higher are classified as giants, while oil fields with smaller URR are considered to be dwarfs
-\cite{H=0000F6=0000F6k 2008}.
+\citep{Hook2008}.
 
 The resulting plot shown in figure \ref{rate_of_discovery} pictures
 the dynamics: giant oil fields have mostly been found while the discovery
@@ -417,9 +402,55 @@ constrained by the available data. A large spectrum of values for
 $K$ can lead to an equally good fit of the data. We have not taken
 into account the possible effect that
 newly discovered dwarf fields could become smaller and smaller 
-until the new fields have a size that is so small to be economical to drill.
-This effect would cap the carrying capacity at a value smaller than 
-the one shown in figure  \ref{rate_of_discovery}. To address these issues, the method
+until the new fields have a size that is too small to be economical to drill.
+
+There are in fact two competing effects that are likely to compensate each other.
+On the one hand, figure \ref{ccdffieldsizes} shows the complementary 
+cumulative distribution function (CCDF) of known oil field sizes $S$ from Norway and the UK.
+Two salient properties can be observed. First, the tails 
+of the distributions are well described by power laws
+\begin{equation}
+{\rm CCDF}(S) \sim {1 \over S^{1+\alpha}}~,
+\label{ccdfsizefield}
+\end{equation}
+with exponent $\alpha = 1.2 \pm 0.1$ for Norway and $\alpha = 1.4 \pm 0.1$ for the UK.
+The fact that the estimations of the exponents $\alpha$ are larger than $1$ implies
+that the cumulative oil reserves are asymptotically controlled by the largest fields, and not the small ones
+\citep{Sornette2004}. However, the fact that the exponents $\alpha$ are rather close
+to $1$ (which is called ``Zipf law'') would make the many small oil field contributing 
+significantly in total. This brings us to the second important feature exhibited by figure \ref{ccdffieldsizes},
+namely the roll-overs of the CCDFs for small oil fields, likely due to an under-sampling
+of the data. Indeed, as for most data sets involving broad distributions of sizes such
+as oil fields, the distributions are in general incomplete for the small events due to the non
+exhaustive sampling. This incompleteness raises the spectre that our extrapolations
+might be grossly underestimating the large potential contributions to the total reserves
+of the many small yet undiscovered small oil fields. Assuming that the power law (\ref{ccdfsizefield})
+would hold for smaller fields down to size of 1 Million barrels leads to a number of 
+such fields 10 to 100 times larger than presently known. 
+
+But there is another
+key factor that needs to be considered, namely the fact that small oil fields
+are not economically viable for exploitation, which leads to an effective truncation
+in the distribution (\ref{ccdfsizefield}) relevant for the estimation of recoverable oil.
+Taking the data from the \citetalias{Directorate2014}
+providing the yearly investments broken by fields in Norway, let us consider the illustrative
+case of the field GAUPE. The investment spent to 
+develop its exploitation was  \$380M, while its estimated size is 
+$\simeq 1.2Mb$, which corresponds approximately to a total
+market value of $\$120M$ at \$100 per barrel. It is thus not a surprise that
+investment to exploit this field was interrupted in 2013. 
+Figure \ref{returnNorwayfield} shows the total estimated revenue divided
+by investment as a function of the estimated ultimate recovery for a number
+of small oil fields. It can be inferred that oil fields of sizes smaller than about 10 Mb
+are not economically viable as long as the market oil price does not 
+grow much higher than \$100 per barrel. This implies that, notwithstanding
+the large number of unknown small oil fields, economic considerations
+oblige us to neglect the small oil fields, therefore providing
+a justification of our procedure. In fact, economic constraints may lead to 
+cap the carrying capacity at a value smaller than 
+the one shown in figure  \ref{rate_of_discovery}. 
+
+To address these issues from a more solid angle, the method
 described in the next section \ref{sub:Likelihood-function-for} has been used
 to compute the probability of different carrying capacities.
 
@@ -428,7 +459,7 @@ to compute the probability of different carrying capacities.
 
 To overcome the poor constraint on the carrying capacity
 $K$ obtained from the fitting procedure for dwarf fields, a method
-already used by Smith \cite{Smith 1980} has been implemented. This
+already used by \cite{Smith1980} has been implemented. This
 method makes the following two postulates:
 \begin{enumerate}
 \item ``The discovery of reservoirs in a petroleum play can be modeled
@@ -467,21 +498,6 @@ that the total likelihood of all generated scenarios equals one.
 For the analysis of the discoveries of the North Sea oil fields, the number
 of size bins has been fixed to $J=2$ splitting between dwarfs (1)
 and giants (2) as described in section \ref{sub:Discoveries-modeled-as}.
-
-\begin{table}[h]
-\caption{Likelihood estimation for the number of dwarf (1) and giant (2) fields.
-For Norway, our logistic fit suggests that up to two new giant fields could be
-ultimately discovered. For the U.K., the prediction is more bleak, suggesting
-that the most probable scenario is that no other giant field will be found.}
-\centering %
-\begin{tabular}{lllll}
- & $m_{N1}$ & $n_{1}\pm\sigma_{1}$ & $m_{N2}$ & $n_{2}\pm\sigma_{2}$\tabularnewline
-\midrule Norway  & $24$ & $88.4\pm10.0$ & $52$ & $56.4\pm1.6$\tabularnewline
-U.K. & $162$ & $208\pm11$ & $99$ & $100\pm0.4$\tabularnewline
-\bottomrule  &  &  &  & \tabularnewline
-\end{tabular}\label{likelihood-results}
-\end{table}
-
 
 The results shown in table \ref{likelihood-results} are coherent
 with the intuitive expectation that discovering a new giant field
@@ -526,17 +542,14 @@ this typical production curve is than multiplied by the size of the
 field.
 
 Superposing the production curves results in the expected production
-curve from future oil field for a given scenario.
+curve from future oil fields for a given scenario.
 
 As the total parameter space is too large to be sampled entirely,
 a Monte Carlo technique is applied to compute the expected production
 with confidence interval from future discoveries. In a nutshell, the
 algorithm works as follows:
 \begin{enumerate}
-\item Draw a scenario based on its probability. {\bf DIDIER: Lucas, Peter expresses
-that he does not understand how this is done. Please give more detail on 
-how a scenario is chosen according to its probability and how the probability
-is determined. A quick synthesis here would be useful.}
+\item Draw a scenario (total number of fields in each size bin) based on its probability according to the likelihood function (\ref{eq:likelihood}). This is done by generating a random number $r$ between 0 and 1, and computing the scenario that is mapped to $r$ by the cumulative distribution function of all scenarios.
 \item Compute the time distribution of new discoveries by fitting a logistic
 curve for each size class.
 \item For each discovery, generate a size and the resulting production curve
@@ -547,12 +560,8 @@ based on the size distribution and production curves of existing fields.
 The result is the expected production curve of future oil field discoveries.
 The distribution of generated scenarios yields the confidence interval.
 
-In order to account for the new fields discussed in section \ref{sub:Regular,-irregular-and},
-which are already discovered but did not yet enter the decay phase,
-the simulated production resulting from new discoveries has been shifted
-to the date in the past where it matches the current production from
-new fields. {\bf DIDIER: what is the meaning of ``shifted''? Peter does not fully
-understand what is done here, neither do I..}
+Last but not least, it has to be defined how the expected production from these future oil field discoveries is added to the extrapolated production from existing fields. The start of the simulation of new discoveries does not match up with the date of the latest production data, the reason being that the new fields (defined in section \ref{sub:Regular,-irregular-and}), which are already discovered but did not yet enter the decay phase, are not taken into account in the simulation as their final size is not known. The only meaningful way of treating the new fields is to consider them as a discovery. Therefore, the starting point in time of the simulated production resulting from new discoveries has been choosen as the date in the past where it matches the current production from
+new fields. In order words, the extrapolated production from regular and irregular fields added to the production from simulated future discoveries (which is shifted into the past as to match the production from new fields) must be equal to the current (latest available data) total production from all fields.
 
 
 \section{Results\label{sec:Results}}
@@ -565,26 +574,11 @@ For each country, the non-symmetric shape of the production dynamics, which
 contradicts the prediction based on Hubbert's standard approach,
 is immediately noticeable.
 
-\begin{table}[H]
-\caption{Remaining oil reserves until 2030 in barrels 
-predicted by the extrapolation of the  \textbf{Fit}
-of the past country production, and predicted by the Monte-Carlo \textbf{Model}.
-The relative difference between these two predictions 
-is defined by $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Model}}$.}
-\centering %
-\begin{tabular}{lllr}
- & Fit (barrels) & Model (barrels)  & $\Delta$ \tabularnewline
-\midrule Norway & $130\cdot10^{6}$  & $188\cdot10^{6}$  & $31\%$\tabularnewline
-U.K. & $59\cdot10^{6}$  & $98\cdot10^{6}$  & $40\%$ \tabularnewline
-\bottomrule  &  &  & \tabularnewline
-\end{tabular}\label{forecast-14}
-\end{table}
-
 The results in table \ref{forecast-14} show a striking difference
 between the extrapolation of the fit and the Monte-Carlo model forecast. According to the
 fit (extrapolation of aggregate production), Norway's future oil production
 would decay much faster than in the Monte-Carlo case. The remaining
-reserves estimated with the Monte-Carlo methodology are $30\%$ larger
+reserves estimated with the Monte-Carlo methodology are $45\%$ larger
 then the estimate from the fit. This difference originates from two
 different effects:
 \begin{itemize}
@@ -600,7 +594,7 @@ However, this has not been an issue for us to extrapolate the decay of productio
 starting at the second peak. The difference between the Hubbert-based
 methodology and the Monte-Carlo one is very similar to the Norwegian
 case. The former underestimates the remaining oil reserves by about
-$40\%$ compared to the latter.
+$66\%$ compared to the latter.
 
 Which of the two models is more trustworthy? Clearly, the implications
 in adopting one methodology over the other are significant. The only
@@ -626,38 +620,9 @@ for Norway and the U.K. The following table \ref{backtest-08}
 summarizes the difference between the two approaches for the back-testing
 period.
 
-\begin{table}[H]
-\caption{Extrapolation of past oil production (``fit'') and prediction
-using the Monte-Carlo model are used on the data set truncated
-in 2008. Their forecast for the period 2008-2014 is compared to
-the actual realised production.}
-\centering %
-\begin{tabular}{llll}
- & Actual (barrels) & Fit (barrels) & Model (barrels)\tabularnewline
-\midrule Norway & $133\cdot10^{6}$  & $108\cdot10^{6}$  & $130\cdot10^{6}$ \tabularnewline
-U.K. & $79\cdot10^{6}$  & $66\cdot10^{6}$  & $75\cdot10^{9}$ \tabularnewline
-\bottomrule  &  &  & \tabularnewline
-\end{tabular}\label{backtest-08}
-\end{table}
-
 While the error of the extrapolation of the past oil production method (``fit'') is not dramatic
 over these six years from 2008 to 2014, the difference between it and the Monte-Carlo
 approach becomes huge from 2014 to 2030, as shown in table \ref{forecast-08}.
-
-\begin{table}[H]
-\caption{Remaining oil reserves forecasted for the period 2014-2030 when using
-the data truncated in 2008, according to the extrapolation of past oil production (``fit'') and 
-the Monte-Carlo model. The relative difference between these two predictions 
-is defined by $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Model}}$.}
-\centering %
-\begin{tabular}{lllc}
- & Fit (barrels) & Model (barrels) & $\Delta$ \tabularnewline
-\midrule Norway 08 & $25\cdot10^{6}$  & $171\cdot10^{6}$  & $-85\%$\tabularnewline
-U.K. 08 & $25\cdot10^{6}$  & $91\cdot10^{9}$  & $-73\%$ \tabularnewline
-\bottomrule  &  &  & \tabularnewline
-\end{tabular}\label{forecast-08}
-\end{table}
-
 
 The simple extrapolation decays too fast and entirely misses the fat
 tails in the decay process of individual fields and the new discoveries.
@@ -685,8 +650,8 @@ oil production. By extending the oil production of current fields
 into the future and modeling the discovery rate of new fields, the
 future oil production of Norway and the U.K. could be forecasted.
 These forecasts are significantly different from the ones obtained
-with a standard extrapolation. Indeed, our model forecasts 30\% to
-40\% more remaining oil reserves than the standard extrapolation.
+with a standard extrapolation. Indeed, our model forecasts 45\% to
+66\% more remaining oil reserves than the standard extrapolation.
 The back-test performed on the time period between 2008 and 2014 confirmed
 that the Monte-Carlo based model better captured the production dynamics.
 
@@ -696,27 +661,12 @@ would expect from a standard extrapolation. Nonetheless, to maintain
 current levels of oil consumption in the European Union, more of it
 will have to be imported from outside Europe, as the imports from
 Norway will vanish (currently accounting for 11\% of E.U. oil imports
-\cite{European oil imports}) and the U.K. will need to import more
+\citepalias{Commission2014}) and the U.K. will need to import more
 oil.
-
-\begin{table}[H]
-\caption{Oil import (bbl/day) at a constant consumption of 1.5M bbl/day for
-the U.K. and 0.22M bbl/day for Norway. The import for the E.U. and
-Norway is a lower bound based on the changes in the U.K and Norway. Negative
-numbers for Norway represent exports.}
-\centering %
-\begin{tabular}{lllcc}
- & 2014 & 2020 & 2025 & 2030\tabularnewline
-\midrule Norway & $-1.23\cdot10^{6}$  & $-0.88\cdot10^{6}$  & $-0.58\cdot10^{6}$  & $-0.43\cdot10^{6}$ \tabularnewline
-U.K. & $0.7\cdot10^{6}$  & $0.9\cdot10^{6}$  & $1.0\cdot10^{6}$  & $1.1\cdot10^{6}$ \tabularnewline
-E.U.+Norway (lower bound) & $9.8\cdot10^{6}$  & $10.45\cdot10^{6}$  & $10.85\cdot10^{6}$  & $11.1\cdot10^{6}$ \tabularnewline
-\bottomrule  &  &  &  & \tabularnewline
-\end{tabular}\label{needs}
-\end{table}
 
 As shown in table \ref{needs}, at constant consumption, the Monte-Carlo
 model predicts that in 2030 the E.U. with Norway will need to increase
-its oil imports by $1.3$ million barrels. These imports will most
+its daily oil imports by $1.3$ million barrels. These imports will most
 likely have to come from outside Europe, except for  
 non-standard oil sources yet to be developed.
 
@@ -735,84 +685,22 @@ Marc A. Del Degan (July 2012) under the supervision of the authors,
 entitled ``Analysis of peak oil with focus on Norwegian oil production''
 (\url{http://www.er.ethz.ch/publications/MAS_Thesis_DelDegan_final_July12.pdf}), which
 itself derived from the methodology of pricing social network companies such as Zynga developed
-by three of the authors \cite{Forro 2012}.
+by three of the authors \cite{Forro2012}.
 
 
-
-\begin{thebibliography}{10}
-\bibitem{Brandt 2006}Brandt, Adam R. \textquotedblleft{}Testing Hubbert.\textquotedblright{}
-Energy Policy 35, no. 5 (May 2007): 3074\textendash{}88. doi:10.1016/j.enpol.2006.11.004. 
-
-\bibitem{Brecha 2012}Brecha, Robert J. \textquotedblleft{}Logistic
-Curves, Extraction Costs and Effective Peak Oil.\textquotedblright{}
-Energy Policy 51 (December 2012): 586\textendash{}97. doi:10.1016/j.enpol.2012.09.016. 
-
-\bibitem{European oil imports}European Commission - Energy (2014,
-Mai 25). EU Crude oil imports. Retrieved from \url{http://ec.europa.eu/energy/observatory/oil/import_export_en.htm}.
-
-\bibitem{Forro 2012} Forró, Zalán, Peter Cauwels, and Didier Sornette.
-\textquotedblleft{}When Games Meet Reality: Is Zynga Overvalued?\textquotedblright{}
-Journal of Investment Strategies 1 (3), 119-145 (2012). 
-
-\bibitem{U.K. Data}GOV.UK (2014, Mai 25). Exploration and production
-- Oil and gas: field data. Retrieved from \url{https://www.og.decc.gov.uk/pprs/full_production.htm}.
-
-\bibitem{Greiner 2012} Greiner, Alfred, Willi Semmler, and Tobias
-Mette. \textquotedblleft{}An Economic Model of Oil Exploration and
-Extraction.\textquotedblright{} Computational Economics 40, no. 4
-(December 2012): 387\textendash{}99. doi:10.1007/s10614-011-9272-0. 
-
-\bibitem{H=0000F6=0000F6k 2008}Höök, Mikael, and Kjell Aleklett.
-\textquotedblleft{}A Decline Rate Study of Norwegian Oil Production.\textquotedblright{}
-Energy Policy 36, no. 11 (November 2008): 4262\textendash{}71. doi:10.1016/j.enpol.2008.07.039. 
-
-\bibitem{Hubbert 1956}Hubbert, Marion King. Nuclear Energy and the
-Fossil Fuels. Vol. 95. Shell Development Company, Exploration and
-Production Research Division Houston, TX, 1956. http://energycrisis.biz/hubbert/1956/1956.pdf. 
-
-\bibitem{Laherr=0000E8re 2002}Laherrere, Jean. \textquotedblleft{}Forecasting
-Future Production from Past Discovery.\textquotedblright{} International
-Journal of Global Energy Issues 18, no. 2 (2002): 218\textendash{}38. 
-
-\bibitem{Laherr=0000E8re and Sornette 1998}Laherrere, Jean, and Didier
-Sornette. \textquotedblleft{}Stretched Exponential Distributions in
-Nature and Economy:\textquoteleft{}fat Tails\textquoteright{} with
-Characteristic Scales.\textquotedblright{} The European Physical Journal
-B-Condensed Matter and Complex Systems 2, no. 4 (1998): 525\textendash{}39. 
-
-\bibitem{Lutz 2012}Lutz, Christian, Ulrike Lehr, and Kirsten S. Wiebe.
-\textquotedblleft{}Economic Effects of Peak Oil.\textquotedblright{}
-Energy Policy 48 (September 2012): 829\textendash{}34. doi:10.1016/j.enpol.2012.05.017. 
-
-\bibitem{Lynch 2002}Lynch, Michael C. \textquotedblleft{}Forecasting
-Oil Supply: Theory and Practice.\textquotedblright{} The Quarterly
-Review of Economics and Finance 42, no. 2 (2002): 373\textendash{}89. 
-
-\bibitem{malpissor05}
-Malevergne, Yannick, Vladilen F. Pisarenko and Didier Sornette,
-Empirical Distributions of Log-Returns: between the Stretched
-Exponential and the Power Law? Quantitative Finance 5 (4), 379401 (2005)
-
-\bibitem{Murray 2012}Murray, James W., and Jim Hansen. \textquotedblleft{}Peak
-Oil and Energy Independence: Myth and Reality.\textquotedblright{}
-Eos, Transactions American Geophysical Union 94, no. 28 (2013): 245\textendash{}46. 
-
-\bibitem{Norwegian Data}Norwegian Petroleum Directorate (2014, Mai
-25). Factpages. Retrieved from \href{http://factpages.npd.no/factpages/}{http://factpages.npd.no/factpages/}.
-
-\bibitem{Smith 1980}Smith, J. L. ``A Probablilistic Model of Oil
-Discovery.'' The Review of Economics and Statistics, Vol. 62, No.
-4 (Nov. 1980): 587-94.
+\bibliographystyle{model5-names}
+\biboptions{authoryear}
+\bibliography{bibliography.bib}
 
 
-\end{thebibliography}
 \newpage{}
 
+%FIGURE 1
 \noindent 
 \begin{figure}[H]
 \includegraphics[width=1\columnwidth]{oseberg}
 \caption{Example of the time evolution of the oil production per day of
-a regular field, parameterised beyond the peak in the decay
+a regular field, parametrised beyond the peak in the decay
 regime by the stretched exponential 
 function (\ref{stretched_exponential}) with $\beta=0.66\pm0.01$ and $\tau=-55\pm1$ months,
 shown with the black line.  The one standard deviation given by expression
@@ -821,8 +709,7 @@ shown with the black line.  The one standard deviation given by expression
 \end{figure}
 
 
-\newpage{}
-
+%FIGURE 2
 \noindent 
 \begin{figure}[H]
 \includegraphics[width=1\columnwidth]{vale}
@@ -830,9 +717,9 @@ shown with the black line.  The one standard deviation given by expression
 \label{irregular} 
 \end{figure}
 
+\pagebreak
 
-\newpage{}
-
+%FIGURE 3
 \noindent 
 \begin{figure}[H]
 \includegraphics[width=1\columnwidth]{skarv}
@@ -841,8 +728,7 @@ shown with the black line.  The one standard deviation given by expression
 \end{figure}
 
 
-\newpage{}
-
+%FIGURE 4
 \noindent 
 \begin{figure}[H]
 \includegraphics[width=1\columnwidth]{oesberg-error}
@@ -855,8 +741,8 @@ errors remain smaller than 20\% since 2004.}
 \end{figure}
 
 
-
-\begin{figure}[p]
+%FIGURE 5
+\begin{figure}[H]
 \includegraphics[width=1\columnwidth]{extrapolating-no-discoveries}
 \caption{Logistic fit of the function solution of expression (\ref{logistic})
 to the number of discoveries for Norway. The discovery
@@ -864,8 +750,31 @@ rate of new oil fields is dependent on their size as explained in the main text.
 \label{rate_of_discovery} 
 \end{figure}
 
+\pagebreak
 
-\begin{figure}[p]
+%FIGURE 6
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{ccdf-field-size}
+\caption{Complementary 
+cumulative distribution function (CCDF) of known oil field sizes $S$ from Norway and the UK.
+The two dashes lines visualise the power law behaviour (\ref{ccdfsizefield}) of the tail
+of the distributions. }
+\label{ccdffieldsizes}
+\end{figure}
+
+\pagebreak
+
+%FIGURE 7
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{no-returns-size}
+\caption{Total estimated revenue divided by investment as a function of the estimated 
+ultimate recovery for a number of small oil fields. }
+\label{returnNorwayfield}
+\end{figure}
+
+
+%FIGURE 8
+\begin{figure}[H]
 \includegraphics[width=1\columnwidth]{NO-future}
 \includegraphics[width=1\columnwidth]{UK-future} 
 \caption{Monte-Carlo (green upper
@@ -874,25 +783,113 @@ and fit forecast based on past production data (lower line and grey one standard
 (top) and the U.K. (bottom). In both cases, the Monte-Carlo model forecasts
 a significantly slower decay than the fit by taking into account that
 new fields will come in production.}
-
-
 \label{no_uk_2013} 
 \end{figure}
 
-
+%FIGURE 9
 \noindent 
-\begin{figure}[p]
+\begin{figure}[H]
 \includegraphics[width=1\columnwidth]{NO-back-test}
-
 \includegraphics[width=1\columnwidth]{UK-back-test} \caption{Monte-Carlo (green upper
 continuous line with standard deviation bank starting in 2014 onward) and Hubbert forecast based 
 on past production data up to 2008 (lower line and grey one standard deviation band)
 for Norway (top) and the U.K. (bottom). The results can be
 compared with the subsequent oil production (blue area). In both cases,
 the Monte-Carlo methodology is more precise.}
-
-
 \label{model-back-testing} 
 \end{figure}
+
+\pagebreak
+
+%TABLE 1
+
+\begin{table}[h]
+\caption{Likelihood estimation for the number of dwarf (1) and giant (2) fields.
+For Norway, our logistic fit suggests that up to two new giant fields could be
+ultimately discovered. For the U.K., the prediction is more bleak, suggesting
+that the most probable scenario is that one giant field will be found (which is most likely already discovered but classified as a new field).}
+\centering %
+\begin{tabular}{lllll}
+ & $m_{N1}$ & $n_{1}\pm\sigma_{1}$ & $m_{N2}$ & $n_{2}\pm\sigma_{2}$\tabularnewline
+\midrule Norway  & $24$ & $88.4\pm10.0$ & $52$ & $56.4\pm1.6$\tabularnewline
+U.K. & $162$ & $208\pm11$ & $99$ & $100\pm0.4$\tabularnewline
+\bottomrule  &  &  &  & \tabularnewline
+\end{tabular}\label{likelihood-results}
+\end{table}
+
+\pagebreak
+
+%TABLE 2
+
+\begin{table}[H]
+\caption{Remaining oil reserves until 2030 in barrels 
+predicted by the extrapolation of the  \textbf{Fit}
+of the past country production, and predicted by the Monte-Carlo \textbf{Model}.
+The relative difference between these two predictions 
+is defined by $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Fit}}$.}
+\centering %
+\begin{tabular}{lllr}
+ & Fit (barrels) & Model (barrels)  & $\Delta$ \tabularnewline
+\midrule Norway & $3.95\cdot10^{9}$  & $5.72\cdot10^{9}$  & $45\%$\tabularnewline
+U.K. & $1.79\cdot10^{9}$  & $2.98\cdot10^{9}$  & $66\%$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{forecast-14}
+\end{table}
+
+\pagebreak
+
+%TABLE 3
+
+\begin{table}[H]
+\caption{Extrapolation of past oil production (``fit'') and prediction
+using the Monte-Carlo model are used on the data set truncated
+in 2008. Their forecast for the period 2008-2014 is compared to
+the actual realised production.}
+\centering %
+\begin{tabular}{llll}
+ & Actual (barrels) & Fit (barrels) & Model (barrels)\tabularnewline
+\midrule Norway & $4.05\cdot10^{9}$  & $3.28\cdot10^{9}$  & $3.95\cdot10^{9}$ \tabularnewline
+U.K. & $2.40\cdot10^{9}$  & $2.00\cdot10^{9}$  & $2.28\cdot10^{9}$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{backtest-08}
+\end{table}
+
+\pagebreak
+
+%TABLE 4
+
+\begin{table}[H]
+\caption{Remaining oil reserves forecasted for the period 2014-2030 when using
+the data truncated in 2008, according to the extrapolation of past oil production (``fit'') and 
+the Monte-Carlo model. The relative difference between these two predictions 
+is defined by $\Delta=\frac{\textrm{Model}-\textrm{Fit}}{\textrm{Fit}}$.}
+\centering %
+\begin{tabular}{lllc}
+ & Fit (barrels) & Model (barrels) & $\Delta$ \tabularnewline
+\midrule Norway 08 & $0.76\cdot10^{9}$  & $5.20\cdot10^{9}$  & $-584\%$\tabularnewline
+U.K. 08 & $0.76\cdot10^{9}$  & $2.77\cdot10^{9}$  & $-264\%$ \tabularnewline
+\bottomrule  &  &  & \tabularnewline
+\end{tabular}\label{forecast-08}
+\end{table}
+
+\pagebreak
+
+%TABLE 5
+
+\begin{table}[H]
+\caption{Oil import (bbl/day) at a constant consumption of 1.5M bbl/day for
+the U.K. and 0.22M bbl/day for Norway. The import for the E.U. and
+Norway is a lower bound based on the changes in the U.K and Norway. Negative
+numbers for Norway represent exports.}
+\centering %
+\begin{tabular}{lllcc}
+ & 2014 & 2020 & 2025 & 2030\tabularnewline
+\midrule Norway & $-1.23\cdot10^{6}$  & $-0.88\cdot10^{6}$  & $-0.58\cdot10^{6}$  & $-0.43\cdot10^{6}$ \tabularnewline
+U.K. & $0.7\cdot10^{6}$  & $0.9\cdot10^{6}$  & $1.0\cdot10^{6}$  & $1.1\cdot10^{6}$ \tabularnewline
+E.U.+Norway & $9.8\cdot10^{6}$  & $10.45\cdot10^{6}$  & $10.85\cdot10^{6}$  & $11.1\cdot10^{6}$ \tabularnewline
+\bottomrule  &  &  &  & \tabularnewline
+\end{tabular}\label{needs}
+\end{table}
+
 
 \end{document}

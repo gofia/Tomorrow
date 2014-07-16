@@ -196,7 +196,7 @@ def fit_double_cyclic(dates, values, init_guesses=2, **kwargs):
                             resid = cost_cyclic(res, _dates, values)
                             output.append((res, resid))
                             i += 1
-                            if i%100 == 0:
+                            if i % 100 == 0:
                                 print i
     output = array(sorted([_res for (_res,_) in output], key=lambda x: x[1]))    
     return output
@@ -208,10 +208,34 @@ def fit_logistic_r_p(k, x, y, r=2.5, p=5.5):
         (r, p),
         args=(k, x, y),
         maxiter=100000,
-        disp=0
+        disp=0,
     )
     residual = cost_function_r_p((r, p), k, x, y)
     return results[0], results[1], residual
+
+
+def fit_d_logistic_r_k_p(x, y, r=2.5, k=3.5, p=5.5):
+    results = fmin(
+        cost_function_d_logistic,
+        (r, k, p),
+        args=(x, y),
+        maxiter=100000,
+        disp=0,
+    )
+    residual = cost_function_d_logistic((r, k, p), x, y)
+    return results[0], results[1], results[2], residual
+
+
+def fit_cyclic_logistic(x, y, r1=2.5, k1=3.5, p1=5.5, t1=0.0, r2=2.5, k2=3.5, p2=5.5, t2=1.0):
+    r = fmin(
+        cost_cyclic_logistic,
+        (r1, k1, p1, t1, r2, k2, p2, t2),
+        args=(x, y),
+        maxiter=100000,
+        disp=0,
+    )
+    residual = cost_cyclic_logistic((r1, k1, p1, t1, r2, k2, p2, t2), x, y)
+    return r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], residual
 
 
 def get_logistic(r, k, p):
@@ -231,6 +255,12 @@ def get_d_logistic(r, k, p):
     return func
 
 
+def cost_cyclic_logistic((r1, k1, p1, t1, r2, k2, p2, t2), x, y):
+    fit = get_d_logistic(r1, k1, p1)(x - t1) + get_d_logistic(r2, k2, p2)(x - t2)
+    res = (y - fit)**2 / abs(fit)
+    return sum(res)
+
+
 def cost_cyclic((qmax1, qmax2, tmax1, tmax2, a1, a2), x, y):
     fit = (4 * qmax1 * (exp(-a1*(x-tmax1))) / (1+exp(-a1*(x-tmax1)))**2) +\
           (4 * qmax2 * (exp(-a2*(x-tmax2))) / (1+exp(-a2*(x-tmax2)))**2)
@@ -246,6 +276,12 @@ def cost_function((r, k, p), x, y):
 
 def cost_function_r_p((r, p), k, x, y):
     fit = get_logistic(r, k, p)(np.array(x))
+    res = (y - fit)**2 / abs(fit)
+    return sum(res)
+
+
+def cost_d_logistic_r_p((r, p), k, x, y):
+    fit = get_d_logistic(r, k, p)(np.array(x))
     res = (y - fit)**2 / abs(fit)
     return sum(res)
 

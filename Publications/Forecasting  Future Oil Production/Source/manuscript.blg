@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: manuscript.aux
+The style file: model5-names.bst
+Database file #1: bibliography.bib.bib
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Warning--can't use both author and editor fields in Sornette2004
+You've used 16 entries,
+            3390 wiz_defined-function locations,
+            808 strings with 8012 characters,
+and the built_in function-call counts, 9638 in all, are:
+= -- 781
+> -- 260
+< -- 15
++ -- 172
+- -- 75
+* -- 1000
+:= -- 1342
+add.period$ -- 58
+call.type$ -- 16
+change.case$ -- 106
+chr.to.int$ -- 19
+cite$ -- 17
+duplicate$ -- 751
+empty$ -- 769
+format.name$ -- 109
+if$ -- 1817
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 128
+newline$ -- 96
+num.names$ -- 64
+pop$ -- 268
+preamble$ -- 1
+purify$ -- 89
+quote$ -- 0
+skip$ -- 256
+stack$ -- 0
+substring$ -- 469
+swap$ -- 498
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 141
+warning$ -- 1
+while$ -- 72
+width$ -- 0
+write$ -- 245
+(There was 1 warning)

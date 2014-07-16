@@ -140,14 +140,27 @@ a methodological point of view, the Hubbert model has enjoyed a longstanding
 popularity in modeling future oil production given its simplicity.
 Various extensions have been studied by \citet{Brandt2007}
 to account for multi-cycled or asymmetric production curves.
-The existing forecasts of future oil production use some form of the
-Hubbert model \citep{Brecha2012,Laherrere2002,Lynch2002}
-or some economical model applied to aggregate production \citep{Greiner2011},
-but none goes into the details of studying the underlying dynamics.
-The main reason for the lack of details is certainly the lack of available
-data. 
 
-In this article, a new methodology is introduced to forecast future
+\subsection{Back-testing Hubbert's Model}
+
+Despite the popularity of Hubbert model, the literature says little about its the out-of-sample performance. There are many ways to address this question and we choose to study the remaining recoverable reserves predicted by the Hubbert Model when going back in time. As the problem of fitting the logistic curve (equation \ref{logistic}) is under-constrained before the peak of $f(t)$, the back-test has to be started when the peak is already well visible in the data. For each time $T$, a month between the start of the back-test and the date of the latest available date, we fitted the Hubbert model to the data truncated at time $T$. Based on each fit, we computed the predicted remaining recoverable reserves.
+This back-test allows us to study how the forecast of Hubbert's model evolves over time. A good model, which captures well the underlying dynamics of the system, should yield a stable forecast over time. An unstable forecast, where the model constantly has too adapt to new data, can be considered as an indicator that the model is missing some aspects. This is of course assuming that the dynamics of the system are deterministic to higher degree than the error the model is making in its forecast.
+For the studied cases, namely Norway and the UK, a good starting date was chosen to be the 01/2000. Fitting Norway's production could be made using the simple logistic equation \ref{logistic}, however for the UK the production exhibits two clear peaks, which requires the use of a double-logistic function which is the sum of two independent logistic functions with time shifted peaks. The peak of each of the two logistic functions matches up with one of the two peaks in the UK production data.
+The results of this back-test can be seen in figure \ref{hubbert-backtest} and clearly show that the forecast is not stable over time. In 2000, for Norway, the Hubbert model would have predicted 2.08Gb remaining recoverable reserves in 2014, while up to now the predicted amount grew to 2.83Gb (a 36\% error) and the growth did not yet slow down. For the UK, the prediction would have been 0.21Gb but grew all the way to 1.43Gb (an error of 581\%), with a recent slow down in growth. These results clearly show that the Hubbert model can be highly unstable and unreliable in its forecast. It has to be added that the error in total production since the beginning in the year 2000 relative too now is only 17\% for Norway and 6.5\% for the UK. Nonetheless, the Hubbert model greatly underestimates the fat tail of the production curve.
+The aim is to understand the cause why the Hubbert model underestimates the tail of the production curve and improve upon it. A first argument could be the strong increase in the oil price, which widened the amount of economically recoverable reserves. To discuss this hypothesis the figure \ref{hubbert-backtest} shows as well the oil price. The forecast for Norway remains fairly stable and then starts to grow with a small delay when the oil price increases. The growth is continuing in the past years, even as the oil price stabilized again. For the UK the behaviour is different, with increases in the forecast showing very little delay with respect to the increases in the oil price. One could speculate that Norway had little spare capacities and therefore the increase in remaining reserves was always delayed with respect to the oil price as new capacities had first to be build. On the other hand, UK could have had available or upcoming spare capacities which allow to respond rapidly to the increase in the oil price. Any case, it seems difficult to establish a clear link between the oil price and the increase in forecasted reserves.
+
+
+\subsection{Beyond Hubbert's Model}
+
+The existing forecasts of future oil production all use some form of the
+Hubbert model \citep{Brecha2012,Laherrere2002,Lynch2002}
+or some economical model applied to aggregate production \citep{Greiner2011}.
+ However, as just shown in the back-test, the Hubbert model does not provide a
+forecast stable in time, usually underestimating the tail in the production curve.
+Considering that none of these Hubbert bases methodologies go into the details of studying the underlying dynamics, it is not surprising that some of the dynamics have been missed.
+In defense of the existing studies, the main reason for the lack of details is certainly the lack of available data. The Hubbert model will certainly always remain the tool of choice to estimate the total reserves when only the aggregated production of a region (typically a country) is available. 
+
+Nonetheless, in this article, a new methodology is introduced to forecast future
 oil production. Instead of taking the aggregate oil production profile
 and fitting it with the Hubbert curve or its variants (such as the
 multi-cyclic Hubbert curve), the production profile of each individual
@@ -156,7 +169,7 @@ extrapolating the future rate of discovery of new fields, the future
 oil production is forecasted by means of a Monte Carlo simulation.
 To demonstrate the generality of the methodology presented here,
 it is applied to two major oil producing countries with publicly available
-data: Norway \citepalias{Directorate2014} and the U.K. \citep{GOVUK2014}.
+data at the field level: Norway \citepalias{Directorate2014} and the U.K. \citep{GOVUK2014}.
 
 
 \section{Methodology}
@@ -695,6 +708,16 @@ by three of the authors \cite{Forro2012}.
 
 \newpage{}
 
+%FIGURE 0
+\noindent 
+\begin{figure}[H]
+\includegraphics[width=1\columnwidth]{hubbert-backtest}
+\caption{A back-test of the forecast stability of the Hubbert model.}
+\label{hubbert-backtest} 
+\end{figure}
+
+\pagebreak
+
 %FIGURE 1
 \noindent 
 \begin{figure}[H]
@@ -708,6 +731,7 @@ shown with the black line.  The one standard deviation given by expression
 \label{regular} 
 \end{figure}
 
+\pagebreak
 
 %FIGURE 2
 \noindent 

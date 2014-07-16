@@ -16,7 +16,7 @@ class HubbertBacktest():
 
     @classmethod
     def run(cls, name):
-        ds, nks, ukfs, fs = [], [], [], []
+        ds, nks, ukks, ukfs, fs = [], [], [], [], []
         d = date(year=2000, month=1, day=1)
         d_max = date.today() - timedelta(days=120)
         r = -1.0
@@ -57,6 +57,7 @@ class HubbertBacktest():
             r1, k1, p1, t1, r2, k2, p2, t2, residual = fit_cyclic_logistic(
                 months, cops, r1, k1, p1, t1, r2, k2, p2, t2
             )
+            ukks.append(k1 + k2)
             ukfs.append(k1 - get_logistic(r1, k1, p1)(
                 len(cops) + diff_months_abs(d_max, d) - t1
             ) + k2 - get_logistic(r2, k2, p2)(
@@ -78,8 +79,12 @@ class HubbertBacktest():
         plt, ax1, ax2 = start_plot(
             "Back-testing date",
             "Remaining production (barrels)",
-            "Norway's remaining recoverable reserves in 2014\nA back-test using Hubbert"
+            "Remaining recoverable reserves in 2014\nA back-test using Hubbert"
         )
+        print "{0} vs {1}".format(fs[0:2], fs[-2:-1])
+        print "{0} vs {1}".format(ukfs[0:2], ukfs[-2:-1])
+        print "{0} vs {1}".format(ukks[0], ukks[-1])
+        print "{0} vs {1}".format(nks[0], nks[-1])
         l1 = ax1.plot(ds, fs, '-b', label="Forecast Norway")
         l2 = ax1.plot(ds, ukfs, '-g', label="Forecast UK")
         l3 = ax2.plot(ds, OIL_PRICE_SINCE_2000[:len(ds)], '-r', label="Oil price ($)")

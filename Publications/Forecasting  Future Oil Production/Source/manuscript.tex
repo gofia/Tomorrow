@@ -96,7 +96,7 @@ our method gives a better description of future oil production, as validated by
 our back-tests starting in 2008. Specifically, we predict remaining reserves
 extractable until 2030 to be $5.7 \pm 0.3$ million barrels for Norway and $3.0 \pm0.3$ billion
 barrels for the UK, which are respectively $45\%$ and $66\%$ above the
-predictions using the standard methodology.
+predictions using an extrapolation of aggregate production.
 \end{abstract}
 
 \section{Introduction}
@@ -429,20 +429,10 @@ as oil fields, the distributions are in general incomplete for the small events 
 exhaustive sampling. This incompleteness raises the spectre that our extrapolations
 might be grossly underestimating the large potential contributions to the total reserves
 of the many small yet undiscovered small oil fields. Assuming that the power law (\ref{ccdfsizefield})
-would hold for smaller fields down to size of 1 Million barrels leads to a number of 
+would hold for smaller fields down to size of 1 million barrels leads to a number of 
 such fields 10 to 100 times larger than presently known. 
 
-But there is another
-key factor that needs to be considered, namely the fact that small oil fields
-are not economically viable for exploitation, which leads to an effective truncation
-in the distribution (\ref{ccdfsizefield}) relevant for the estimation of recoverable oil.
-Taking the data from the \citetalias{Directorate2014}
-providing the yearly investments broken by fields in Norway, let us consider the illustrative
-case of the field GAUPE. The investment spent to 
-develop its exploitation was  \$380M, while its estimated size is 
-$\simeq 1.2Mb$, which corresponds approximately to a total
-market value of $\$120M$ at \$100 per barrel. It is thus not a surprise that
-investment to exploit this field was interrupted in 2013. 
+But there is another key factor that needs to be considered, namely the fact that small oil fields are not economically viable for exploitation, which leads to an effective truncation in the distribution (\ref{ccdfsizefield}) relevant for the estimation of recoverable oil. In 1980, the threshold for economic viability was as high as 70 million barrels \cite[p. 591]{Smith1980}, but with today's oil price we expect a much lower threshold. Taking the data from the \citetalias{Directorate2014} providing the yearly investments broken by fields in Norway, let us consider the illustrative case of the field GAUPE. The investment spent to develop its exploitation was  \$380M, while its estimated size is $\simeq 1.2Mb$, which corresponds approximately to a total market value of $\$120M$ at \$100 per barrel. It is thus not a surprise that investment to exploit this field was interrupted in 2013.
 Figure \ref{returnNorwayfield} shows the total estimated revenue divided
 by investment as a function of the estimated ultimate recovery for a number
 of small oil fields. It can be inferred that oil fields of sizes smaller than about 10 Mb
@@ -511,6 +501,9 @@ and giants have been used to constrain the logistic curve fitted to
 the discoveries. Figure \ref{rate_of_discovery} shows a sample of
 fitted logistic curves, each curve being weighted by the likelihood
 of its carrying capacity given by equation (\ref{eq:likelihood}).
+
+A comparison with the results in table 1 of \cite{Smith1980} show that our results a coherent. Back in 1980, he used $J=7$ which fortunately maps easily to our splitting using $J=2$ as his first reservoir size is 0 to 50 Mb as ours, and the sum of the 6 others yields our second reservoir size 50 Mb and above. His estimated total reserves were 43.2 billion barrels with 90\% confidence bounds at 38.4 and 65.0, across 203 dwarfs and 117 giants in our definition. Currently, we know that total estimated reserves are reaching 59 Bb, which is still within the 90\% confidence interval of Smith. This strongly speaks in favour of his likelihood technique. Given that in the past 34 years there have been major technological improvements and a strong increase in the oil price, it is not surprising that the actual reserves are tending towards his upper bound.\\
+A linear scaling by 59/43.2 (actual reserves over Smith expected reserves) of the number of fields Smith predicted, yields 277 dwarfs and 160 giants. This is close to the $296 \pm 21$ dwarfs and $156 \pm 2$ giants our 60\% likelihood estimation found for Norway and the UK combined. Such a strong coherence between the two fully independent implementations using different parameters (e.g. $J=7$ versus $J=2$) and different data sets (1980 versus 2014) is almost surprising and we see it as a good validation of the approach.
 
 
 \subsubsection{Future production from discoveries\label{sub:Future-production-from}}
@@ -590,11 +583,7 @@ the discovery process of dwarf fields.
 In the U.K., oil production faced a change of regime during the early
 nineties due to technological innovation, giving rise to the inverted
 \textquotedbl{}w shape\textquotedbl{} of the oil production profile.
-However, this has not been an issue for us to extrapolate the decay of production
-starting at the second peak. The difference between the Hubbert-based
-methodology and the fit extrapolation is very similar to the Norwegian
-case. The former underestimates the remaining oil reserves by about
-$66\%$ compared to the latter.
+However, this has not been an issue to fit a double logistic (Hubbert model) or extrapolate the decay of aggregate production starting at the second peak. The differences between the three methodologies are very similar to the Norwegian case. The Hubbert model again predicts the smallest remaining reserves with about half the amount of the Monte-Carlo model. The fit of aggregate production underestimates the remaining oil reserves by about $66\%$ compared to the Monte-Carlo model.
 
 Which of the models is more trustworthy? Clearly, the implications
 in adopting one methodology over the other are significant. The only
@@ -610,21 +599,10 @@ For both countries, namely Norway and the U.K., a back-test using
 the data truncated in 2008 has been made. Before that date, too many
 of the giant fields have not entered their decay phase for a sufficiently
 long time to apply the extrapolation algorithm. Figure \ref{model-back-testing}
-shows the results of these tests. Comparing the forecast of both models,
-with the oil production of the subsequent 6 years, shows that the
-predictive power of the Monte-Carlo model is significantly better than the Hubbert model or a simple extrapolation of the aggregate past production. The Monte-Carlo model is found essentially right on target, while the extrapolation of past production (``fit'') is under-estimating the realised production by 19\% and 16\% respectively for Norway and the U.K. The following table \ref{backtest-08} summarizes the difference between the two approaches for the back-testing period.
-
-While the error of the extrapolation of the past oil production method (``fit'') is not dramatic over these six years from 2008 to 2014, the difference between it and the Monte-Carlo approach becomes huge from 2014 to 2030, as shown in table \ref{forecast-08}.
-
-The simple extrapolation decays too fast and entirely misses the fat
-tails in the decay process of individual fields and the new discoveries.
-Moreover, it must be noted that the simple extrapolation changed massively
-between the back-test in table \ref{forecast-08} and the current
-fit in table \ref{forecast-14} (520\% for Norway and 236\% for the
-U.K.). In other words, the simple extrapolation is very unstable
-in its forecast, while the Monte-Carlo forecasts remains very consistent
-(less than 10\% change).
-
+shows the resulting production curves for the fit of aggregate production and the Monte-Carlo model.\\
+Comparing the forecast of the models with the oil production of the subsequent 6 years, shows that the predictive power of the Monte-Carlo model is significantly better than the Hubbert model or a simple extrapolation of the aggregate past production. Table \ref{backtest-08} summarizes the difference between the approaches for the back-testing period. The Hubbert model has the poorest performance, underestimating production by 19\% (Norway) and 47\% (UK). The Monte-Carlo model is found essentially on target with less then 5\% error on the actual production, while the extrapolation of past production (``fit'') is under-estimating the realised production by 19\% and 16\% respectively for Norway and the U.K. These results confirm that modelling the production dynamics of the individual fields and the discovery of new fields yields a more accurate prediction then methodologies who just use aggregate production.\\
+The error of the Hubbert model or the extrapolation of the past oil production method (``fit'') is not dramatic over the six years from 2008 to 2014, however the difference between them and the Monte-Carlo approach becomes huge for the time period from 2014 to 2030, as shown in table \ref{forecast-08}. The Hubbert model and the simple extrapolation decay too fast and entirely miss the fat tails in the decay process of individual fields and the new discoveries. It is interesting to note that the Hubbert model performs similarly then the fit of aggregate production for the UK, but performs much better for Norway. This is due to the fact that the Hubbert model calibrates the decay slope based on the increase before the peak, which in the case of Norway turns out to be beneficial.\\
+The simple extrapolation changed massively between the back-test in table \ref{forecast-08} and the current fit in table \ref{forecast-14} (520\% for Norway and 236\% for the U.K.). In other words, the simple extrapolation is very unstable in its forecast, while the Monte-Carlo forecasts remains very consistent (less than 10\% change).\\
 As can be seen in figure \ref{model-back-testing}, the actual production
 of Norway during the back-testing period remained entirely within
 the quite narrow $1\sigma$ interval of the Monte-Carlo methodology,
@@ -637,15 +615,8 @@ discoveries and their production profile.
 
 \section{Conclusion}
 
-We have presented a Monte-Carlo based methodology to forecast future
-oil production. By extending the oil production of current fields
-into the future and modeling the discovery rate of new fields, the
-future oil production of Norway and the U.K. could be forecasted.
-These forecasts are significantly different from the ones obtained
-with a standard extrapolation. Indeed, our model forecasts 45\% to
-66\% more remaining oil reserves than the standard extrapolation.
-The back-test performed on the time period between 2008 and 2014 confirmed
-that the Monte-Carlo based model better captured the production dynamics.
+The detailed discussion of a full back-test of the Hubbert model for Norway and the UK showed that its prediction were unstable in time and therefore unlikely to be reliable. We argue that the Hubbert model is likely to be unable to correctly capture the fat tail in the decay process as it doesn't model the fat tails in the decay of individual fields nor the discovery of new fields. An easily quantifiable link with the oil price, which is the driving factor of oil production, could not be found and we therefore rejected the exploration of extensions of the Hubbert model to capture properly the tail.\\
+We preferred a two step Monte-Carlo based methodology to forecast future oil production which: (i) extends the oil production of current fields into the future and (ii) models the discovery rate of new fields. This methodology was then applied to forecast the future oil production of Norway and the U.K. These forecasts are significantly different from the ones obtained with an extrapolation of aggregate production. Indeed, our model forecasts 45\% to 66\% more remaining oil reserves than the standard extrapolation. The back-test performed on the time period between 2008 and 2014 confirmed that the Monte-Carlo based model better captured the production dynamics.
 
 The results suggest that it is highly likely that the decay
 of Norwegian and U.K. oil production will be much slower then one

@@ -1,8 +1,10 @@
-This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: manuscript.aux
 The style file: model5-names.bst
 Database file #1: bibliography.bib.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--can't use both author and editor fields in Sornette2004
 You've used 16 entries,
             3390 wiz_defined-function locations,

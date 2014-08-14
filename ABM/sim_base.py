@@ -35,11 +35,18 @@ class SimBase(object):
     def hash(self):
         return self.compute_hash(self.parameters, self.initial_variables)
 
-    def __getattr__(self, name, t=-1):
-        m = re.search('(\S*)_(\d*)$', name)
+    @staticmethod
+    def underscore_split(s):
+        one, two = s, None
+        m = re.search('(\S*)_(\d*)$', s)
         if m is not None:
-            name = m.group(1)
-            t = -int(m.group(2))
+            one = m.group(1)
+            two = m.group(2)
+        return one, two
+
+    def __getattr__(self, name, t=-1):
+        name, t = self.underscore_split(name)
+        t = -1 if t is None else -int(t)
         if name in self.variables and len(self.variables[name]) > 0:
             return self.variables[name][t]
         if name in self.parameters:
@@ -62,12 +69,13 @@ class SimBase(object):
                 for key in keys:
                     self.__setattr__(key, new_values[key])
 
-    def run_until(self, name, upper=1E-3):
+    def run_until(self, property, upper=1E-3):
+        p_variable, p_name = property['variables'], property['name']
         old_value, new_value = 0.0, 1.0
         while abs(new_value - old_value) > upper:
             self.run(1000)
             old_value = new_value
-            new_value = self.__getattribute__("diff_{0}".format(name))("p")
+            new_value = self.__getattribute__(p_name)(*p_variable)
         return new_value
 
     def scan_parameters(self, parameters, properties, scan=None):
@@ -112,11 +120,13 @@ class SimBase(object):
                 count += 1
                 scan[name]["values"].append(value)
                 for p in properties:
-                    if p not in scan[name]:
-                        scan[name][p] = {'values': []}
-                    p_value = self.__getattribute__("diff_{0}".format(p))("p")
-                    print "{0}: {1}".format(p, p_value)
-                    scan[name][p]['values'].append(p_value)
+                    p_variable, p_name = p['variables'], p['name']
+                    full_name = "{0}_{1}".format("_".join(p_variable), p_name)
+                    if full_name not in scan[name]:
+                        scan[name][full_name] = {'values': []}
+                    p_value = self.__getattribute__(p_name)(*p_variable)
+                    print "{0}: {1}".format(full_name, p_value)
+                    scan[name][full_name]['values'].append(p_value)
             else:
                 last_count = self.scan_parameters(parameters, properties, scan[name])
                 for _ in range(0, last_count):
@@ -144,6 +154,16 @@ class SimBase(object):
         ax.set_ylabel(args[1])
         ax.set_zlabel(args[2])
         plt.show()
+
+    def mean(self, name):
+        return np.mean(self.variables[name])
+
+    def diff_correlate(self, name1, name2):
+        array1 = np.array(self.variables[name1])
+        array1_diff = np.diff(array1)
+        array2 = np.array(self.variables[name2])
+        array2_diff = np.diff(array2)
+        return np.correlate(array1_diff, array2_diff)[0]
 
     def diff_method(self, name, method):
         array = np.array(self.variables[name])

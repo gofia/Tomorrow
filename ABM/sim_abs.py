@@ -10,19 +10,19 @@ class SimABS(SimBase):
         'r': 0.001,
         'y_avg': 1.0,
         'ps': 1000,
-        'v': 0.9,
-        'g': 1.9,
+        'v': 0.995,
+        'g': 2.5,
         'a': 1.0,
         'o': 1.0,
         'b': 2.0,
         'n': 0.99,
         'alpha': 1800,
-        'noise': 25.0,
+        'noise': 10,
     }
     variables = {
         'n1': [],
         'n2': [],
-        'p': [920, 920, 920],
+        'p': [600, 600, 600],
         'U1': [0.0],
         'U2': [0.0],
         'y': [],
@@ -70,17 +70,31 @@ if __name__ == '__main__':
     print sim
     sim.scan_parameters(
         [
-            {"name": "v", "values": list(arange(0.5, 1.01, 0.025))},
-            {"name": "g", "values": list(arange(1.5, 2.51, 0.025))},
+            {"name": "v", "values": list(arange(0.99, 1.000001, 0.0025))},
+            {"name": "g", "values": list(arange(0.5, 2.51, 0.1))},
         ],
-        ["std", "skewness", "kurtosis"]
+        [
+            {"name": "diff_mean", "variables": ("p",)},
+            {"name": "diff_std", "variables": ("p",)},
+            {"name": "diff_skewness", "variables": ("p",)},
+            {"name": "diff_kurtosis", "variables": ("p",)},
+            {"name": "mean", "variables": ("n1",)},
+            {"name": "mean", "variables": ("n2",)},
+            {"name": "diff_correlate", "variables": ("p", "n1")},
+            {"name": "diff_correlate", "variables": ("p", "n2")},
+        ]
     )
-    sim.plot_scan("v", "g", "std")
-    sim.plot_scan("v", "g", "skewness")
-    sim.plot_scan("v", "g", "kurtosis")
-    # sim.run_until("std", 1E-4)
-    # for i in range(0, 100000):
+    sim.plot_scan("v", "g", "p_diff_mean")
+    sim.plot_scan("v", "g", "p_diff_std")
+    sim.plot_scan("v", "g", "p_diff_skewness")
+    sim.plot_scan("v", "g", "p_diff_kurtosis")
+    sim.plot_scan("v", "g", "n1_mean")
+    sim.plot_scan("v", "g", "n2_mean")
+    sim.plot_scan("v", "g", "p_n1_diff_correlate")
+    sim.run_until("std")
+    # for i in range(0, 1000):
     #     sim.run(1)
-        # print sim
+    #     # print sim
     # sim.print_diff_information("p")
     # sim.plot("p")
+    # sim.plot("n1")

@@ -1,0 +1,408 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.2 (15/5/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+
+
+\usepackage{lipsum}% Package to generate dummy text throughout this template
+
+% Use the Palatino font
+% Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype}% Slightly tweak font spacing for aesthetics
+
+% Document margins
+\usepackage{multicol}% Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption}% Custom captions under/above floats in tables or figures
+\usepackage{booktabs}% Horizontal rules in tables
+\usepackage{float}% Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+% For hyperlinks in the PDF
+
+
+\usepackage{lettrine}% The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist}% Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract}% Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec}% Allows customization of titles
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr}% Headers and footers
+ % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+%\fancyhead[C]{Running title $\bullet$ November 2012 $\bullet$ Vol. XXI, No. 1} % Custom header text
+\fancyhead[C]{Forecasting future oil production $\bullet$ July 2014} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding T1
+\font_roman palatino
+\font_sans default
+\font_typewriter mathpazo
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{fancy}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Title
+Financial stylized facts in non-linear adaptive believe systems 
+\end_layout
+
+\begin_layout Author
+L.
+ Fiévet and D.
+ Sornette
+\begin_inset Newline newline
+\end_inset
+
+D-MTEC, ETH Zürich
+\end_layout
+
+\begin_layout Date
+05/25/14
+\end_layout
+
+\begin_layout Abstract
+\noindent
+balasdjasldja.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lettrine[nindent=0em,lines=3]
+\end_layout
+
+\end_inset
+
+ Gaussian random walks have been used for over a century, since Bachelier's
+ work in ??? [ref], as a simplified model for stock markets.
+ However, it is well known that real financial time series exhibit numerous
+ stylized facts which cannot be explained by a simple Gaussian random walk.
+ As has been well documented by Rama Cont [ref], some main stylized facts
+ are:
+\end_layout
+
+\begin_layout Itemize
+Heavy tails of returns at small time scales which transition to gaussianity
+ at large time scales.
+\end_layout
+
+\begin_layout Itemize
+Skewness in the return distribution: larger drawdowns then upward movements.
+\end_layout
+
+\begin_layout Itemize
+Autocorrelations of returns at small time scales.
+\end_layout
+
+\begin_layout Itemize
+Volatility clustering.
+\end_layout
+
+\begin_layout Standard
+It is difficult to find an ad-hoc stochastic process which exhibits all
+ of these stylized facts.
+ Statistical models, for example (G)ARCH, can be used to model the volatility
+ clustering but do not offer any structural explanation.
+ This lead to the development of non-linear adapative believe systems (simple
+ agent based models) which exhibit these properties and are derived from
+ a specific market structure.
+ Gaunersdorfer and Hommes have studied such a system in great detail [ref],
+ showing that indeed it produced excess kurtosis, some skewness, volatility
+ clustering and autocorrelations of returns.
+ However, the simulation does not provide a good intuition for the dynamics
+ of the system.
+ Fortunately, subsequent work by ??? [ref] has provided a partial analytical
+ solution for two edge cases, confirming the numerical results.
+\end_layout
+
+\begin_layout Section
+The model
+\end_layout
+
+\begin_layout Standard
+The model is constituted of two types of agents, mean reverter expecting
+ the price to be
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{1,t+1}^{e}=p^{*}+\nu(p_{t-1}-p^{*})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and trend followers expecting the price to be
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{2,t+1}^{e}=p_{t-1}+g(p_{t-1}-p_{t-2})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with some transformation, one can show that the price evolution is given
+ by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{t}=\left(\frac{1-x\nu^{'}}{1+r}+\frac{(1-x)g}{1+r}\right)p_{t-1}+\frac{(1-x)g}{1+r}p_{t-2}+\frac{1}{1+r}\xi_{t},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $x$
+\end_inset
+
+ is the number of mean reverter and 
+\begin_inset Formula $r$
+\end_inset
+
+ is the risk free return.
+ The variable 
+\begin_inset Formula $x$
+\end_inset
+
+ is not constant and has separate dynamics depending on the profit made
+ by the two type of traders.
+ However, for fixed 
+\begin_inset Formula $x$
+\end_inset
+
+, the price dynamics reduce to a VAR model with none trivial parameters.
+\end_layout
+
+\begin_layout Standard
+Based on the Ansatz from [ref], we can solve for 
+\begin_inset Formula $p_{t}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p_{t}=Ap_{t-1}+Bp_{t-2}+\xi_{t},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+p_{t} & = & a_{i}p_{t-i}+a_{i-1}Bp_{t-i-1}+\sum_{j=0}^{i-1}a_{j}\xi_{t-j}\\
+ & = & a_{i}(Ap_{t-i-1}+Bp_{t-i-2}+\xi_{t-i})+a_{i-1}Bp_{t-i-1}+\sum_{j=0}^{i-1}a_{j}\xi_{t-j}\\
+ & = & (a_{i}A+a_{i-1}B)p_{t-i-1}+a_{i}Bp_{t-i-2}+\sum_{j=0}^{i}a_{j}\xi_{t-j}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This leads to the recursion equation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+a_{i}A+a_{i-1}B=a_{i+1},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which is easily solvable as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+a_{i}=k_{1}r_{1}^{i}+k_{2}r_{2}^{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where the parameters 
+\begin_inset Formula $r_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $r_{2}$
+\end_inset
+
+ are the roots of
+\begin_inset Formula 
+\[
+t^{2}-At-B=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and the parameters 
+\begin_inset Formula $k_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $k_{2}$
+\end_inset
+
+ dependend on the initial conditions
+\begin_inset Formula 
+\[
+p_{t}=\sigma\sum_{i=0}^{t-2}\left(k_{1}r_{1}^{t-i}+k_{2}r_{2}^{t-i}\right)\xi_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+now we can solve for the 
+\end_layout
+
+\end_body
+\end_document
